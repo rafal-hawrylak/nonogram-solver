@@ -6,7 +6,7 @@ public class PuzzlePrinter {
 
     private static final int COL_WIDTH = 3;
 
-    public String print(Puzzle puzzle, Optional<ChangedInLastIteration> changes) {
+    public String print(Puzzle puzzle, Optional<ChangedInIteration> changes) {
         StringBuilder sb = new StringBuilder();
         // rows
         var rows = puzzle.rowsOrCols.stream().filter(rc -> rc.horizontal).toList();
@@ -40,7 +40,7 @@ public class PuzzlePrinter {
         return sb.toString();
     }
 
-    private String getField(Puzzle puzzle, int i, int j, Optional<ChangedInLastIteration> changes) {
+    private String getField(Puzzle puzzle, int i, int j, Optional<ChangedInIteration> changes) {
         var sb = new StringBuilder();
         var color = false;
         if (changes.isPresent()) {

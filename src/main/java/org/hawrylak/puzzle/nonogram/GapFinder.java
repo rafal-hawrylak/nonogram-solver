@@ -33,6 +33,7 @@ public class GapFinder {
                         case EMPTY, OUTSIDE ->
                             gaps.add(new Gap(rowOrCol, start, start + length - 1, length));
                         case FULL -> {
+                            length++;
                             startFilling = i;
                             lengthFilling = 1;
                         }

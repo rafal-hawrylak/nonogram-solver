@@ -8,13 +8,13 @@ public class GapCloser {
 
     private final GapFinder gapFinder;
 
-    void closeNotNeeded(Puzzle puzzle, ChangedInLastIteration changes) {
+    void closeNotNeeded(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             closeNotNeededInRowOrCol(puzzle, changes, rowOrCol);
         }
     }
 
-    private void closeNotNeededInRowOrCol(Puzzle puzzle, ChangedInLastIteration changes, RowOrCol rowOrCol) {
+    private void closeNotNeededInRowOrCol(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol) {
         if (changes.firstIteration() || changes.hasChanged(rowOrCol)) {
             List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
             var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
@@ -27,15 +27,15 @@ public class GapCloser {
         }
     }
 
-    private void close(Gap gap, Puzzle puzzle, ChangedInLastIteration changes) {
+    public void close(Gap gap, Puzzle puzzle, ChangedInIteration changes) {
         var k = gap.rowOrCol.number;
         for (int i = gap.start; i <= gap.end; i++) {
             if (gap.rowOrCol.horizontal) {
                 puzzle.fields[i][k] = FieldState.EMPTY;
-                changes.markChange(gap.rowOrCol, i, k);
+                changes.markChangeSingle(i, k);
             } else {
                 puzzle.fields[k][i] = FieldState.EMPTY;
-                changes.markChange(gap.rowOrCol, k, i);
+                changes.markChangeSingle(k, i);
             }
         }
     }

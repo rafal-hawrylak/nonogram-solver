@@ -42,7 +42,7 @@ public class Puzzle {
         return puzzlePrinter.print(this, Optional.empty());
     }
 
-    public String toString(ChangedInLastIteration changes) {
+    public String toString(ChangedInIteration changes) {
         return puzzlePrinter.print(this, Optional.of(changes));
     }
 
