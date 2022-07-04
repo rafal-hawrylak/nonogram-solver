@@ -9,15 +9,15 @@ public class GapFiller {
     private final GapFinder gapFinder;
     private final GapCloser gapCloser;
 
-    public void fillTheOnlyMatchingGaps(Puzzle puzzle, ChangedInIteration changes) {
+    public void fillTheOnlyMatchingGaps(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            if (changes.firstIteration() || changes.hasChanged(rowOrCol)) {
+            if (changesLast.firstIteration() || changesLast.hasChanged(rowOrCol)) {
                 if (!rowOrCol.solved) {
                     List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
                     if (gaps.size() == rowOrCol.numbersToFind.size()) {
-                        tryToFillEachGap(gaps, rowOrCol, puzzle, changes);
+                        tryToFillEachGap(gaps, rowOrCol, puzzle, changesCurrent);
                     } else if (gaps.size() > rowOrCol.numbersToFind.size()) {
-                        tryToFillSomeGaps(gaps, rowOrCol, puzzle, changes);
+                        tryToFillSomeGaps(gaps, rowOrCol, puzzle, changesCurrent);
                     } else {
 
                     }
@@ -69,13 +69,17 @@ public class GapFiller {
     private void fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
         if (rowOrCol.horizontal) {
             if (i >= 0 && i < puzzle.width) {
-                puzzle.fields[i][rowOrCol.number] = state;
-                changes.markChangeSingle(i, rowOrCol.number);
+                if (!state.equals(puzzle.fields[i][rowOrCol.number])) {
+                    puzzle.fields[i][rowOrCol.number] = state;
+                    changes.markChangeSingle(i, rowOrCol.number);
+                }
             }
         } else {
             if (i >= 0 && i < puzzle.height) {
-                puzzle.fields[rowOrCol.number][i] = state;
-                changes.markChangeSingle(rowOrCol.number, i);
+                if (!state.equals(puzzle.fields[rowOrCol.number][i])) {
+                    puzzle.fields[rowOrCol.number][i] = state;
+                    changes.markChangeSingle(rowOrCol.number, i);
+                }
             }
         }
     }

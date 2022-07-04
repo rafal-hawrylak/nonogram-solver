@@ -25,8 +25,13 @@ public class ChangedInIteration {
         return iteration == 1;
     }
 
-    public void nextIteration() {
+    public void nextIteration(ChangedInIteration changesInCurrentIteration) {
         iteration++;
+        clear();
+        changedRowsOrCols.addAll(changesInCurrentIteration.changedRowsOrCols);
+        changedFields = changesInCurrentIteration.changedFields;
+        changesInCurrentIteration.clear();
+        changesInCurrentIteration.iteration++;
     }
 
     public void clear() {

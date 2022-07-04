@@ -11,21 +11,31 @@ public class PuzzleSolver {
 
     boolean solve(Puzzle puzzle) {
 
-        var changes = new ChangedInIteration(puzzle);
-        while (changes.firstIteration() || changes.anyChange()) {
-            System.out.println("iteration = " + changes.iteration);
-            changes.clear();
+        var changesLast = new ChangedInIteration(puzzle);
+        var changesCurrent = new ChangedInIteration(puzzle);
+        while (changesLast.firstIteration() || changesLast.anyChange()) {
+            System.out.println("iteration = " + changesLast.iteration);
 
             // rules
-            gapCloser.closeNotNeeded(puzzle, changes);
-            gapFiller.fillTheOnlyMatchingGaps(puzzle, changes);
-            numberCloser.close(puzzle, changes);
+            markRowsAsSolved(puzzle);
+            gapCloser.closeNotNeeded(puzzle, changesLast, changesCurrent);
+            gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
+            numberCloser.close(puzzle, changesLast, changesCurrent);
 
-            System.out.println(puzzle.toString(changes));
-            changes.nextIteration();
+            System.out.println(puzzle.toString(changesCurrent));
+            changesLast.nextIteration(changesCurrent);
         }
 
         return isPuzzleSolved(puzzle);
+    }
+
+    private void markRowsAsSolved(Puzzle puzzle) {
+        for (RowOrCol rowsOrCol : puzzle.rowsOrCols) {
+            if (rowsOrCol.solved) continue;
+            if (rowsOrCol.numbersToFind.stream().filter(n -> !n.found).count() == 0) {
+                rowsOrCol.solved = true;
+            }
+        }
     }
 
     private boolean isPuzzleSolved(Puzzle puzzle) {

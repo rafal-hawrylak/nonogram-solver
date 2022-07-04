@@ -8,20 +8,22 @@ public class GapCloser {
 
     private final GapFinder gapFinder;
 
-    void closeNotNeeded(Puzzle puzzle, ChangedInIteration changes) {
+    void closeNotNeeded(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            closeNotNeededInRowOrCol(puzzle, changes, rowOrCol);
+            closeNotNeededInRowOrCol(puzzle, changesLast, changesCurrent, rowOrCol);
         }
     }
 
-    private void closeNotNeededInRowOrCol(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol) {
-        if (changes.firstIteration() || changes.hasChanged(rowOrCol)) {
-            List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
-            var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
-                .map(n -> n.number).min(Integer::compareTo).get();
-            for (Gap gap : gaps) {
-                if (gap.length < min) {
-                    close(gap, puzzle, changes);
+    private void closeNotNeededInRowOrCol(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent, RowOrCol rowOrCol) {
+        if (changesLast.firstIteration() || changesLast.hasChanged(rowOrCol)) {
+            if (!rowOrCol.solved) {
+                List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
+                var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
+                    .map(n -> n.number).min(Integer::compareTo).get();
+                for (Gap gap : gaps) {
+                    if (gap.length < min) {
+                        close(gap, puzzle, changesCurrent);
+                    }
                 }
             }
         }
