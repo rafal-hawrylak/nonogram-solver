@@ -19,9 +19,9 @@ public class GapCloser {
             if (!rowOrCol.solved) {
                 List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
                 var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
-                    .map(n -> n.number).min(Integer::compareTo).get();
+                    .map(n -> n.number).min(Integer::compareTo);
                 for (Gap gap : gaps) {
-                    if (gap.length < min) {
+                    if (min.isEmpty() || gap.length < min.get()) {
                         close(gap, puzzle, changesCurrent);
                     }
                 }
@@ -33,11 +33,15 @@ public class GapCloser {
         var k = gap.rowOrCol.number;
         for (int i = gap.start; i <= gap.end; i++) {
             if (gap.rowOrCol.horizontal) {
-                puzzle.fields[i][k] = FieldState.EMPTY;
-                changes.markChangeSingle(i, k);
+                if (FieldState.UNKNOWN.equals(puzzle.fields[i][k])) {
+                    puzzle.fields[i][k] = FieldState.EMPTY;
+                    changes.markChangeSingle(i, k);
+                }
             } else {
-                puzzle.fields[k][i] = FieldState.EMPTY;
-                changes.markChangeSingle(k, i);
+                if (FieldState.UNKNOWN.equals(puzzle.fields[k][i])) {
+                    puzzle.fields[k][i] = FieldState.EMPTY;
+                    changes.markChangeSingle(k, i);
+                }
             }
         }
     }

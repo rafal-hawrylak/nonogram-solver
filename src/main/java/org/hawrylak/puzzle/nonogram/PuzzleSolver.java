@@ -4,10 +4,9 @@ public class PuzzleSolver {
 
     private final GapFinder gapFinder = new GapFinder();
     private final GapCloser gapCloser = new GapCloser(gapFinder);
-
     private final GapFiller gapFiller = new GapFiller(gapFinder, gapCloser);
-
-    private final NumberCloser numberCloser = new NumberCloser();
+    private final RowSelector rowSelector = new RowSelector();
+    private final NumberCloser numberCloser = new NumberCloser(rowSelector, gapFiller);
 
     boolean solve(Puzzle puzzle) {
 
@@ -20,7 +19,7 @@ public class PuzzleSolver {
             markRowsAsSolved(puzzle);
             gapCloser.closeNotNeeded(puzzle, changesLast, changesCurrent);
             gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
-            numberCloser.close(puzzle, changesLast, changesCurrent);
+            numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);
@@ -30,10 +29,10 @@ public class PuzzleSolver {
     }
 
     private void markRowsAsSolved(Puzzle puzzle) {
-        for (RowOrCol rowsOrCol : puzzle.rowsOrCols) {
-            if (rowsOrCol.solved) continue;
-            if (rowsOrCol.numbersToFind.stream().filter(n -> !n.found).count() == 0) {
-                rowsOrCol.solved = true;
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            if (rowOrCol.solved) continue;
+            if (rowOrCol.numbersToFind.stream().filter(n -> !n.found).count() == 0) {
+                rowOrCol.solved = true;
             }
         }
     }

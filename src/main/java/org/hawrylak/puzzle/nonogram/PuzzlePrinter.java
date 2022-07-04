@@ -5,12 +5,20 @@ import java.util.Optional;
 public class PuzzlePrinter {
 
     private static final int COL_WIDTH = 3;
+    private static final int INDEX_WIDTH = 2;
 
     public String print(Puzzle puzzle, Optional<ChangedInIteration> changes) {
         StringBuilder sb = new StringBuilder();
+        // column indexes
+        sb.append("   ");
+        for (int i = 0; i < puzzle.width; i++) {
+            sb.append(StringUtils.pad("" + i, ' ', COL_WIDTH));
+        }
+        sb.append("\n");
         // rows
         var rows = puzzle.rowsOrCols.stream().filter(rc -> rc.horizontal).toList();
         for (int i = 0; i < puzzle.height; i++) {
+            sb.append(StringUtils.pad("" + i, ' ', INDEX_WIDTH));
             sb.append("|");
             for (int j = 0; j < puzzle.width; j++) {
                 sb.append(getField(puzzle, i, j, changes));
@@ -26,7 +34,7 @@ public class PuzzlePrinter {
         var maxHeight = cols.stream().map(c -> c.numbersToFind.size()).max(Integer::compareTo)
             .get();
         for (int h = 1; h <= maxHeight; h++) {
-            sb.append(" ");
+            sb.append(StringUtils.pad("", ' ', COL_WIDTH));
             for (RowOrCol col : cols) {
                 if (col.numbersToFind.size() >= h) {
                     appendNumber(sb, col.numbersToFind.get(h - 1).found,

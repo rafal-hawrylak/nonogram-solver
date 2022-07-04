@@ -59,7 +59,7 @@ public class GapFiller {
         }
     }
 
-    private void fillTheGapEntirely(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public void fillTheGapEntirely(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         fillTheGap(gap, rowOrCol, puzzle, changes);
         number.found = true;
         fillSingleField(rowOrCol, puzzle, changes, gap.start - 1, FieldState.EMPTY);
@@ -84,7 +84,7 @@ public class GapFiller {
         }
     }
 
-    private void fillTheGap(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public void fillTheGap(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         for (int i = gap.start; i <= gap.end; i++) {
             fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
         }
