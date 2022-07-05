@@ -14,17 +14,14 @@ public class GapCloser {
         }
     }
 
-    private void closeNotNeededInRowOrCol(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent, RowOrCol rowOrCol) {
-        if (changesLast.firstIteration() || changesLast.hasChanged(rowOrCol)) {
-            if (!rowOrCol.solved) {
-                List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
-                var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
-                    .map(n -> n.number).min(Integer::compareTo);
-                for (Gap gap : gaps) {
-                    if (min.isEmpty() || gap.length < min.get()) {
-                        close(gap, puzzle, changesCurrent);
-                    }
-                }
+    private void closeNotNeededInRowOrCol(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
+        RowOrCol rowOrCol) {
+        List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
+        var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
+            .map(n -> n.number).min(Integer::compareTo);
+        for (Gap gap : gaps) {
+            if (min.isEmpty() || gap.length < min.get()) {
+                close(gap, puzzle, changesCurrent);
             }
         }
     }

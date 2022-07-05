@@ -17,7 +17,7 @@ public class Main {
     @SneakyThrows
     private void run() {
         System.out.println("Hello Nonogram Solver!");
-        Puzzle puzzle = getTestPuzzle1();
+        Puzzle puzzle = getTestPuzzle2();
         System.out.println(puzzle);
 
         boolean solved = new PuzzleSolver().solve(puzzle);
@@ -77,6 +77,35 @@ public class Main {
         puzzle.fields[1][9] = FieldState.EMPTY;
         puzzle.fields[2][9] = FieldState.EMPTY;
         puzzle.fields[4][9] = FieldState.EMPTY;
+        return puzzle;
+    }
+
+    private Puzzle getTestPuzzle2() {
+        var width = 10;
+        var height = 10;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(3));
+        rows.add(List.of(8));
+        rows.add(List.of(8));
+        rows.add(List.of(8));
+        rows.add(List.of(7));
+        rows.add(List.of(1, 3));
+        rows.add(List.of(2));
+        rows.add(List.of(1, 2, 2));
+        rows.add(List.of(2, 7));
+        rows.add(List.of(10));
+        cols.add(List.of(1, 2));
+        cols.add(List.of(2, 2));
+        cols.add(List.of(3, 1));
+        cols.add(List.of(4, 3));
+        cols.add(List.of(5, 2));
+        cols.add(List.of(4, 3));
+        cols.add(List.of(5, 3));
+        cols.add(List.of(6, 2));
+        cols.add(List.of(1, 8));
+        cols.add(List.of(7));
+        var puzzle = new Puzzle(width, height, rows, cols);
         return puzzle;
     }
 
