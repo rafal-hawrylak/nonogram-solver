@@ -107,4 +107,17 @@ public class GapFinder {
         }
         return Optional.empty();
     }
+
+    public Optional<Gap> nextGap(List<Gap> gaps, Gap gap) {
+        for (int i = 0; i < gaps.size(); i++) {
+            if (gaps.get(i).equals(gap)) {
+                if (i == gaps.size() - 1) {
+                    return Optional.empty();
+                } else {
+                    return Optional.of(gaps.get(i + 1));
+                }
+            }
+        }
+        return Optional.empty();
+    }
 }

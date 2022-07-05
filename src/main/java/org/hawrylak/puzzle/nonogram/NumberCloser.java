@@ -102,14 +102,35 @@ public class NumberCloser {
             return;
         }
         var previousGap = gapFinder.previousGap(gaps, gapAtPosition);
+        var nextGap = gapFinder.nextGap(gaps, gapAtPosition);
         if (previousGap.isEmpty()) {
             var numberToClose = rowOrCol.numbersToFind.get(0);
             fillTheNumber(rowOrCol, numberToClose, i, j, startingFrom, puzzle, changesCurrent);
+        } else if (nextGap.isEmpty()) {
+            var numberToClose = rowOrCol.numbersToFind.get(rowOrCol.numbersToFind.size() - 1);
+            fillTheNumber(rowOrCol, numberToClose, i, j, startingFrom, puzzle, changesCurrent);
         } else {
             if (previousGap.get().assignedNumber.isPresent()) {
-                // TODO find current number, next to the one from previous gap
+                var numberToClose = getNextNumber(rowOrCol.numbersToFind, previousGap.get().assignedNumber.get());
+                if (numberToClose.isPresent()) {
+                    fillTheNumber(rowOrCol, numberToClose.get(), i, j, startingFrom, puzzle, changesCurrent);
+                }
+            }
+            // TODO if (next.get().assignedNumber.isPresent()) {
+        }
+    }
+
+    private Optional<NumberToFind> getNextNumber(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
+        for (int i = 0; i < numbersToFind.size(); i++) {
+            if (numbersToFind.get(i).equals(numberToFind)) {
+                if (i == numbersToFind.size() - 1) {
+                    return Optional.empty();
+                } else {
+                    return Optional.of(numbersToFind.get(i + 1));
+                }
             }
         }
+        return Optional.empty();
     }
 
     private void fillTheNumber(RowOrCol rowOrCol, NumberToFind numberToClose, int i, int j, boolean startingFrom,
