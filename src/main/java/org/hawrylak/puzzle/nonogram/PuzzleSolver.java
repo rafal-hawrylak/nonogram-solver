@@ -12,6 +12,8 @@ public class PuzzleSolver {
 
         var changesLast = new ChangedInIteration(puzzle);
         var changesCurrent = new ChangedInIteration(puzzle);
+        var hardStop = true;
+        var iterationsToStopAfter = 5;
         while (changesLast.firstIteration() || changesLast.anyChange()) {
             System.out.println("iteration = " + changesLast.iteration);
 
@@ -24,6 +26,10 @@ public class PuzzleSolver {
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);
+
+            if (hardStop && changesCurrent.iteration >= iterationsToStopAfter) {
+                break;
+            }
         }
 
         return isPuzzleSolved(puzzle);
