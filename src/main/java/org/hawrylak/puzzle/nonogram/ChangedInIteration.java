@@ -48,7 +48,7 @@ public class ChangedInIteration {
         changedFields[i][j] = true;
     }
 
-    private Collection<RowOrCol> findPerpendicularRowOrCol(int i, int j) {
+    public Collection<RowOrCol> findPerpendicularRowOrCol(int i, int j) {
         Collection<RowOrCol> rowsAndCols = new ArrayList<>();
         rowsAndCols.addAll(puzzle.rowsOrCols.stream()
             .filter(rc -> rc.number == i)

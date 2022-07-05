@@ -1,6 +1,7 @@
 package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -62,6 +63,8 @@ public class GapFiller {
     public void fillTheGapEntirely(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         fillTheGap(gap, rowOrCol, puzzle, changes);
         number.found = true;
+        number.foundStart = gap.start;
+        number.fountEnd = gap.end;
         fillSingleField(rowOrCol, puzzle, changes, gap.start - 1, FieldState.EMPTY);
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
     }
@@ -95,7 +98,7 @@ public class GapFiller {
             var howManyFieldsMayBeSet = 2 * number.number - gap.length;
             var start = gap.start + (gap.length - number.number);
             var end = start + howManyFieldsMayBeSet - 1;
-            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet);
+            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
         }
     }

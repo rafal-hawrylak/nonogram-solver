@@ -6,7 +6,7 @@ public class PuzzleSolver {
     private final GapCloser gapCloser = new GapCloser(gapFinder);
     private final GapFiller gapFiller = new GapFiller(gapFinder, gapCloser);
     private final RowSelector rowSelector = new RowSelector();
-    private final NumberCloser numberCloser = new NumberCloser(rowSelector, gapFiller);
+    private final NumberCloser numberCloser = new NumberCloser(rowSelector, gapFinder, gapFiller);
 
     boolean solve(Puzzle puzzle) {
 
@@ -20,6 +20,7 @@ public class PuzzleSolver {
             gapCloser.closeNotNeeded(puzzle, changesLast, changesCurrent);
             gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
+            numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);
@@ -31,7 +32,7 @@ public class PuzzleSolver {
     private void markRowsAsSolved(Puzzle puzzle) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             if (rowOrCol.solved) continue;
-            if (rowOrCol.numbersToFind.stream().filter(n -> !n.found).count() == 0) {
+            if (rowOrCol.numbersToFind.stream().noneMatch(n -> !n.found)) {
                 rowOrCol.solved = true;
             }
         }

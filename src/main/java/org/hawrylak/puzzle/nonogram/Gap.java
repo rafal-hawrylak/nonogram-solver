@@ -1,5 +1,6 @@
 package org.hawrylak.puzzle.nonogram;
 
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
@@ -11,5 +12,6 @@ public class Gap {
     int start;
     int end;
     int length;
+    Optional<NumberToFind> assignedNumber;
 
 }

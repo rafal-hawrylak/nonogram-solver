@@ -2,6 +2,7 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GapFinder {
 
@@ -30,8 +31,8 @@ public class GapFinder {
                 case UNKNOWN -> {
                     switch (field) {
                         case UNKNOWN -> length++;
-                        case EMPTY, OUTSIDE ->
-                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length));
+                        case EMPTY, OUTSIDE -> gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
+                            findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1)));
                         case FULL -> {
                             length++;
                             startFilling = i;
@@ -55,8 +56,8 @@ public class GapFinder {
                 }
                 case FULL -> {
                     switch (field) {
-                        case OUTSIDE, EMPTY ->
-                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length));
+                        case OUTSIDE, EMPTY -> gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
+                            findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1)));
                         case UNKNOWN -> {
                             // TODO gaps in gaps
                             length++;
@@ -81,4 +82,29 @@ public class GapFinder {
         }
     }
 
+    private Optional<NumberToFind> findAssignedNumber(List<NumberToFind> numbersToFind, int start, int end) {
+        return numbersToFind.stream()
+            .filter(n -> n.found)
+            .filter(n -> n.foundStart == start)
+            .filter(n -> n.fountEnd == end)
+            .findAny();
+    }
+
+    public Gap getGapAtPosition(List<Gap> gaps, int i, int j) {
+        return gaps.stream()
+            .filter(g -> g.start <= i)
+            .filter(g -> g.end >= j)
+            .findAny().get();
+    }
+
+    public Optional<Gap> previousGap(List<Gap> gaps, Gap gap) {
+        Optional<Gap> previousGap = Optional.empty();
+        for (Gap currentGap : gaps) {
+            if (currentGap.equals(gap)) {
+                return previousGap;
+            }
+            previousGap = Optional.of(currentGap);
+        }
+        return Optional.empty();
+    }
 }
