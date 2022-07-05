@@ -17,7 +17,7 @@ public class Main {
     @SneakyThrows
     private void run() {
         System.out.println("Hello Nonogram Solver!");
-        Puzzle puzzle = getTestPuzzle3();
+        Puzzle puzzle = getTestPuzzle1();
         System.out.println(puzzle);
 
         boolean solved = new PuzzleSolver().solve(puzzle);

@@ -87,8 +87,7 @@ public class NumberCloser {
     }
 
     private void tryToCloseFromFullNextToEmpty(RowOrCol rowOrCol, int i, int j, boolean startingFrom, Puzzle puzzle,
-        ChangedInIteration changesCurrent
-    ) {
+        ChangedInIteration changesCurrent) {
         if (i < 0 || i >= puzzle.width || j < 0 || j >= puzzle.height) {
             return;
         }
@@ -145,8 +144,8 @@ public class NumberCloser {
         return Optional.empty();
     }
 
-    private void fillTheNumber(RowOrCol rowOrCol, NumberToFind numberToClose, int i, int j, boolean startingFrom,
-        Puzzle puzzle, ChangedInIteration changesCurrent) {
+    private void fillTheNumber(RowOrCol rowOrCol, NumberToFind numberToClose, int i, int j, boolean startingFrom, Puzzle puzzle,
+        ChangedInIteration changesCurrent) {
         int start;
         if (startingFrom) {
             start = rowOrCol.horizontal ? j : i;
@@ -166,6 +165,20 @@ public class NumberCloser {
     }
 
     public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
-        // TODO if sum(numbers) + count(numbers) - 1 == width or height -> fill the whole row or col
+        for (RowOrCol rowsOrCol : puzzle.rowsOrCols) {
+            var sumOfNumbers = rowsOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
+            var countOfNumbers = rowsOrCol.numbersToFind.size();
+            var limit = rowsOrCol.horizontal ? puzzle.width : puzzle.height;
+            if (sumOfNumbers + countOfNumbers - 1 == limit) {
+                var start = 0;
+                for (NumberToFind numberToClose : rowsOrCol.numbersToFind) {
+                    var length = numberToClose.number;
+                    var fakeGap = new Gap(rowsOrCol, start, start + length - 1, length, Optional.of(numberToClose));
+                    gapFiller.fillTheGapEntirely(fakeGap, numberToClose, rowsOrCol, puzzle, changesCurrent);
+                    rowsOrCol.solved = true;
+                    start += length + 1;
+                }
+            }
+        }
     }
 }

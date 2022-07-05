@@ -23,6 +23,7 @@ public class PuzzleSolver {
             gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
+            numberCloser.closeTheOnlyCombination(puzzle, changesLast, changesCurrent);
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);
