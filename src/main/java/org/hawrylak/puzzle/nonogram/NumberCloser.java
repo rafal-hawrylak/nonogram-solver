@@ -103,19 +103,18 @@ public class NumberCloser {
         }
         var previousGap = gapFinder.previousGap(gaps, gapAtPosition);
         var nextGap = gapFinder.nextGap(gaps, gapAtPosition);
-        if (previousGap.isEmpty()) {
-            var numberToClose = rowOrCol.numbersToFind.get(0);
-            fillTheNumber(rowOrCol, numberToClose, i, j, startingFrom, puzzle, changesCurrent);
-        } else if (nextGap.isEmpty()) {
-            var numberToClose = rowOrCol.numbersToFind.get(rowOrCol.numbersToFind.size() - 1);
-            fillTheNumber(rowOrCol, numberToClose, i, j, startingFrom, puzzle, changesCurrent);
-        } else {
-            if (previousGap.get().assignedNumber.isPresent()) {
-                var numberToClose = getNextNumber(rowOrCol.numbersToFind, previousGap.get().assignedNumber.get());
-                if (numberToClose.isPresent()) {
-                    fillTheNumber(rowOrCol, numberToClose.get(), i, j, startingFrom, puzzle, changesCurrent);
-                }
+        if (nextGap.isPresent() && nextGap.get().assignedNumber.isPresent()) {
+            var numberToClose = getPreviousNumber(rowOrCol.numbersToFind, nextGap.get().assignedNumber.get());
+            if (numberToClose.isPresent()) {
+                fillTheNumber(rowOrCol, numberToClose.get(), i, j, startingFrom, puzzle, changesCurrent);
             }
+        } else if (previousGap.isPresent() && previousGap.get().assignedNumber.isPresent()) {
+            var numberToClose = getNextNumber(rowOrCol.numbersToFind, previousGap.get().assignedNumber.get());
+            if (numberToClose.isPresent()) {
+                fillTheNumber(rowOrCol, numberToClose.get(), i, j, startingFrom, puzzle, changesCurrent);
+            }
+        } else {
+
             // TODO if (next.get().assignedNumber.isPresent()) {
         }
     }
@@ -127,6 +126,19 @@ public class NumberCloser {
                     return Optional.empty();
                 } else {
                     return Optional.of(numbersToFind.get(i + 1));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    private Optional<NumberToFind> getPreviousNumber(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
+        for (int i = 0; i < numbersToFind.size(); i++) {
+            if (numbersToFind.get(i).equals(numberToFind)) {
+                if (i == 0) {
+                    return Optional.empty();
+                } else {
+                    return Optional.of(numbersToFind.get(i - 1));
                 }
             }
         }
