@@ -13,17 +13,18 @@ public class PuzzleSolver {
         var changesLast = new ChangedInIteration(puzzle);
         var changesCurrent = new ChangedInIteration(puzzle);
         var hardStop = true;
-        var iterationsToStopAfter = 5;
+        var iterationsToStopAfter = 10;
         while (changesLast.firstIteration() || changesLast.anyChange()) {
             System.out.println("iteration = " + changesLast.iteration);
 
             // rules
             markRowsAsSolved(puzzle);
-            gapCloser.closeNotNeeded(puzzle, changesLast, changesCurrent);
+            gapCloser.closeToSmallToFillAnything(puzzle, changesLast, changesCurrent);
             gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
             numberCloser.closeTheOnlyCombination(puzzle, changesLast, changesCurrent);
+            gapCloser.closeWhenAllNumbersAreFound(puzzle, changesLast, changesCurrent);
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);

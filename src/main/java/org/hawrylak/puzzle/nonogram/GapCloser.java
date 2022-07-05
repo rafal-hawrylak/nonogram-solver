@@ -8,13 +8,24 @@ public class GapCloser {
 
     private final GapFinder gapFinder;
 
-    void closeNotNeeded(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    void closeToSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            closeNotNeededInRowOrCol(puzzle, changesLast, changesCurrent, rowOrCol);
+            closeToSmallToFillAnything(puzzle, changesLast, changesCurrent, rowOrCol);
         }
     }
 
-    private void closeNotNeededInRowOrCol(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
+    void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            if (rowOrCol.numbersToFind.stream().allMatch(n -> n.found)) {
+                List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
+                for (Gap gap : gaps) {
+                    close(gap, puzzle, changesCurrent);
+                }
+            }
+        }
+    }
+
+    private void closeToSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
         RowOrCol rowOrCol) {
         List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
         var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
