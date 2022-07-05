@@ -113,8 +113,13 @@ public class NumberCloser {
                 fillTheNumber(rowOrCol, numberToClose.get(), i, j, startingFrom, puzzle, changesCurrent);
             }
         } else {
-
-            // TODO if (next.get().assignedNumber.isPresent()) {
+            var numberOfNotFoundNumbersInRowOrCol = rowOrCol.numbersToFind.stream().filter(n -> !n.found).count();
+            if (numberOfNotFoundNumbersInRowOrCol == 1) {
+                var numberToClose = rowOrCol.numbersToFind.stream().filter(n -> !n.found).findAny();
+                if (numberToClose.isPresent()) {
+                    fillTheNumber(rowOrCol, numberToClose.get(), i, j, startingFrom, puzzle, changesCurrent);
+                }
+            }
         }
     }
 
