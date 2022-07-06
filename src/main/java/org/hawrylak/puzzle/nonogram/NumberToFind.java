@@ -16,5 +16,5 @@ public class NumberToFind {
     private final UUID id = UUID.randomUUID();
     boolean found = false;
     int foundStart = -1;
-    int fountEnd = -1;
+    int foundEnd = -1;
 }

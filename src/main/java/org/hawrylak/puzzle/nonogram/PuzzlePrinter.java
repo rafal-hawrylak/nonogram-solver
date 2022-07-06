@@ -11,54 +11,56 @@ public class PuzzlePrinter {
         StringBuilder sb = new StringBuilder();
         // column indexes
         sb.append("   ");
-        for (int i = 0; i < puzzle.width; i++) {
-            sb.append(StringUtils.pad("" + i, ' ', COL_WIDTH));
+        for (int c = 0; c < puzzle.width; c++) {
+            sb.append(StringUtils.pad("" + c, ' ', COL_WIDTH));
         }
         sb.append("\n");
         // rows
         var rows = puzzle.rowsOrCols.stream().filter(rc -> rc.horizontal).toList();
-        for (int i = 0; i < puzzle.height; i++) {
-            sb.append(StringUtils.pad("" + i, ' ', INDEX_WIDTH));
+        for (int r = 0; r < puzzle.height; r++) {
+            sb.append(StringUtils.pad("" + r, ' ', INDEX_WIDTH));
             sb.append("|");
-            for (int j = 0; j < puzzle.width; j++) {
-                sb.append(getField(puzzle, i, j, changes));
+            for (int c = 0; c < puzzle.width; c++) {
+                sb.append(getField(puzzle, r, c, changes));
             }
             sb.append("|");
-            for (NumberToFind row : rows.get(i).numbersToFind) {
-                appendNumber(sb, row.found, " " + row.number);
+            for (NumberToFind number : rows.get(r).numbersToFind) {
+                appendNumber(sb, number.found, " " + number.number);
             }
             sb.append("\n");
         }
         // cols
         var cols = puzzle.rowsOrCols.stream().filter(rc -> !rc.horizontal).toList();
-        var maxHeight = cols.stream().map(c -> c.numbersToFind.size()).max(Integer::compareTo)
-            .get();
-        for (int h = 1; h <= maxHeight; h++) {
-            sb.append(StringUtils.pad("", ' ', COL_WIDTH));
-            for (RowOrCol col : cols) {
-                if (col.numbersToFind.size() >= h) {
-                    appendNumber(sb, col.numbersToFind.get(h - 1).found,
-                        StringUtils.pad("" + col.numbersToFind.get(h - 1).number, ' ', COL_WIDTH));
-                } else {
-                    sb.append(StringUtils.pad("", ' ', COL_WIDTH));
+        if (!cols.isEmpty()) {
+            var maxHeight = cols.stream().map(c -> c.numbersToFind.size()).max(Integer::compareTo)
+                .get();
+            for (int h = 1; h <= maxHeight; h++) {
+                sb.append(StringUtils.pad("", ' ', COL_WIDTH));
+                for (RowOrCol col : cols) {
+                    if (col.numbersToFind.size() >= h) {
+                        appendNumber(sb, col.numbersToFind.get(h - 1).found,
+                            StringUtils.pad("" + col.numbersToFind.get(h - 1).number, ' ', COL_WIDTH));
+                    } else {
+                        sb.append(StringUtils.pad("", ' ', COL_WIDTH));
+                    }
                 }
+                sb.append("\n");
             }
-            sb.append("\n");
         }
         return sb.toString();
     }
 
-    private String getField(Puzzle puzzle, int i, int j, Optional<ChangedInIteration> changes) {
+    private String getField(Puzzle puzzle, int r, int c, Optional<ChangedInIteration> changes) {
         var sb = new StringBuilder();
         var color = false;
         if (changes.isPresent()) {
-            if (changes.get().changedFields[j][i]) {
+            if (changes.get().changedFields[c][r]) {
                 color = true;
-                sb.append(puzzle.fields[j][i].equals(FieldState.EMPTY) ? Colors.ANSI_RED
+                sb.append(puzzle.fields[c][r].equals(FieldState.EMPTY) ? Colors.ANSI_RED
                     : Colors.ANSI_GREEN);
             }
         }
-        String value = switch (puzzle.fields[j][i]) {
+        String value = switch (puzzle.fields[c][r]) {
             case UNKNOWN, OUTSIDE -> ".";
             case EMPTY -> "x";
             case FULL -> "■";

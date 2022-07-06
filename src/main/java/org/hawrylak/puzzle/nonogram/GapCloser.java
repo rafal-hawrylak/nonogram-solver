@@ -7,50 +7,40 @@ import lombok.AllArgsConstructor;
 public class GapCloser {
 
     private final GapFinder gapFinder;
+    private final GapFiller gapFiller;
 
-    void closeToSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    public void closeTooSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            closeToSmallToFillAnything(puzzle, changesLast, changesCurrent, rowOrCol);
+            closeTooSmallToFillAnything(puzzle, changesLast, changesCurrent, rowOrCol);
         }
     }
 
-    void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    public void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             if (rowOrCol.numbersToFind.stream().allMatch(n -> n.found)) {
                 List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
                 for (Gap gap : gaps) {
-                    close(gap, puzzle, changesCurrent);
+                    closeAsEmpty(gap, puzzle, changesCurrent);
                 }
             }
         }
     }
 
-    private void closeToSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
+    private void closeTooSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
         RowOrCol rowOrCol) {
         List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
         var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
             .map(n -> n.number).min(Integer::compareTo);
         for (Gap gap : gaps) {
             if (min.isEmpty() || gap.length < min.get()) {
-                close(gap, puzzle, changesCurrent);
+                closeAsEmpty(gap, puzzle, changesCurrent);
             }
         }
     }
 
-    public void close(Gap gap, Puzzle puzzle, ChangedInIteration changes) {
-        var k = gap.rowOrCol.number;
+    public void closeAsEmpty(Gap gap, Puzzle puzzle, ChangedInIteration changes) {
         for (int i = gap.start; i <= gap.end; i++) {
-            if (gap.rowOrCol.horizontal) {
-                if (FieldState.UNKNOWN.equals(puzzle.fields[i][k])) {
-                    puzzle.fields[i][k] = FieldState.EMPTY;
-                    changes.markChangeSingle(i, k);
-                }
-            } else {
-                if (FieldState.UNKNOWN.equals(puzzle.fields[k][i])) {
-                    puzzle.fields[k][i] = FieldState.EMPTY;
-                    changes.markChangeSingle(k, i);
-                }
-            }
+            gapFiller.fillSingleField(gap.rowOrCol, puzzle, changes, i, FieldState.EMPTY);
         }
     }
 }

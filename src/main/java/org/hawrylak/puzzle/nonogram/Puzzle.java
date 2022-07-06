@@ -15,12 +15,11 @@ public class Puzzle {
 
     private final PuzzlePrinter puzzlePrinter = new PuzzlePrinter();
 
-    public Puzzle(int width, int height, ArrayList<List<Integer>> rowsOrCols,
-        ArrayList<List<Integer>> cols) {
+    public Puzzle(int width, int height, List<List<Integer>> rows, List<List<Integer>> cols) {
         this.width = width;
         this.height = height;
-        for (int i = 0; i < rowsOrCols.size(); i++) {
-            this.rowsOrCols.add(new RowOrCol(rowsOrCols.get(i), i, true));
+        for (int i = 0; i < rows.size(); i++) {
+            this.rowsOrCols.add(new RowOrCol(rows.get(i), i, true));
         }
         for (int i = 0; i < cols.size(); i++) {
             this.rowsOrCols.add(new RowOrCol(cols.get(i), i, false));
@@ -30,9 +29,9 @@ public class Puzzle {
 
     private void initFields() {
         fields = new FieldState[width][height];
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                fields[i][j] = FieldState.UNKNOWN;
+        for (int c = 0; c < width; c++) {
+            for (int r = 0; r < height; r++) {
+                fields[c][r] = FieldState.UNKNOWN;
             }
         }
     }

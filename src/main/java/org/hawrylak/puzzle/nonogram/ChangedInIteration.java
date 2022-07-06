@@ -43,19 +43,19 @@ public class ChangedInIteration {
         return changedRowsOrCols.contains(rowOrCol);
     }
 
-    public void markChangeSingle(int i, int j) {
-        changedRowsOrCols.addAll(findPerpendicularRowOrCol(i, j));
-        changedFields[i][j] = true;
+    public void markChangeSingle(int c, int r) {
+        changedRowsOrCols.addAll(findPerpendicularRowOrCol(c, r));
+        changedFields[c][r] = true;
     }
 
-    public Collection<RowOrCol> findPerpendicularRowOrCol(int i, int j) {
+    public Collection<RowOrCol> findPerpendicularRowOrCol(int c, int r) {
         Collection<RowOrCol> rowsAndCols = new ArrayList<>();
         rowsAndCols.addAll(puzzle.rowsOrCols.stream()
-            .filter(rc -> rc.number == i)
+            .filter(rc -> rc.number == r)
             .filter(rc -> rc.horizontal)
             .toList());
         rowsAndCols.addAll(puzzle.rowsOrCols.stream()
-            .filter(rc -> rc.number == j)
+            .filter(rc -> rc.number == c)
             .filter(rc -> !rc.horizontal)
             .toList());
         return rowsAndCols;

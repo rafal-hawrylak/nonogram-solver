@@ -2,11 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 public class PuzzleSolver {
 
-    private final GapFinder gapFinder = new GapFinder();
-    private final GapCloser gapCloser = new GapCloser(gapFinder);
-    private final GapFiller gapFiller = new GapFiller(gapFinder, gapCloser);
     private final RowSelector rowSelector = new RowSelector();
-    private final NumberCloser numberCloser = new NumberCloser(rowSelector, gapFinder, gapFiller);
+    private final NumberSelector numberSelector = new NumberSelector();
+    private final GapFinder gapFinder = new GapFinder();
+    private final GapFiller gapFiller = new GapFiller(gapFinder, numberSelector);
+    private final GapCloser gapCloser = new GapCloser(gapFinder, gapFiller);
+    private final NumberCloser numberCloser = new NumberCloser(rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     boolean solve(Puzzle puzzle) {
 
@@ -19,12 +20,13 @@ public class PuzzleSolver {
 
             // rules
             markRowsAsSolved(puzzle);
-            gapCloser.closeToSmallToFillAnything(puzzle, changesLast, changesCurrent);
+            gapCloser.closeTooSmallToFillAnything(puzzle, changesLast, changesCurrent);
             gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
             numberCloser.closeTheOnlyCombination(puzzle, changesLast, changesCurrent);
             gapCloser.closeWhenAllNumbersAreFound(puzzle, changesLast, changesCurrent);
+            numberCloser.markAllNumbersFound(puzzle, changesLast, changesCurrent);
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);

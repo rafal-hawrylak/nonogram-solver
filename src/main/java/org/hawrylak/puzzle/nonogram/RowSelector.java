@@ -8,4 +8,16 @@ public class RowSelector {
             filter(rc -> rc.horizontal == horizontal)
             .findFirst().get();
     }
+
+    public int countOfFields(Puzzle puzzle, RowOrCol rowOrCol, FieldState fieldState) {
+        var count = 0;
+        var limit = rowOrCol.horizontal ? puzzle.width : puzzle.height;
+        for (int i = 0; i < limit; i++) {
+            var field = rowOrCol.horizontal ? puzzle.fields[i][rowOrCol.number] : puzzle.fields[rowOrCol.number][i];
+            if (fieldState.equals(field)) {
+                count++;
+            }
+        }
+        return count;
+    }
 }

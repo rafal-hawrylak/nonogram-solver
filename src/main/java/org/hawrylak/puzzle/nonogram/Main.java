@@ -53,6 +53,7 @@ public class Main {
         cols.add(List.of(3));
         var puzzle = new Puzzle(width, height, rows, cols);
         // initial marks
+        //puzzle.fields[c][r]
         puzzle.fields[2][0] = FieldState.EMPTY;
         puzzle.fields[3][0] = FieldState.EMPTY;
         puzzle.fields[4][0] = FieldState.EMPTY;

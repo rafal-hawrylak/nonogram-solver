@@ -16,7 +16,7 @@ public class GapFinder {
         var lengthFilling = 0;
         var previousField = FieldState.OUTSIDE;
         for (int i = 0; i <= maxSize; i++) {
-            var field = getField(puzzle, rowOrCol, k, i);
+            var field = getField(puzzle, rowOrCol, i, k);
             switch (previousField) {
                 case OUTSIDE -> {
                     switch (field) {
@@ -74,11 +74,11 @@ public class GapFinder {
         return gaps;
     }
 
-    private FieldState getField(Puzzle puzzle, RowOrCol rowOrCol, int k, int i) {
+    private FieldState getField(Puzzle puzzle, RowOrCol rowOrCol, int i, int j) {
         if (rowOrCol.horizontal) {
-            return i == puzzle.width ? FieldState.OUTSIDE : puzzle.fields[i][k];
+            return i == puzzle.width ? FieldState.OUTSIDE : puzzle.fields[i][j];
         } else {
-            return i == puzzle.height ? FieldState.OUTSIDE : puzzle.fields[k][i];
+            return i == puzzle.height ? FieldState.OUTSIDE : puzzle.fields[j][i];
         }
     }
 
@@ -86,18 +86,18 @@ public class GapFinder {
         return numbersToFind.stream()
             .filter(n -> n.found)
             .filter(n -> n.foundStart == start)
-            .filter(n -> n.fountEnd == end)
+            .filter(n -> n.foundEnd == end)
             .findAny();
     }
 
-    public Gap getGapAtPosition(List<Gap> gaps, int i, int j) {
+    public Gap getGapAtPosition(List<Gap> gaps, int start, int end) {
         return gaps.stream()
-            .filter(g -> g.start <= i)
-            .filter(g -> g.end >= j)
+            .filter(g -> g.start <= start)
+            .filter(g -> g.end >= end)
             .findAny().get();
     }
 
-    public Optional<Gap> previousGap(List<Gap> gaps, Gap gap) {
+    public Optional<Gap> previous(List<Gap> gaps, Gap gap) {
         Optional<Gap> previousGap = Optional.empty();
         for (Gap currentGap : gaps) {
             if (currentGap.equals(gap)) {
@@ -108,7 +108,7 @@ public class GapFinder {
         return Optional.empty();
     }
 
-    public Optional<Gap> nextGap(List<Gap> gaps, Gap gap) {
+    public Optional<Gap> next(List<Gap> gaps, Gap gap) {
         for (int i = 0; i < gaps.size(); i++) {
             if (gaps.get(i).equals(gap)) {
                 if (i == gaps.size() - 1) {

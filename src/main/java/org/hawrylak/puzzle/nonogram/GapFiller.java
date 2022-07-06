@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 public class GapFiller {
 
     private final GapFinder gapFinder;
-    private final GapCloser gapCloser;
+    private final NumberSelector numberSelector;
 
     public void fillTheOnlyMatchingGaps(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
@@ -29,32 +29,34 @@ public class GapFiller {
 
     private void tryToFillSomeGaps(List<Gap> gaps, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         var gapIndex = 0;
+        // TODO - is it doable?
         for (NumberToFind number : rowOrCol.numbersToFind) {
             if (!number.found) {
-
-//                while (true) { // TODO condition!!!!!!
-//                    var gap = gaps.get(gapIndex);
-//                    if (gap.length < number.number) {
-//                        gapCloser.close(gap, puzzle, changes);
-//                        gapIndex++;
-//                    } else {
-//
-//                    }
-//                }
 
             }
         }
     }
 
+    // FIXME not very mature, lots of cases not covered
     private void tryToFillEachGap(List<Gap> gaps, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+        var offsetGap = 0;
+        var offsetNumber = 0;
         for (int i = 0; i < gaps.size(); i++) {
-            var number = rowOrCol.numbersToFind.get(i);
+            var number = rowOrCol.numbersToFind.get(i + offsetNumber);
             if (!number.found) {
-                var gap = gaps.get(i);
-                if (gap.length == number.number) {
-                    fillTheGapEntirely(gap, number, rowOrCol, puzzle, changes);
+                var gap = gaps.get(i + offsetGap);
+                Optional<NumberToFind> nextNumber = numberSelector.getNext(rowOrCol.numbersToFind, number);
+                Optional<Gap> nextGap = gapFinder.next(gaps, gap);
+                if (nextGap.isEmpty()) {
+                    if (gap.length == number.number) {
+                        fillTheGapEntirely(gap, number, rowOrCol, puzzle, changes);
+                    } else {
+                        // TODO nextNumber.isPresent - try to fill better
+                        fillTheGapPartially(gap, number, rowOrCol, puzzle, changes);
+                        break;
+                    }
                 } else {
-                    fillTheGapPartially(gap, number, rowOrCol, puzzle, changes);
+                    break;
                 }
             }
         }
@@ -64,12 +66,12 @@ public class GapFiller {
         fillTheGap(gap, rowOrCol, puzzle, changes);
         number.found = true;
         number.foundStart = gap.start;
-        number.fountEnd = gap.end;
+        number.foundEnd = gap.end;
         fillSingleField(rowOrCol, puzzle, changes, gap.start - 1, FieldState.EMPTY);
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
     }
 
-    private void fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
+    public void fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
         if (rowOrCol.horizontal) {
             if (i >= 0 && i < puzzle.width) {
                 if (!state.equals(puzzle.fields[i][rowOrCol.number])) {
