@@ -15,15 +15,15 @@ public class NumberCloser {
     private final GapCloser gapCloser;
 
     public void closeAtEdges(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
-        for (int i = 0; i < puzzle.height; i++) {
-            var rowOrCol = rowSelector.find(puzzle, i, true);
-            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, i, rowOrCol, true);
-            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, i, rowOrCol, false);
+        for (int r = 0; r < puzzle.height; r++) {
+            var rowOrCol = rowSelector.find(puzzle, r, true);
+            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, r, rowOrCol, true);
+            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, r, rowOrCol, false);
         }
-        for (int i = 0; i < puzzle.width; i++) {
-            var rowOrCol = rowSelector.find(puzzle, i, false);
-            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, i, rowOrCol, true);
-            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, i, rowOrCol, false);
+        for (int c = 0; c < puzzle.width; c++) {
+            var rowOrCol = rowSelector.find(puzzle, c, false);
+            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, c, rowOrCol, true);
+            tryToCloseFromEdge(puzzle, changesLast, changesCurrent, c, rowOrCol, false);
         }
     }
 
@@ -208,7 +208,7 @@ public class NumberCloser {
 
     }
 
-    public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
             var countOfNumbers = rowOrCol.numbersToFind.size();

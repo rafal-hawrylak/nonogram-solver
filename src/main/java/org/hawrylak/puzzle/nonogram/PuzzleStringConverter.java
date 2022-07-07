@@ -16,24 +16,28 @@ public class PuzzleStringConverter {
         var width = input.length();
         var height = 1;
         List<Integer> row = new ArrayList<>();
+        List<List<Integer>> cols = new ArrayList<>();
 
         FieldState[][] fields = new FieldState[width][height];
         var currentNumber = 0;
-        for (int r = 0; r < height; r++) {
-            for (int c = 0; c <= width; c++) {
+        for (int c = 0; c <= width; c++) {
+            for (int r = 0; r < height; r++) {
                 var currentField = FieldState.OUTSIDE;
                 if (c < width) {
                     fields[c][r] = char2Field("" + input.charAt(c));
                     currentField = fields[c][r];
                 }
+                var isFull = FieldState.FULL.equals(currentField);
+                // support only for N x 1 puzzles
+                cols.add(List.of());
                 if (c == 0) {
-                    if (FieldState.FULL.equals(fields[c][r])) {
+                    if (isFull) {
                         currentNumber = 1;
                     }
                 } else {
                     switch (fields[c - 1][r]) {
                         case UNKNOWN, EMPTY -> {
-                            if (FieldState.FULL.equals(currentField)) {
+                            if (isFull) {
                                 currentNumber = 1;
                             }
                         }
@@ -51,7 +55,7 @@ public class PuzzleStringConverter {
             }
         }
         var rows = numbersToFind.isEmpty() ? List.of(row) : List.of(numbersToFind);
-        Puzzle puzzle = new Puzzle(width, 1, rows, new ArrayList<>());
+        Puzzle puzzle = new Puzzle(width, 1, rows, cols);
         puzzle.fields = fields;
         return puzzle;
     }
