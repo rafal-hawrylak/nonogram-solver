@@ -58,7 +58,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "...x■.";
         String expectedPuzzle = "...x■■";
         List<Integer> numbersToFind = List.of(2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -71,7 +71,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "...x■.";
         String expectedPuzzle = "...x■■";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -84,7 +84,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "...x■....";
         String expectedPuzzle = "...x■....";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -97,7 +97,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = ".x■....";
         String expectedPuzzle = ".x■....";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -158,7 +158,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = ".■x...";
         String expectedPuzzle = "■■x...";
         List<Integer> numbersToFind = List.of(2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -171,7 +171,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = ".■x...";
         String expectedPuzzle = "■■x...";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -184,7 +184,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "..■x...";
         String expectedPuzzle = "..■x...";
         List<Integer> numbersToFind = List.of(1, 1);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -197,7 +197,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "....■x...";
         String expectedPuzzle = "....■x...";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -210,7 +210,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "....■x.";
         String expectedPuzzle = "....■x.";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -223,7 +223,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "..x..x...■x...x..x..x";
         String expectedPuzzle = "..x..x.x■■x...x..x..x";
         List<Integer> numbersToFind = List.of(2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);
@@ -236,13 +236,45 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         String puzzleCase = "..x■xx...■x...x..xx■x";
         String expectedPuzzle = "..x■xx.x■■x...x..xx■x";
         List<Integer> numbersToFind = List.of(1, 2, 1);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundStart = 3;
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundEnd = 3;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 19;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 19;
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        numberCloser.closeWithOneEnd(puzzle, changes, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
+
+    @Test
+    void productionCase1() {
+        String puzzleCase = "■x....■x■.";
+        String expectedPuzzle = "■x....■x■x";
+        List<Integer> numbersToFind = List.of(1, 1, 1, 1, 1);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
+        puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundStart = 0;
+        puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundEnd = 0;
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        numberCloser.closeWithOneEnd(puzzle, changes, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
+
+    @Test
+    void productionCase1Reversed() {
+        String puzzleCase = ".■x■....x■";
+        String expectedPuzzle = "x■x■x...x■";
+        List<Integer> numbersToFind = List.of(1, 1, 1, 1, 1);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        puzzle.rowsOrCols.get(0).numbersToFind.get(4).found = true;
+        puzzle.rowsOrCols.get(0).numbersToFind.get(4).foundStart = 9;
+        puzzle.rowsOrCols.get(0).numbersToFind.get(4).foundEnd = 9;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         numberCloser.closeWithOneEnd(puzzle, changes, changes);

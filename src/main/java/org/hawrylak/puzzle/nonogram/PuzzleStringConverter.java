@@ -1,15 +1,16 @@
 package org.hawrylak.puzzle.nonogram;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class PuzzleStringConverter {
 
     public Puzzle fromString(String puzzleCase) {
-        return fromString(puzzleCase, List.of());
+        return fromString(puzzleCase, List.of(), true);
     }
 
-    public Puzzle fromString(String input, List<Integer> numbersToFind) {
+    public Puzzle fromString(String input, List<Integer> numbersToFind, boolean withCols) {
         if (input.contains("\n")) {
             throw new IllegalArgumentException("multiline string not supported yet");
         }
@@ -55,7 +56,7 @@ public class PuzzleStringConverter {
             }
         }
         var rows = numbersToFind.isEmpty() ? List.of(row) : List.of(numbersToFind);
-        Puzzle puzzle = new Puzzle(width, 1, rows, cols);
+        Puzzle puzzle = new Puzzle(width, 1, rows, withCols ? cols : Collections.emptyList());
         puzzle.fields = fields;
         return puzzle;
     }

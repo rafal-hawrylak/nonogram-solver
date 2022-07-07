@@ -11,9 +11,9 @@ public class GapCloser {
 
     private final NumberSelector numberSelector;
 
-    public void closeTooSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    public void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            closeTooSmallToFillAnything(puzzle, changesLast, changesCurrent, rowOrCol);
+            closeTooSmallToFitAnything(puzzle, changesLast, changesCurrent, rowOrCol);
         }
     }
 
@@ -28,7 +28,7 @@ public class GapCloser {
         }
     }
 
-    private void closeTooSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
+    private void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
         RowOrCol rowOrCol) {
         List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
         var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)

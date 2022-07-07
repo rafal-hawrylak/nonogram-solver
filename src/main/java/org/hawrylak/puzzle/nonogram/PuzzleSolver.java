@@ -20,7 +20,7 @@ public class PuzzleSolver {
 
             // rules
             markRowsAsSolved(puzzle);
-            gapCloser.closeTooSmallToFillAnything(puzzle, changesLast, changesCurrent);
+            gapCloser.closeTooSmallToFitAnything(puzzle, changesLast, changesCurrent);
             gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);

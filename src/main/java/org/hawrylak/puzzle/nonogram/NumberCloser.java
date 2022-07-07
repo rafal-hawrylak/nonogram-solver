@@ -142,7 +142,7 @@ public class NumberCloser {
         else if (startingFrom && nextGap.isEmpty()) {
             var lastNumber = numberSelector.getLast(rowOrCol.numbersToFind).get();
             var lastButOneNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, lastNumber);
-            if (lastButOneNumber.isEmpty() || lastButOneNumber.get().number + lastNumber.number - 1 > gapAtPosition.length) {
+            if (lastButOneNumber.isEmpty() || lastButOneNumber.get().number + lastNumber.number + 1 > gapAtPosition.length) {
                 fillTheNumber(rowOrCol, lastNumber, c, r, startingFrom, puzzle, changesCurrent);
                 fillingSuccessful = true;
             }
@@ -155,7 +155,7 @@ public class NumberCloser {
         else if (!startingFrom && previousGap.isEmpty()) {
             var firstNumber = numberSelector.getFirst(rowOrCol.numbersToFind).get();
             var secondNumber = numberSelector.getNext(rowOrCol.numbersToFind, firstNumber);
-            if (secondNumber.isEmpty() || secondNumber.get().number + firstNumber.number - 1 > gapAtPosition.length) {
+            if (secondNumber.isEmpty() || secondNumber.get().number + firstNumber.number + 1 > gapAtPosition.length) {
                 fillTheNumber(rowOrCol, firstNumber, c, r, startingFrom, puzzle, changesCurrent);
                 fillingSuccessful = true;
             }
@@ -198,14 +198,6 @@ public class NumberCloser {
                 }
             }
         }
-    }
-
-    public void closeWithTwoEnds(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
-
-    }
-
-    public void closeWithNoEnds(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
-
     }
 
     public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changesCurrent) {
