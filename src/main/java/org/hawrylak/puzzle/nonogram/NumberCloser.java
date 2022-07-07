@@ -187,14 +187,14 @@ public class NumberCloser {
         gapFiller.fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changesCurrent);
     }
 
-    public void markAllNumbersFound(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    public void closeAllTheGapsIfAllFullMarked(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
             var countOfFullFields = rowSelector.countOfFields(puzzle, rowOrCol, FieldState.FULL);
             if (sumOfNumbers == countOfFullFields) {
                 List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
                 for (Gap gap : gaps) {
-                    gapCloser.closeAsEmpty(gap, puzzle, changesCurrent);
+                    gapCloser.close(gap, puzzle, changesCurrent);
                 }
             }
         }

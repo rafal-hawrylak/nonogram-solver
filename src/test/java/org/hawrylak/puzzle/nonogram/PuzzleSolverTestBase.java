@@ -8,7 +8,7 @@ public class PuzzleSolverTestBase {
     protected final NumberSelector numberSelector = new NumberSelector();
     protected final GapFinder gapFinder = new GapFinder();
     protected final GapFiller gapFiller = new GapFiller(gapFinder, numberSelector);
-    protected final GapCloser gapCloser = new GapCloser(gapFinder, gapFiller);
+    protected final GapCloser gapCloser = new GapCloser(gapFinder, gapFiller, numberSelector);
     protected final NumberCloser numberCloser = new NumberCloser(rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     protected final PuzzleStringConverter puzzleStringConverter = new PuzzleStringConverter();

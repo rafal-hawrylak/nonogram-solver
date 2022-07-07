@@ -9,6 +9,8 @@ public class GapCloser {
     private final GapFinder gapFinder;
     private final GapFiller gapFiller;
 
+    private final NumberSelector numberSelector;
+
     public void closeTooSmallToFillAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             closeTooSmallToFillAnything(puzzle, changesLast, changesCurrent, rowOrCol);
@@ -40,7 +42,20 @@ public class GapCloser {
 
     public void closeAsEmpty(Gap gap, Puzzle puzzle, ChangedInIteration changes) {
         for (int i = gap.start; i <= gap.end; i++) {
-            gapFiller.fillSingleField(gap.rowOrCol, puzzle, changes, i, FieldState.EMPTY);
+            if (gapFiller.isFieldAtState(gap.rowOrCol, puzzle, i, FieldState.UNKNOWN)) {
+                gapFiller.fillSingleField(gap.rowOrCol, puzzle, changes, i, FieldState.EMPTY);
+            }
+        }
+    }
+
+    public void close(Gap gap, Puzzle puzzle, ChangedInIteration changes) {
+        if (gapFiller.isFieldAtState(gap.rowOrCol, puzzle, gap.start, FieldState.UNKNOWN)) {
+            closeAsEmpty(gap, puzzle, changes);
+        } else if (gapFiller.isFieldAtState(gap.rowOrCol, puzzle, gap.start, FieldState.FULL)) {
+            var numberToClose = numberSelector.getForPositionAssumingAllFullInTheRowOrColFilled(gap.rowOrCol, puzzle, gap.start, gap.end);
+            if (numberToClose.isPresent()) {
+                gapFiller.fillTheGapEntirely(gap, numberToClose.get(), gap.rowOrCol, puzzle, changes);
+            }
         }
     }
 }

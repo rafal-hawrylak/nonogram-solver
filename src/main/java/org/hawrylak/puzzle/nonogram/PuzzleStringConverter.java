@@ -26,10 +26,10 @@ public class PuzzleStringConverter {
                 if (c < width) {
                     fields[c][r] = char2Field("" + input.charAt(c));
                     currentField = fields[c][r];
+                    // support only for N x 1 puzzles
+                    cols.add(List.of());
                 }
                 var isFull = FieldState.FULL.equals(currentField);
-                // support only for N x 1 puzzles
-                cols.add(List.of());
                 if (c == 0) {
                     if (isFull) {
                         currentNumber = 1;

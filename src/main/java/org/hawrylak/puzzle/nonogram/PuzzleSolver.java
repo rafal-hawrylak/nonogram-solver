@@ -6,7 +6,7 @@ public class PuzzleSolver {
     private final NumberSelector numberSelector = new NumberSelector();
     private final GapFinder gapFinder = new GapFinder();
     private final GapFiller gapFiller = new GapFiller(gapFinder, numberSelector);
-    private final GapCloser gapCloser = new GapCloser(gapFinder, gapFiller);
+    private final GapCloser gapCloser = new GapCloser(gapFinder, gapFiller, numberSelector);
     private final NumberCloser numberCloser = new NumberCloser(rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     boolean solve(Puzzle puzzle) {
@@ -26,7 +26,7 @@ public class PuzzleSolver {
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
             numberCloser.closeTheOnlyCombination(puzzle, changesCurrent);
             gapCloser.closeWhenAllNumbersAreFound(puzzle, changesLast, changesCurrent);
-            numberCloser.markAllNumbersFound(puzzle, changesLast, changesCurrent);
+            numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changesLast, changesCurrent);
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);

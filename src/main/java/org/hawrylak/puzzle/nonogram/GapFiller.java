@@ -71,6 +71,19 @@ public class GapFiller {
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
     }
 
+    public boolean isFieldAtState(RowOrCol rowOrCol, Puzzle puzzle, int i, FieldState state) {
+        if (rowOrCol.horizontal) {
+            if (i >= 0 && i < puzzle.width) {
+                return state.equals(puzzle.fields[i][rowOrCol.number]);
+            }
+        } else {
+            if (i >= 0 && i < puzzle.height) {
+                return state.equals(puzzle.fields[rowOrCol.number][i]);
+            }
+        }
+        return false;
+    }
+
     public void fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
         if (rowOrCol.horizontal) {
             if (i >= 0 && i < puzzle.width) {
