@@ -4,11 +4,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PuzzleSolverTestBase {
 
+    protected final FieldFinder fieldFinder = new FieldFinder();
     protected final RowSelector rowSelector = new RowSelector();
     protected final NumberSelector numberSelector = new NumberSelector();
     protected final GapFinder gapFinder = new GapFinder();
-    protected final GapFiller gapFiller = new GapFiller(gapFinder, numberSelector);
-    protected final GapCloser gapCloser = new GapCloser(gapFinder, gapFiller, numberSelector);
+    protected final GapFiller gapFiller = new GapFiller(fieldFinder);
+    protected final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
     protected final NumberCloser numberCloser = new NumberCloser(rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     protected final PuzzleStringConverter puzzleStringConverter = new PuzzleStringConverter();

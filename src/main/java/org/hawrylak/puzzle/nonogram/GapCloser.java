@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GapCloser {
 
+    private final FieldFinder fieldFinder;
     private final GapFinder gapFinder;
     private final GapFiller gapFiller;
 
@@ -39,8 +40,9 @@ public class GapCloser {
                 if (numbersSum + numbersNotFound.size() - 1 == gap.length) {
                     gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changesCurrent, rowOrCol, numbersNotFound, gap.start);
                 }
-                // TODO single number - partial fill
-
+                else if (numbersNotFound.size() == 1) {
+                    gapFiller.fillTheGapPartiallyForSingleNumber(gap, numbersNotFound.get(0), rowOrCol, puzzle, changesCurrent);
+                }
                 else if (numbersNotFound.size() == 2) {
                     var gapDiff = gap.length - numbersSum - numbersNotFound.size() + 1;
                     gapFiller.fillTheGapPartiallyForTwoNumbers(gap, numbersNotFound.get(0), numbersNotFound.get(1), gapDiff, rowOrCol,
@@ -63,16 +65,16 @@ public class GapCloser {
 
     public void closeAsEmpty(Gap gap, Puzzle puzzle, ChangedInIteration changes) {
         for (int i = gap.start; i <= gap.end; i++) {
-            if (gapFiller.isFieldAtState(gap.rowOrCol, puzzle, i, FieldState.UNKNOWN)) {
+            if (fieldFinder.isFieldAtState(gap.rowOrCol, puzzle, i, FieldState.UNKNOWN)) {
                 gapFiller.fillSingleField(gap.rowOrCol, puzzle, changes, i, FieldState.EMPTY);
             }
         }
     }
 
     public void close(Gap gap, Puzzle puzzle, ChangedInIteration changes) {
-        if (gapFiller.isFieldAtState(gap.rowOrCol, puzzle, gap.start, FieldState.UNKNOWN)) {
+        if (fieldFinder.isFieldAtState(gap.rowOrCol, puzzle, gap.start, FieldState.UNKNOWN)) {
             closeAsEmpty(gap, puzzle, changes);
-        } else if (gapFiller.isFieldAtState(gap.rowOrCol, puzzle, gap.start, FieldState.FULL)) {
+        } else if (fieldFinder.isFieldAtState(gap.rowOrCol, puzzle, gap.start, FieldState.FULL)) {
             var numberToClose = numberSelector.getForPositionAssumingAllFullInTheRowOrColFilled(gap.rowOrCol, puzzle, gap.start, gap.end);
             if (numberToClose.isPresent()) {
                 gapFiller.fillTheGapEntirely(gap, numberToClose.get(), gap.rowOrCol, puzzle, changes);

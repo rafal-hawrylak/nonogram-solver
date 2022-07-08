@@ -7,60 +7,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GapFiller {
 
-    private final GapFinder gapFinder;
-    private final NumberSelector numberSelector;
-
-    public void fillTheOnlyMatchingGaps(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            if (changesLast.firstIteration() || changesLast.hasChanged(rowOrCol)) {
-                if (!rowOrCol.solved) {
-                    List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
-                    if (gaps.size() == rowOrCol.numbersToFind.size()) {
-                        tryToFillEachGap(gaps, rowOrCol, puzzle, changesCurrent);
-                    } else if (gaps.size() > rowOrCol.numbersToFind.size()) {
-                        tryToFillSomeGaps(gaps, rowOrCol, puzzle, changesCurrent);
-                    } else {
-
-                    }
-                }
-            }
-        }
-    }
-
-    private void tryToFillSomeGaps(List<Gap> gaps, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
-        var gapIndex = 0;
-        // TODO - is it doable?
-        for (NumberToFind number : rowOrCol.numbersToFind) {
-            if (!number.found) {
-
-            }
-        }
-    }
-
-    // FIXME not very mature, lots of cases not covered
-    private void tryToFillEachGap(List<Gap> gaps, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
-        var offsetGap = 0;
-        var offsetNumber = 0;
-        for (int i = 0; i < gaps.size(); i++) {
-            var number = rowOrCol.numbersToFind.get(i + offsetNumber);
-            if (!number.found) {
-                var gap = gaps.get(i + offsetGap);
-                Optional<NumberToFind> nextNumber = numberSelector.getNext(rowOrCol.numbersToFind, number);
-                Optional<Gap> nextGap = gapFinder.next(gaps, gap);
-                if (nextGap.isEmpty()) {
-                    if (gap.length == number.number) {
-                        fillTheGapEntirely(gap, number, rowOrCol, puzzle, changes);
-                    } else {
-                        // TODO nextNumber.isPresent - try to fill better
-                        fillTheGapPartiallyForSingleNumber(gap, number, rowOrCol, puzzle, changes);
-                        break;
-                    }
-                } else {
-                    break;
-                }
-            }
-        }
-    }
+    private final FieldFinder fieldFinder;
 
     public void fillTheGapEntirely(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         fillTheGap(gap, rowOrCol, puzzle, changes);
@@ -81,19 +28,6 @@ public class GapFiller {
             rowOrCol.solved = true;
             start += length + 1;
         }
-    }
-
-    public boolean isFieldAtState(RowOrCol rowOrCol, Puzzle puzzle, int i, FieldState state) {
-        if (rowOrCol.horizontal) {
-            if (i >= 0 && i < puzzle.width) {
-                return state.equals(puzzle.fields[i][rowOrCol.number]);
-            }
-        } else {
-            if (i >= 0 && i < puzzle.height) {
-                return state.equals(puzzle.fields[rowOrCol.number][i]);
-            }
-        }
-        return false;
     }
 
     public void fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
@@ -120,7 +54,7 @@ public class GapFiller {
         }
     }
 
-    private void fillTheGapPartiallyForSingleNumber(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle,
+    public void fillTheGapPartiallyForSingleNumber(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle,
         ChangedInIteration changes) {
         if (2 * number.number > gap.length) {
             var howManyFieldsMayBeSet = 2 * number.number - gap.length;
@@ -129,9 +63,38 @@ public class GapFiller {
             var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
         }
+        List<Integer> fullFieldsInGap = fieldFinder.findFieldsSetInGap(gap, puzzle, rowOrCol, FieldState.FULL);
+        if (!fullFieldsInGap.isEmpty()) {
+            var min = fullFieldsInGap.stream().min(Integer::compareTo).get();
+            var max = fullFieldsInGap.stream().max(Integer::compareTo).get();
+            var toFillSize = max - min + 1;
+            if (toFillSize == number.number) {
+                // already .  .  ■  ■  ■  ■  ■  .  .  .| 5
+                // or      .  .  ■  .  .  ■  ■  .  .  .| 5
+                var fakeGap = new Gap(rowOrCol, min, max, toFillSize, Optional.of(number));
+                fillTheGapEntirely(fakeGap, number, rowOrCol, puzzle, changes);
+            } else if (toFillSize != fullFieldsInGap.size()) {
+                // with holes, partially filled, patch the holes
+                // from  .  .  .  .  ■  .  ■  .  .  .| 5
+                //   to  .  .  .  .  ■  ■  ■  .  .  .| 5
+                var fakeGap = new Gap(rowOrCol, min, max, toFillSize, Optional.empty());
+                fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+            }
+            // mark as empty:
+            // from  .  .  .  .  ■  ■  ■  .  .  .| 5
+            //   to  x  x  .  .  ■  ■  ■  .  .  x| 5
+            var howManyMoreToFill = number.number - toFillSize;
+            for (int i = gap.start; i <= min - howManyMoreToFill - 1; i++) {
+                fillSingleField(rowOrCol, puzzle, changes, i, FieldState.EMPTY);
+            }
+            for (int i = max + howManyMoreToFill + 1; i <= gap.end; i++) {
+                fillSingleField(rowOrCol, puzzle, changes, i, FieldState.EMPTY);
+            }
+        }
     }
 
-    public void fillTheGapPartiallyForTwoNumbers(Gap gap, NumberToFind number1, NumberToFind number2, int gapDiff, RowOrCol rowOrCol, Puzzle puzzle,
+    public void fillTheGapPartiallyForTwoNumbers(Gap gap, NumberToFind number1, NumberToFind number2, int gapDiff, RowOrCol rowOrCol,
+        Puzzle puzzle,
         ChangedInIteration changes) {
         var howManyFieldsMayBeSet = number1.number - gapDiff;
         if (howManyFieldsMayBeSet > 0) {

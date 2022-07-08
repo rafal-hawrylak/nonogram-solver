@@ -2,11 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 public class PuzzleSolver {
 
+    private final FieldFinder fieldFinder = new FieldFinder();
     private final RowSelector rowSelector = new RowSelector();
     private final NumberSelector numberSelector = new NumberSelector();
     private final GapFinder gapFinder = new GapFinder();
-    private final GapFiller gapFiller = new GapFiller(gapFinder, numberSelector);
-    private final GapCloser gapCloser = new GapCloser(gapFinder, gapFiller, numberSelector);
+    private final GapFiller gapFiller = new GapFiller(fieldFinder);
+    private final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
     private final NumberCloser numberCloser = new NumberCloser(rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     boolean solve(Puzzle puzzle) {
@@ -14,14 +15,13 @@ public class PuzzleSolver {
         var changesLast = new ChangedInIteration(puzzle);
         var changesCurrent = new ChangedInIteration(puzzle);
         var hardStop = true;
-        var iterationsToStopAfter = 10;
+        var iterationsToStopAfter = 50;
         while (changesLast.firstIteration() || changesLast.anyChange()) {
             System.out.println("iteration = " + changesLast.iteration);
 
             // rules
             markRowsAsSolved(puzzle);
             gapCloser.closeTooSmallToFitAnything(puzzle, changesLast, changesCurrent);
-            gapFiller.fillTheOnlyMatchingGaps(puzzle, changesLast, changesCurrent);
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
             numberCloser.closeTheOnlyCombination(puzzle, changesCurrent);
