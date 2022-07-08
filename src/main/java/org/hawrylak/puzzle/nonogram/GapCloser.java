@@ -39,15 +39,12 @@ public class GapCloser {
                 if (numbersSum + numbersNotFound.size() - 1 == gap.length) {
                     gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changesCurrent, rowOrCol, numbersNotFound, gap.start);
                 }
-
                 // TODO single number - partial fill
 
-                // TODO two numbers - partial fill
                 else if (numbersNotFound.size() == 2) {
-                    if (numbersSum + numbersNotFound.size() == gap.length) {
-                        gapFiller.fillTheGapPartiallyForTwoNumbers(gap, numbersNotFound.get(0), numbersNotFound.get(1), rowOrCol, puzzle,
-                            changesCurrent);
-                    }
+                    var gapDiff = gap.length - numbersSum - numbersNotFound.size() + 1;
+                    gapFiller.fillTheGapPartiallyForTwoNumbers(gap, numbersNotFound.get(0), numbersNotFound.get(1), gapDiff, rowOrCol,
+                        puzzle, changesCurrent);
                 }
             }
         }
@@ -56,8 +53,7 @@ public class GapCloser {
     private void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
         RowOrCol rowOrCol) {
         List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
-        var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found)
-            .map(n -> n.number).min(Integer::compareTo);
+        var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found).map(n -> n.number).min(Integer::compareTo);
         for (Gap gap : gaps) {
             if (min.isEmpty() || gap.length < min.get()) {
                 closeAsEmpty(gap, puzzle, changesCurrent);

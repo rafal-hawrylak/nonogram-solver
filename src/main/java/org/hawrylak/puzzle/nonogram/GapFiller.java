@@ -131,16 +131,16 @@ public class GapFiller {
         }
     }
 
-    public void fillTheGapPartiallyForTwoNumbers(Gap gap, NumberToFind number1, NumberToFind number2, RowOrCol rowOrCol, Puzzle puzzle,
+    public void fillTheGapPartiallyForTwoNumbers(Gap gap, NumberToFind number1, NumberToFind number2, int gapDiff, RowOrCol rowOrCol, Puzzle puzzle,
         ChangedInIteration changes) {
-        var howManyFieldsMayBeSet = number1.number - 1;
+        var howManyFieldsMayBeSet = number1.number - gapDiff;
         if (howManyFieldsMayBeSet > 0) {
-            var start = gap.start + 1;
+            var start = gap.start + gapDiff;
             var end = start + howManyFieldsMayBeSet - 1;
             var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
         }
-        howManyFieldsMayBeSet = number2.number - 1;
+        howManyFieldsMayBeSet = number2.number - gapDiff;
         if (howManyFieldsMayBeSet > 0) {
             var start = gap.end - howManyFieldsMayBeSet;
             var end = start + howManyFieldsMayBeSet - 1;
