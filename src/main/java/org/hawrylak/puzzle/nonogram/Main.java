@@ -17,7 +17,7 @@ public class Main {
     @SneakyThrows
     private void run() {
         System.out.println("Hello Nonogram Solver!");
-        Puzzle puzzle = getTestPuzzle3();
+        Puzzle puzzle = getTestPuzzle1();
         System.out.println(puzzle);
 
         boolean solved = new PuzzleSolver().solve(puzzle);
@@ -54,30 +54,30 @@ public class Main {
         var puzzle = new Puzzle(width, height, rows, cols);
         // initial marks
         //puzzle.fields[c][r]
-        puzzle.fields[2][0] = FieldState.EMPTY;
-        puzzle.fields[3][0] = FieldState.EMPTY;
-        puzzle.fields[4][0] = FieldState.EMPTY;
-        puzzle.fields[7][0] = FieldState.EMPTY;
-        puzzle.fields[8][0] = FieldState.EMPTY;
-        puzzle.fields[9][0] = FieldState.EMPTY;
-        puzzle.fields[0][1] = FieldState.EMPTY;
-        puzzle.fields[1][1] = FieldState.EMPTY;
-        puzzle.fields[9][1] = FieldState.EMPTY;
-        puzzle.fields[8][2] = FieldState.EMPTY;
-        puzzle.fields[9][2] = FieldState.EMPTY;
-        puzzle.fields[3][3] = FieldState.EMPTY;
-        puzzle.fields[7][3] = FieldState.EMPTY;
-        puzzle.fields[8][3] = FieldState.EMPTY;
-        puzzle.fields[9][3] = FieldState.EMPTY;
-        puzzle.fields[1][4] = FieldState.EMPTY;
-        puzzle.fields[4][4] = FieldState.EMPTY;
-        puzzle.fields[4][5] = FieldState.EMPTY;
-        puzzle.fields[3][6] = FieldState.EMPTY;
-        puzzle.fields[4][7] = FieldState.EMPTY;
-        puzzle.fields[0][9] = FieldState.EMPTY;
-        puzzle.fields[1][9] = FieldState.EMPTY;
-        puzzle.fields[2][9] = FieldState.EMPTY;
-        puzzle.fields[4][9] = FieldState.EMPTY;
+//        puzzle.fields[2][0] = FieldState.EMPTY;
+//        puzzle.fields[3][0] = FieldState.EMPTY;
+//        puzzle.fields[4][0] = FieldState.EMPTY;
+//        puzzle.fields[7][0] = FieldState.EMPTY;
+//        puzzle.fields[8][0] = FieldState.EMPTY;
+//        puzzle.fields[9][0] = FieldState.EMPTY;
+//        puzzle.fields[0][1] = FieldState.EMPTY;
+//        puzzle.fields[1][1] = FieldState.EMPTY;
+//        puzzle.fields[9][1] = FieldState.EMPTY;
+//        puzzle.fields[8][2] = FieldState.EMPTY;
+//        puzzle.fields[9][2] = FieldState.EMPTY;
+//        puzzle.fields[3][3] = FieldState.EMPTY;
+//        puzzle.fields[7][3] = FieldState.EMPTY;
+//        puzzle.fields[8][3] = FieldState.EMPTY;
+//        puzzle.fields[9][3] = FieldState.EMPTY;
+//        puzzle.fields[1][4] = FieldState.EMPTY;
+//        puzzle.fields[4][4] = FieldState.EMPTY;
+//        puzzle.fields[4][5] = FieldState.EMPTY;
+//        puzzle.fields[3][6] = FieldState.EMPTY;
+//        puzzle.fields[4][7] = FieldState.EMPTY;
+//        puzzle.fields[0][9] = FieldState.EMPTY;
+//        puzzle.fields[1][9] = FieldState.EMPTY;
+//        puzzle.fields[2][9] = FieldState.EMPTY;
+//        puzzle.fields[4][9] = FieldState.EMPTY;
         return puzzle;
     }
 

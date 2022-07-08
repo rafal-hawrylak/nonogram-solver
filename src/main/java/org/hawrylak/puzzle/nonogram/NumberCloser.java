@@ -206,15 +206,9 @@ public class NumberCloser {
             var countOfNumbers = rowOrCol.numbersToFind.size();
             var limit = rowOrCol.horizontal ? puzzle.width : puzzle.height;
             if (sumOfNumbers + countOfNumbers - 1 == limit) {
-                var start = 0;
-                for (NumberToFind numberToClose : rowOrCol.numbersToFind) {
-                    var length = numberToClose.number;
-                    var fakeGap = new Gap(rowOrCol, start, start + length - 1, length, Optional.of(numberToClose));
-                    gapFiller.fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changesCurrent);
-                    rowOrCol.solved = true;
-                    start += length + 1;
-                }
+                gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changesCurrent, rowOrCol, rowOrCol.numbersToFind, 0);
             }
         }
     }
+
 }

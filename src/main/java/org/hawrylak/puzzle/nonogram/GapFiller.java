@@ -52,7 +52,7 @@ public class GapFiller {
                         fillTheGapEntirely(gap, number, rowOrCol, puzzle, changes);
                     } else {
                         // TODO nextNumber.isPresent - try to fill better
-                        fillTheGapPartially(gap, number, rowOrCol, puzzle, changes);
+                        fillTheGapPartiallyForSingleNumber(gap, number, rowOrCol, puzzle, changes);
                         break;
                     }
                 } else {
@@ -69,6 +69,18 @@ public class GapFiller {
         number.foundEnd = gap.end;
         fillSingleField(rowOrCol, puzzle, changes, gap.start - 1, FieldState.EMPTY);
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
+    }
+
+    public void fillTheGapEntirelyWithNumbers(Puzzle puzzle, ChangedInIteration changesCurrent, RowOrCol rowOrCol,
+        List<NumberToFind> numbersToClose, int start
+    ) {
+        for (NumberToFind numberToClose : numbersToClose) {
+            var length = numberToClose.number;
+            var fakeGap = new Gap(rowOrCol, start, start + length - 1, length, Optional.of(numberToClose));
+            fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changesCurrent);
+            rowOrCol.solved = true;
+            start += length + 1;
+        }
     }
 
     public boolean isFieldAtState(RowOrCol rowOrCol, Puzzle puzzle, int i, FieldState state) {
@@ -108,10 +120,29 @@ public class GapFiller {
         }
     }
 
-    private void fillTheGapPartially(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    private void fillTheGapPartiallyForSingleNumber(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle,
+        ChangedInIteration changes) {
         if (2 * number.number > gap.length) {
             var howManyFieldsMayBeSet = 2 * number.number - gap.length;
             var start = gap.start + (gap.length - number.number);
+            var end = start + howManyFieldsMayBeSet - 1;
+            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+        }
+    }
+
+    public void fillTheGapPartiallyForTwoNumbers(Gap gap, NumberToFind number1, NumberToFind number2, RowOrCol rowOrCol, Puzzle puzzle,
+        ChangedInIteration changes) {
+        var howManyFieldsMayBeSet = number1.number - 1;
+        if (howManyFieldsMayBeSet > 0) {
+            var start = gap.start + 1;
+            var end = start + howManyFieldsMayBeSet - 1;
+            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+        }
+        howManyFieldsMayBeSet = number2.number - 1;
+        if (howManyFieldsMayBeSet > 0) {
+            var start = gap.end - howManyFieldsMayBeSet;
             var end = start + howManyFieldsMayBeSet - 1;
             var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);

@@ -17,12 +17,37 @@ public class GapCloser {
         }
     }
 
-    public void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    public void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             if (rowOrCol.numbersToFind.stream().allMatch(n -> n.found)) {
                 List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
                 for (Gap gap : gaps) {
                     closeAsEmpty(gap, puzzle, changesCurrent);
+                }
+            }
+        }
+    }
+
+    public void closeWhenSingleGapWithNumbersNotFound(Puzzle puzzle, ChangedInIteration changesCurrent) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
+            var gapsWithoutFoundNumbers = gaps.stream().filter(gap -> gap.assignedNumber.isEmpty()).toList();
+            if (gapsWithoutFoundNumbers.size() == 1) {
+                var gap = gapsWithoutFoundNumbers.get(0);
+                var numbersNotFound = rowOrCol.numbersToFind.stream().filter(n -> !n.found).toList();
+                var numbersSum = numbersNotFound.stream().map(n -> n.number).reduce(0, Integer::sum);
+                if (numbersSum + numbersNotFound.size() - 1 == gap.length) {
+                    gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changesCurrent, rowOrCol, numbersNotFound, gap.start);
+                }
+
+                // TODO single number - partial fill
+
+                // TODO two numbers - partial fill
+                else if (numbersNotFound.size() == 2) {
+                    if (numbersSum + numbersNotFound.size() == gap.length) {
+                        gapFiller.fillTheGapPartiallyForTwoNumbers(gap, numbersNotFound.get(0), numbersNotFound.get(1), rowOrCol, puzzle,
+                            changesCurrent);
+                    }
                 }
             }
         }

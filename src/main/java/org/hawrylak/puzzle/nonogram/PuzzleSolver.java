@@ -25,8 +25,9 @@ public class PuzzleSolver {
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
             numberCloser.closeTheOnlyCombination(puzzle, changesCurrent);
-            gapCloser.closeWhenAllNumbersAreFound(puzzle, changesLast, changesCurrent);
+            gapCloser.closeWhenAllNumbersAreFound(puzzle, changesCurrent);
             numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changesLast, changesCurrent);
+            gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changesCurrent);
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);
