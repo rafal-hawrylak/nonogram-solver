@@ -42,7 +42,15 @@ public class Puzzle {
     }
 
     public String toString(ChangedInIteration changes) {
-        return puzzlePrinter.print(this, Optional.of(changes));
+        return toString(changes, "");
     }
 
+    public String toString(ChangedInIteration changes, String debugHeader) {
+        var sb = new StringBuilder();
+            if (!debugHeader.isEmpty()) {
+                sb.append("DEBUG: " + debugHeader + "\n");
+            }
+            sb.append(puzzlePrinter.print(this, Optional.of(changes)));
+        return sb.toString();
+    }
 }

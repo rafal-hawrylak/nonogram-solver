@@ -17,7 +17,10 @@ public class Main {
     @SneakyThrows
     private void run() {
         System.out.println("Hello Nonogram Solver!");
-        Puzzle puzzle = getTestPuzzle6();
+        // FIXME getTestPuzzle9 - infinite marking
+        // TODO getTestPuzzle10 - not solved
+        // TODO getTestPuzzle11 - minor, solved but not marked
+        Puzzle puzzle = getTestPuzzle11();
         System.out.println(puzzle);
 
         boolean solved = new PuzzleSolver().solve(puzzle);
@@ -236,6 +239,223 @@ public class Main {
         var puzzle = new Puzzle(width, height, rows, cols);
         return puzzle;
     }
+
+    private Puzzle getTestPuzzle7() {
+        var width = 15;
+        var height = 15;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(6,3));
+        rows.add(List.of(3,6));
+        rows.add(List.of(5,7));
+        rows.add(List.of(13));
+        rows.add(List.of(10));
+        rows.add(List.of(14));
+        rows.add(List.of(13));
+        rows.add(List.of(6));
+        rows.add(List.of(8));
+        rows.add(List.of(6));
+        rows.add(List.of(1,7));
+        rows.add(List.of(3,8));
+        rows.add(List.of(2,8,1));
+        rows.add(List.of(10));
+        rows.add(List.of(8));
+        cols.add(List.of(1,2,1));
+        cols.add(List.of(2,2,4));
+        cols.add(List.of(3,2,4));
+        cols.add(List.of(4,2,2));
+        cols.add(List.of(7,2));
+        cols.add(List.of(1,5,3));
+        cols.add(List.of(1,4,3));
+        cols.add(List.of(7,1,4));
+        cols.add(List.of(7,1,4));
+        cols.add(List.of(13));
+        cols.add(List.of(14));
+        cols.add(List.of(13));
+        cols.add(List.of(13));
+        cols.add(List.of(10));
+        cols.add(List.of(6));
+        var puzzle = new Puzzle(width, height, rows, cols);
+        return puzzle;
+    }
+
+    private Puzzle getTestPuzzle8() {
+        var width = 15;
+        var height = 15;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(15));
+        rows.add(List.of(2,3,1));
+        rows.add(List.of(5,3,1));
+        rows.add(List.of(4,2));
+        rows.add(List.of(4,3));
+        rows.add(List.of(6,1,3));
+        rows.add(List.of(6,1,3));
+        rows.add(List.of(9,3,1));
+        rows.add(List.of(1,3,2,3,1));
+        rows.add(List.of(5,9));
+        rows.add(List.of(13));
+        rows.add(List.of(1,7,5));
+        rows.add(List.of(1,7,1,3));
+        rows.add(List.of(5,5,3));
+        rows.add(List.of(1,1,1,1));
+        cols.add(List.of(3,5,3));
+        cols.add(List.of(8,1,1));
+        cols.add(List.of(1,13));
+        cols.add(List.of(1,12));
+        cols.add(List.of(1,13));
+        cols.add(List.of(1,3,3));
+        cols.add(List.of(1,1,5));
+        cols.add(List.of(2,9));
+        cols.add(List.of(4,7));
+        cols.add(List.of(4,2,1));
+        cols.add(List.of(1,1,11));
+        cols.add(List.of(1,8));
+        cols.add(List.of(1,11));
+        cols.add(List.of(1,5));
+        cols.add(List.of(3,7));
+        var puzzle = new Puzzle(width, height, rows, cols);
+        return puzzle;
+    }
+
+    private Puzzle getTestPuzzle9() {
+        var width = 10;
+        var height = 10;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(2));
+        rows.add(List.of(4));
+        rows.add(List.of(6));
+        rows.add(List.of(6));
+        rows.add(List.of(8));
+        rows.add(List.of(8));
+        rows.add(List.of(3,1,2));
+        rows.add(List.of(3,2,3));
+        rows.add(List.of(3,2,3));
+        rows.add(List.of(8));
+        cols.add(List.of(3));
+        cols.add(List.of(6));
+        cols.add(List.of(8));
+        cols.add(List.of(5,1));
+        cols.add(List.of(6,2));
+        cols.add(List.of(6,3));
+        cols.add(List.of(7,1));
+        cols.add(List.of(4,2));
+        cols.add(List.of(6));
+        cols.add(List.of(3));
+        var puzzle = new Puzzle(width, height, rows, cols);
+        return puzzle;
+    }
+
+    private Puzzle getTestPuzzle10() {
+        var width = 15;
+        var height = 15;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(1));
+        rows.add(List.of(2,3));
+        rows.add(List.of(4,5));
+        rows.add(List.of(4,7));
+        rows.add(List.of(2,2,5));
+        rows.add(List.of(2,6));
+        rows.add(List.of(2,7));
+        rows.add(List.of(2,8));
+        rows.add(List.of(2,9));
+        rows.add(List.of(2,10));
+        rows.add(List.of(15));
+        rows.add(List.of(13,1));
+        rows.add(List.of(8,3,2));
+        rows.add(List.of(4,3,1));
+        rows.add(List.of(4));
+        cols.add(List.of(4));
+        cols.add(List.of(2,5));
+        cols.add(List.of(4,7));
+        cols.add(List.of(4,2,5));
+        cols.add(List.of(2,2,3,1));
+        cols.add(List.of(2,4,1));
+        cols.add(List.of(2,5));
+        cols.add(List.of(2,6));
+        cols.add(List.of(2,6,1));
+        cols.add(List.of(3,9));
+        cols.add(List.of(14));
+        cols.add(List.of(12));
+        cols.add(List.of(10));
+        cols.add(List.of(8,1));
+        cols.add(List.of(10));
+        var puzzle = new Puzzle(width, height, rows, cols);
+        return puzzle;
+    }
+
+    private Puzzle getTestPuzzle11() {
+        var width = 15;
+        var height = 15;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(1,1));
+        rows.add(List.of(2,3));
+        rows.add(List.of(5));
+        rows.add(List.of(2));
+        rows.add(List.of(3));
+        rows.add(List.of(3));
+        rows.add(List.of(3));
+        rows.add(List.of(6));
+        rows.add(List.of(9));
+        rows.add(List.of(10));
+        rows.add(List.of(10));
+        rows.add(List.of(10));
+        rows.add(List.of(10));
+        rows.add(List.of(1,1,1,2));
+        rows.add(List.of(1,1,1,1));
+        cols.add(List.of(2));
+        cols.add(List.of(2));
+        cols.add(List.of(1,1));
+        cols.add(List.of(5));
+        cols.add(List.of(8));
+        cols.add(List.of(1,11));
+        cols.add(List.of(7));
+        cols.add(List.of(8));
+        cols.add(List.of(6));
+        cols.add(List.of(6));
+        cols.add(List.of(5));
+        cols.add(List.of(7));
+        cols.add(List.of(5));
+        cols.add(List.of(7));
+        cols.add(List.of(5));
+        var puzzle = new Puzzle(width, height, rows, cols);
+        return puzzle;
+    }
+    /*
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        rows.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+        cols.add(List.of());
+     */
 
     private Puzzle getPuzzleFromInput() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

@@ -14,6 +14,7 @@ public class PuzzleSolver {
 
         var changesLast = new ChangedInIteration(puzzle);
         var changesCurrent = new ChangedInIteration(puzzle);
+        boolean debug = false;
         var hardStop = true;
         var iterationsToStopAfter = 50;
         while (changesLast.firstIteration() || changesLast.anyChange()) {
@@ -22,12 +23,19 @@ public class PuzzleSolver {
             // rules
             markRowsAsSolved(puzzle);
             gapCloser.closeTooSmallToFitAnything(puzzle, changesLast, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeTooSmallToFitAnything");
             numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeAtEdges");
             numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeWithOneEnd");
             numberCloser.closeTheOnlyCombination(puzzle, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeTheOnlyCombination");
             gapCloser.closeWhenAllNumbersAreFound(puzzle, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeWhenAllNumbersAreFound");
             numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changesLast, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeAllTheGapsIfAllFullMarked");
             gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeWhenSingleGapWithNumbersNotFound");
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);
@@ -38,6 +46,12 @@ public class PuzzleSolver {
         }
 
         return isPuzzleSolved(puzzle);
+    }
+
+    private void printDebug(Puzzle puzzle, ChangedInIteration changesCurrent, boolean debug, String debugHeader) {
+        if (debug) {
+            System.out.println(puzzle.toString(changesCurrent, debugHeader));
+        }
     }
 
     private void markRowsAsSolved(Puzzle puzzle) {

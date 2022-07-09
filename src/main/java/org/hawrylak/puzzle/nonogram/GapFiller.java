@@ -103,10 +103,10 @@ public class GapFiller {
             var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
         }
+        var start = gap.start + gapDiff + number1.number + 1;
+        var end = gap.start + number1.number + number2.number;
         howManyFieldsMayBeSet = number2.number - gapDiff;
-        if (howManyFieldsMayBeSet > 0) {
-            var start = gap.end - howManyFieldsMayBeSet;
-            var end = start + howManyFieldsMayBeSet - 1;
+        if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
             var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
         }
