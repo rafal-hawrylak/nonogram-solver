@@ -27,6 +27,7 @@ public class Main {
 
         System.out.println("solved = " + solved);
         System.out.println(puzzle);
+        System.out.println(puzzle.compact());
     }
 
     private Puzzle getTestPuzzle1() {

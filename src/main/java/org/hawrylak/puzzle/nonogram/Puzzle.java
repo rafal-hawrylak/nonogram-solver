@@ -53,4 +53,8 @@ public class Puzzle {
             sb.append(puzzlePrinter.print(this, Optional.of(changes)));
         return sb.toString();
     }
+
+    public String compact() {
+        return puzzlePrinter.printCompact(this);
+    }
 }
