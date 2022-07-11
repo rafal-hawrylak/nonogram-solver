@@ -19,7 +19,6 @@ public class Main {
         System.out.println("Hello Nonogram Solver!");
         // FIXME getTestPuzzle9 - infinite marking
         // TODO getTestPuzzle10 - not solved
-        // TODO getTestPuzzle11 - minor, solved but not marked
         Puzzle puzzle = getTestPuzzle11();
         System.out.println(puzzle);
 

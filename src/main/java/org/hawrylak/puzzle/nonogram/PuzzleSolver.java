@@ -45,6 +45,7 @@ public class PuzzleSolver {
             }
         }
 
+        markRowsAsSolved(puzzle);
         return isPuzzleSolved(puzzle);
     }
 
