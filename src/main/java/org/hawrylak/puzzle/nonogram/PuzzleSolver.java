@@ -38,6 +38,8 @@ public class PuzzleSolver {
             printDebug(puzzle, changesCurrent, debug, "closeTheNumbersAlreadyFilledButNotMarked");
             gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changesCurrent);
             printDebug(puzzle, changesCurrent, debug, "closeWhenSingleGapWithNumbersNotFound");
+            gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeAllGapsBeforeFirstFoundNumber");
 
             System.out.println(puzzle.toString(changesCurrent));
             changesLast.nextIteration(changesCurrent);

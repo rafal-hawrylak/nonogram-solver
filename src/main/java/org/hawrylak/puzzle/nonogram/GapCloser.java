@@ -81,4 +81,27 @@ public class GapCloser {
             }
         }
     }
+
+    public void closeAllGapsBeforeFirstAndAfterLastFoundNumber(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            if (rowOrCol.numbersToFind.isEmpty()) {
+                continue;
+            }
+            var gaps = gapFinder.find(puzzle, rowOrCol);
+            var firstNumber = rowOrCol.numbersToFind.get(0);
+            if (firstNumber.found) {
+                var gapsBeforeNumber = gapFinder.gapsBeforeNumber(gaps, firstNumber);
+                for (Gap gap : gapsBeforeNumber) {
+                    closeAsEmpty(gap, puzzle, changes);
+                }
+            }
+            var lastNumber = rowOrCol.numbersToFind.get(rowOrCol.numbersToFind.size() - 1);
+            if (lastNumber.found) {
+                var gapsAfterNumber = gapFinder.gapsAfterNumber(gaps, lastNumber);
+                for (Gap gap : gapsAfterNumber) {
+                    closeAsEmpty(gap, puzzle, changes);
+                }
+            }
+        }
+    }
 }

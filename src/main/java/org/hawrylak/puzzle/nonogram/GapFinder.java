@@ -152,4 +152,29 @@ public class GapFinder {
         }
         return new Gap(rowOrCol, start, start + maxCount - 1, maxCount, Optional.empty());
     }
+
+    public List<Gap> gapsBeforeNumber(List<Gap> gaps, NumberToFind numberToFind) {
+        var foundGaps = new ArrayList<Gap>();
+        for (Gap gap : gaps) {
+            if (gap.assignedNumber.isPresent() && gap.assignedNumber.get().equals(numberToFind)) {
+                break;
+            }
+            foundGaps.add(gap);
+        }
+        return foundGaps;
+    }
+
+    public List<Gap> gapsAfterNumber(List<Gap> gaps, NumberToFind numberToFind) {
+        var foundGaps = new ArrayList<Gap>();
+        var numberFound = false;
+        for (Gap gap : gaps) {
+            if (numberFound) {
+                foundGaps.add(gap);
+            }
+            if (gap.assignedNumber.isPresent() && gap.assignedNumber.get().equals(numberToFind)) {
+                numberFound = true;
+            }
+        }
+        return foundGaps;
+    }
 }
