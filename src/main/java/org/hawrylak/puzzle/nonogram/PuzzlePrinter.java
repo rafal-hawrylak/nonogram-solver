@@ -91,7 +91,7 @@ public class PuzzlePrinter {
             case EMPTY -> "x";
             case FULL -> "■";
         };
-        int colWidth = compact ? 1 : COL_WIDTH;
+        int colWidth = compact ? 2 : COL_WIDTH;
         sb.append(StringUtils.pad(value, ' ', colWidth));
         if (color) {
             sb.append(Colors.ANSI_RESET);

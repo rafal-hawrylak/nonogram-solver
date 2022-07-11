@@ -34,6 +34,8 @@ public class PuzzleSolver {
             printDebug(puzzle, changesCurrent, debug, "closeWhenAllNumbersAreFound");
             numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changesLast, changesCurrent);
             printDebug(puzzle, changesCurrent, debug, "closeAllTheGapsIfAllFullMarked");
+            numberCloser.fitTheNumbersInOnlyPossibleGaps(puzzle, changesCurrent);
+            printDebug(puzzle, changesCurrent, debug, "closeTheNumbersAlreadyFilledButNotMarked");
             gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changesCurrent);
             printDebug(puzzle, changesCurrent, debug, "closeWhenSingleGapWithNumbersNotFound");
 

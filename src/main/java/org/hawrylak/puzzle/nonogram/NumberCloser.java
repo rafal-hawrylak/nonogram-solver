@@ -1,6 +1,6 @@
 package org.hawrylak.puzzle.nonogram;
 
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -69,7 +69,7 @@ public class NumberCloser {
         for (int c = 0; c < puzzle.width; c++) {
             for (int r = 0; r < puzzle.height; r++) {
                 if (FieldState.EMPTY.equals(puzzle.fields[c][r])) {
-                    Collection<RowOrCol> rowAndCol = changesCurrent.findPerpendicularRowOrCol(c, r);
+                    var rowAndCol = changesCurrent.findPerpendicularRowOrCol(c, r);
                     for (RowOrCol rowOrCol : rowAndCol) {
                         tryToCloseFromEmpty(rowOrCol, c, r, puzzle, changesCurrent);
                     }
@@ -200,6 +200,34 @@ public class NumberCloser {
         }
     }
 
+    /*
+      ex
+        x  x  .  .  x  x  x  x  .  ■  ■  ■  ■  ■  .| 2 5
+        to
+        x  x  .  .  x  x  x  x  x  ■  ■  ■  ■  ■  x| 2 5
+     */
+    public void fitTheNumbersInOnlyPossibleGaps(Puzzle puzzle, ChangedInIteration changesCurrent) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var notClosedGaps = gapFinder.find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
+            var biggerNumbersFirst = rowOrCol.numbersToFind.stream()
+                .filter(n -> !n.found)
+                .sorted(Comparator.comparingInt(NumberToFind::getNumber).reversed())
+                .toList();
+            if (!biggerNumbersFirst.isEmpty()) {
+                var numberToFind = biggerNumbersFirst.get(0);
+                var gapsTheAreCapableToFit = notClosedGaps.stream().filter(g -> g.length >= numberToFind.number).toList();
+                if (gapsTheAreCapableToFit.size() == 1) {
+                    var gap = gapsTheAreCapableToFit.get(0);
+                    var gapWithMaxSubsequentFullFields = gapFinder.maxSubsequentCountOfFields(puzzle, rowOrCol, gap, FieldState.FULL);
+                    if (gapWithMaxSubsequentFullFields.length == numberToFind.number) {
+                        var fakeGap = new Gap(rowOrCol, gapWithMaxSubsequentFullFields.start, gapWithMaxSubsequentFullFields.end, numberToFind.number, Optional.of(numberToFind));
+                        gapFiller.fillTheGapEntirely(fakeGap, numberToFind, rowOrCol, puzzle, changesCurrent);
+                    }
+                }
+            }
+        }
+    }
+
     public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
@@ -210,5 +238,4 @@ public class NumberCloser {
             }
         }
     }
-
 }

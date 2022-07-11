@@ -120,4 +120,36 @@ public class GapFinder {
         }
         return Optional.empty();
     }
+
+    public Gap maxSubsequentCountOfFields(Puzzle puzzle, RowOrCol rowOrCol, Gap gap, FieldState state) {
+        var maxCount = 0;
+        var count = 0;
+        var start = 0;
+        for (int i = gap.start; i <= gap.end + 1; i++) {
+            var field = i == gap.end + 1 ? FieldState.OUTSIDE :
+                rowOrCol.horizontal ? puzzle.fields[i][rowOrCol.number] : puzzle.fields[rowOrCol.number][i];
+            var previousField = i == gap.start ? FieldState.OUTSIDE :
+                rowOrCol.horizontal ? puzzle.fields[i - 1][rowOrCol.number] : puzzle.fields[rowOrCol.number][i - 1];
+            switch (previousField) {
+                case OUTSIDE, UNKNOWN, EMPTY -> {
+                    switch (field) {
+                        case FULL -> count = 1;
+                    }
+                }
+                case FULL -> {
+                    switch (field) {
+                        case FULL -> count++;
+                        case OUTSIDE, UNKNOWN, EMPTY -> {
+                            if (count > maxCount) {
+                                maxCount = count;
+                                start = i - maxCount;
+                                count = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return new Gap(rowOrCol, start, start + maxCount - 1, maxCount, Optional.empty());
+    }
 }
