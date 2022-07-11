@@ -19,7 +19,7 @@ public class Main {
         System.out.println("Hello Nonogram Solver!");
         // FIXME getTestPuzzle9 - infinite marking
         // TODO getTestPuzzle10 - not solved
-        Puzzle puzzle = getTestPuzzle11();
+        Puzzle puzzle = getTestPuzzle9();
         System.out.println(puzzle);
 
         boolean solved = new PuzzleSolver().solve(puzzle);

@@ -80,7 +80,13 @@ public class PuzzlePrinter {
                     : Colors.ANSI_GREEN);
             }
         }
-        String value = switch (puzzle.fields[c][r]) {
+        String value = compact ?
+            switch (puzzle.fields[c][r]) {
+                case UNKNOWN, OUTSIDE, EMPTY -> " ";
+                case FULL -> "■";
+            }
+        :
+            switch (puzzle.fields[c][r]) {
             case UNKNOWN, OUTSIDE -> ".";
             case EMPTY -> "x";
             case FULL -> "■";
