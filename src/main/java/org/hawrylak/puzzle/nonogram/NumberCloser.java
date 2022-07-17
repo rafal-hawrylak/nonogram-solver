@@ -14,6 +14,13 @@ public class NumberCloser {
     private final GapFiller gapFiller;
     private final GapCloser gapCloser;
 
+
+    /*
+      ex
+        .  .  .  .  x  .  .  <  x|
+        .  .  .  .  v  .  ^  .  .|
+        x  >  .  .  .  .  x  .  .|
+     */
     public void closeAtEdges(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (int r = 0; r < puzzle.height; r++) {
             var rowOrCol = rowSelector.find(puzzle, r, true);
@@ -65,6 +72,12 @@ public class NumberCloser {
         }
     }
 
+    /*
+      ex
+        .  .  .  .  ^  .  .  .  .|
+        .  .  .  <  x  >  .  .  .|
+        .  .  .  .  v  .  .  .  .|
+     */
     public void closeWithOneEnd(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (int c = 0; c < puzzle.width; c++) {
             for (int r = 0; r < puzzle.height; r++) {
@@ -231,9 +244,19 @@ public class NumberCloser {
                 if (gapsTheAreCapableToFit.size() == 1) {
                     var gap = gapsTheAreCapableToFit.get(0);
                     var gapWithMaxSubsequentFullFields = gapFinder.maxSubsequentCountOfFields(puzzle, rowOrCol, gap, FieldState.FULL);
+                    // FIXME |.  .  .  .  .  .  .  .  .  ■  ■  ■  ■  ■  .| 5 5
+                    // will close first 5 from numbers but
                     if (gapWithMaxSubsequentFullFields.length == numberToFind.number) {
-                        var fakeGap = new Gap(rowOrCol, gapWithMaxSubsequentFullFields.start, gapWithMaxSubsequentFullFields.end, numberToFind.number, Optional.of(numberToFind));
-                        gapFiller.fillTheGapEntirely(fakeGap, numberToFind, rowOrCol, puzzle, changesCurrent);
+                        long countOfNumbersEqualtoFind = biggerNumbersFirst.stream().filter(n -> n.number == numberToFind.number).count();
+                        if (countOfNumbersEqualtoFind == 1) {
+                            var fakeGap = new Gap(rowOrCol, gapWithMaxSubsequentFullFields.start, gapWithMaxSubsequentFullFields.end,
+                                numberToFind.number, Optional.of(numberToFind));
+                            gapFiller.fillTheGapEntirely(fakeGap, numberToFind, rowOrCol, puzzle, changesCurrent);
+                        }
+                    } else {
+                        if (biggerNumbersFirst.size() == 1) {
+                            gapFiller.fillTheGapPartiallyForSingleNumber(gap, numberToFind, rowOrCol, puzzle, changesCurrent);
+                        }
                     }
                 }
             }
