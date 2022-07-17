@@ -125,7 +125,8 @@ public class NumberCloser {
          3|  ■  x  .  .  .  ?  x  x  ■  ■| 1 1 1 2
          */
         if (!startingFrom && (nextGap.isEmpty() || nextGap.get().assignedNumber.isPresent())) {
-            var numberToClose = nextGap.isEmpty() ? numberSelector.getLast(rowOrCol.numbersToFind)
+            var numberToClose = nextGap.isEmpty()
+                ? numberSelector.getLast(rowOrCol.numbersToFind)
                 : numberSelector.getPrevious(rowOrCol.numbersToFind, nextGap.get().assignedNumber.get());
             if (numberToClose.isPresent()) {
                 fillTheNumber(rowOrCol, numberToClose.get(), c, r, startingFrom, puzzle, changesCurrent);
@@ -133,9 +134,10 @@ public class NumberCloser {
             }
         }
         /*
+        startingFrom AND ...
          previousGap.isEmpty
          3|  x  x  ?  .  .  .  .  x  x  x| 1 1 1
-         previousGap.get().assignedNumber.isPresent()
+         OR previousGap.get().assignedNumber.isPresent()
          3|  ■  x  ?  .  .  .  x  x  ■  ■| 1 1 1 2
          */
         else if (startingFrom && (previousGap.isEmpty() || previousGap.get().assignedNumber.isPresent())) {
@@ -147,20 +149,25 @@ public class NumberCloser {
             }
         }
         /*
-         nextGap.isEmpty AND
+        startingFrom AND ...
+         nextGap.isEmpty AND ...
              we can't fit more in this gap than the last number or the last number is the only number
              3|  .  .  .  x  ?  .  .  x  x  x  x  x| 1
              3|  .  .  .  x  ?  .  x  x  x  x  x  x| 1 1
          */
-        else if (startingFrom && nextGap.isEmpty()) {
-            var lastNumber = numberSelector.getLast(rowOrCol.numbersToFind).get();
+        else if (startingFrom && (nextGap.isEmpty() || nextGap.get().assignedNumber.isPresent())) {
+            var lastNumber = nextGap.isEmpty()
+                ? numberSelector.getLast(rowOrCol.numbersToFind).get()
+                : numberSelector.getPrevious(rowOrCol.numbersToFind, nextGap.get().assignedNumber.get()).get();
             var lastButOneNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, lastNumber);
-            if (lastButOneNumber.isEmpty() || lastButOneNumber.get().number + lastNumber.number + 1 > gapAtPosition.length) {
+            if (lastButOneNumber.isEmpty() || lastButOneNumber.get().found
+                || lastButOneNumber.get().number + lastNumber.number + 1 > gapAtPosition.length) {
                 fillTheNumber(rowOrCol, lastNumber, c, r, startingFrom, puzzle, changesCurrent);
                 fillingSuccessful = true;
             }
         }
         /*
+        !startingFrom AND ...
          previousGap.isEmpty AND
              we can't fit more in this gap than the first number
              3|  .  ?  x  x  ■  x  x  x| 1 1
@@ -168,7 +175,28 @@ public class NumberCloser {
         else if (!startingFrom && previousGap.isEmpty()) {
             var firstNumber = numberSelector.getFirst(rowOrCol.numbersToFind).get();
             var secondNumber = numberSelector.getNext(rowOrCol.numbersToFind, firstNumber);
-            if (secondNumber.isEmpty() || secondNumber.get().number + firstNumber.number + 1 > gapAtPosition.length) {
+            if (secondNumber.isEmpty() || secondNumber.get().found
+                || secondNumber.get().number + firstNumber.number + 1 > gapAtPosition.length) {
+                fillTheNumber(rowOrCol, firstNumber, c, r, startingFrom, puzzle, changesCurrent);
+                fillingSuccessful = true;
+            }
+        }
+        /*
+        !startingFrom AND ...
+         the first not found number fits into the gap AND ...
+         next number is empty or found or too big to fit into the gap AND ...
+         previousGap.isEmpty
+         3|  x  x  .  .  .  .  ?  x  x  x| 1 1 1
+         OR previousGap.get().assignedNumber.isPresent()
+         3|  ■  x  .  .  .  .  ?  x  ■  ■| 1 1 1 2
+         */
+        else if (!startingFrom && (previousGap.isEmpty() || previousGap.get().assignedNumber.isPresent())) {
+            var firstNumber = previousGap.isEmpty()
+                ? rowOrCol.numbersToFind.get(0)
+                : numberSelector.getNext(rowOrCol.numbersToFind, previousGap.get().assignedNumber.get()).get();
+            var secondNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, firstNumber);
+            if (secondNumber.isEmpty() || secondNumber.get().found
+                || secondNumber.get().number + firstNumber.number + 1 > gapAtPosition.length) {
                 fillTheNumber(rowOrCol, firstNumber, c, r, startingFrom, puzzle, changesCurrent);
                 fillingSuccessful = true;
             }
