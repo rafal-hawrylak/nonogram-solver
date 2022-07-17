@@ -29,6 +29,24 @@ public class GapCloser {
         }
     }
 
+    /*
+      ex
+        x  x  ■  x  .  .  .  .  . | 1 5
+        to
+        x  x  ■  x  ■  ■  ■  ■  ■ | 1 5
+
+      and
+
+        x  x  ■  x  .  .  .  .  . | 1 4
+        to
+        x  x  ■  x  .  ■  ■  ■  . | 1 4
+
+      and
+
+        x  x  ■  x  .  .  .  .  .  . | 1 2 2
+        to
+        x  x  ■  x  .  ■  .  .  ■  . | 1 2 2
+     */
     public void closeWhenSingleGapWithNumbersNotFound(Puzzle puzzle, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
@@ -82,6 +100,18 @@ public class GapCloser {
         }
     }
 
+    /*
+      ex
+        .  x  .  x  ■  ■  ■  x  .  . | 3 1
+        to
+        x  x  x  x  ■  ■  ■  x  .  . | 3 1
+
+      and
+
+        .  .  x  ■  ■  ■  x  .  x  . | 1 3
+        to
+        .  .  x  ■  ■  ■  x  x  x  x | 1 3
+     */
     public void closeAllGapsBeforeFirstAndAfterLastFoundNumber(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             if (rowOrCol.numbersToFind.isEmpty()) {

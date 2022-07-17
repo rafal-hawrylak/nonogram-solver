@@ -187,6 +187,18 @@ public class NumberCloser {
         gapFiller.fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changesCurrent);
     }
 
+    /*
+      ex
+        x  x  ■  ■  x  x  x  x  .  ■  ■  ■  ■  ■  .| 2 5
+        to
+        x  x  ■  ■  x  x  x  x  x  ■  ■  ■  ■  ■  x| 2 5
+
+      and
+
+        x  x  .  .  x  x  x  x  .  ■  ■  ■  ■  ■  .| 5
+        to
+        x  x  x  x  x  x  x  x  x  ■  ■  ■  ■  ■  x| 5
+     */
     public void closeAllTheGapsIfAllFullMarked(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
