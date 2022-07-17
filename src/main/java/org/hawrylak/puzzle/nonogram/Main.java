@@ -17,7 +17,7 @@ public class Main {
     @SneakyThrows
     private void run() {
         System.out.println("Hello Nonogram Solver!");
-        Puzzle puzzle = getTestPuzzle12ProfessionalLevel1();
+        Puzzle puzzle = getTestPuzzle13ProfessionalLevel1();
         System.out.println(puzzle);
 
         boolean solved = new PuzzleSolver().solve(puzzle);
@@ -487,6 +487,68 @@ public class Main {
         cols.add(List.of(2,2,7));
         cols.add(List.of(2,7));
         cols.add(List.of(7));
+        var puzzle = new Puzzle(width, height, rows, cols);
+        return puzzle;
+    }
+
+    private Puzzle getTestPuzzle13ProfessionalLevel1() {
+        var width = 20;
+        var height = 25;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(5));
+        rows.add(List.of(7));
+        rows.add(List.of(7));
+        rows.add(List.of(4,2));
+        rows.add(List.of(10));
+
+        rows.add(List.of(3,3,5));
+        rows.add(List.of(2,2,3,2));
+        rows.add(List.of(3,5,3));
+        rows.add(List.of(2,7,2,1));
+        rows.add(List.of(2,10,2,1));
+
+        rows.add(List.of(1,13,1));
+        rows.add(List.of(1,4,8,2));
+        rows.add(List.of(2,3,2,2,5));
+        rows.add(List.of(9,4,2,1));
+        rows.add(List.of(1,5,5,2,1));
+
+        rows.add(List.of(1,6,6,1));
+        rows.add(List.of(2,2,2,2,1));
+        rows.add(List.of(4,1,3,1,1));
+        rows.add(List.of(1,3,1,2,1,2));
+        rows.add(List.of(1,6,2));
+
+        rows.add(List.of(1,2,2));
+        rows.add(List.of(3,1,2));
+        rows.add(List.of(3,1,2));
+        rows.add(List.of(3,1,2));
+        rows.add(List.of(6));
+
+        cols.add(List.of(9));
+        cols.add(List.of(2,2,6));
+        cols.add(List.of(2,1,1,1));
+        cols.add(List.of(1,5,2,2));
+        cols.add(List.of(2,7,1,1));
+
+        cols.add(List.of(2,8,2,2));
+        cols.add(List.of(1,4,3,1,1));
+        cols.add(List.of(2,3,4,1,2));
+        cols.add(List.of(1,3,2,6,1));
+        cols.add(List.of(10,2,6));
+
+        cols.add(List.of(11,2,2,1));
+        cols.add(List.of(6,9,2,1));
+        cols.add(List.of(5,1,9,2));
+        cols.add(List.of(3,1,2,3,6,2));
+        cols.add(List.of(3,3,3,1,2));
+
+        cols.add(List.of(7,8,2));
+        cols.add(List.of(5,2,7,2));
+        cols.add(List.of(1,2,1,2));
+        cols.add(List.of(3,8));
+        cols.add(List.of(6));
         var puzzle = new Puzzle(width, height, rows, cols);
         return puzzle;
     }
