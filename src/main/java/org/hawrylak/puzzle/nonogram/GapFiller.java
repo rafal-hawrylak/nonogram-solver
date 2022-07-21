@@ -18,13 +18,13 @@ public class GapFiller {
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
     }
 
-    public void fillTheGapEntirelyWithNumbers(Puzzle puzzle, ChangedInIteration changesCurrent, RowOrCol rowOrCol,
+    public void fillTheGapEntirelyWithNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol,
         List<NumberToFind> numbersToClose, int start
     ) {
         for (NumberToFind numberToClose : numbersToClose) {
             var length = numberToClose.number;
             var fakeGap = new Gap(rowOrCol, start, start + length - 1, length, Optional.of(numberToClose));
-            fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changesCurrent);
+            fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changes);
             rowOrCol.solved = true;
             start += length + 1;
         }

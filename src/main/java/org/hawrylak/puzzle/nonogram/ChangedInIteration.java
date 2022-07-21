@@ -8,7 +8,7 @@ import java.util.Set;
 public class ChangedInIteration {
 
     private final Puzzle puzzle;
-    int iteration = 1;
+    int iteration = 0;
     Set<RowOrCol> changedRowsOrCols = new HashSet<>();
     boolean[][] changedFields;
 
@@ -22,16 +22,12 @@ public class ChangedInIteration {
     }
 
     public boolean firstIteration() {
-        return iteration == 1;
+        return iteration <= 1;
     }
 
-    public void nextIteration(ChangedInIteration changesInCurrentIteration) {
+    public void nextIteration() {
         iteration++;
         clear();
-        changedRowsOrCols.addAll(changesInCurrentIteration.changedRowsOrCols);
-        changedFields = changesInCurrentIteration.changedFields;
-        changesInCurrentIteration.clear();
-        changesInCurrentIteration.iteration++;
     }
 
     public void clear() {

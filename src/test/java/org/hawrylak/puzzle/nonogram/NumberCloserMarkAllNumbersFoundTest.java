@@ -14,7 +14,7 @@ public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes, changes);
+        numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         assertEachNumberIsFound(puzzle.rowsOrCols);
@@ -28,7 +28,7 @@ public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes, changes);
+        numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         assertEachNumberIsFound(puzzle.rowsOrCols);

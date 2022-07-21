@@ -12,18 +12,18 @@ public class GapCloser {
 
     private final NumberSelector numberSelector;
 
-    public void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent) {
+    public void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changesLast) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            closeTooSmallToFitAnything(puzzle, changesLast, changesCurrent, rowOrCol);
+            closeTooSmallToFitAnything(puzzle, changesLast, rowOrCol);
         }
     }
 
-    public void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changesCurrent) {
+    public void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             if (rowOrCol.numbersToFind.stream().allMatch(n -> n.found)) {
                 List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
                 for (Gap gap : gaps) {
-                    closeAsEmpty(gap, puzzle, changesCurrent);
+                    closeAsEmpty(gap, puzzle, changes);
                 }
             }
         }
@@ -47,7 +47,7 @@ public class GapCloser {
         to
         x  x  ■  x  .  ■  .  .  ■  . | 1 2 2
      */
-    public void closeWhenSingleGapWithNumbersNotFound(Puzzle puzzle, ChangedInIteration changesCurrent) {
+    public void closeWhenSingleGapWithNumbersNotFound(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
             var gapsWithoutFoundNumbers = gaps.stream().filter(gap -> gap.assignedNumber.isEmpty()).toList();
@@ -56,22 +56,22 @@ public class GapCloser {
                 var numbersNotFound = rowOrCol.numbersToFind.stream().filter(n -> !n.found).toList();
                 var numbersSum = numbersNotFound.stream().map(n -> n.number).reduce(0, Integer::sum);
                 if (numbersSum + numbersNotFound.size() - 1 == gap.length) {
-                    gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changesCurrent, rowOrCol, numbersNotFound, gap.start);
+                    gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changes, rowOrCol, numbersNotFound, gap.start);
                 } else {
                     var gapDiff = gap.length - numbersSum - numbersNotFound.size() + 1;
-                    gapFiller.fillTheGapPartiallyForNNumbers(gap, numbersNotFound, gapDiff, rowOrCol, puzzle, changesCurrent);
+                    gapFiller.fillTheGapPartiallyForNNumbers(gap, numbersNotFound, gapDiff, rowOrCol, puzzle, changes);
                 }
             }
         }
     }
 
-    private void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changesLast, ChangedInIteration changesCurrent,
+    private void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changes,
         RowOrCol rowOrCol) {
         List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
         var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found).map(n -> n.number).min(Integer::compareTo);
         for (Gap gap : gaps) {
             if (min.isEmpty() || gap.length < min.get()) {
-                closeAsEmpty(gap, puzzle, changesCurrent);
+                closeAsEmpty(gap, puzzle, changes);
             }
         }
     }

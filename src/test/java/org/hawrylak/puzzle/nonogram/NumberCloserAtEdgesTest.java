@@ -12,7 +12,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -25,7 +25,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -38,7 +38,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -51,7 +51,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -63,7 +63,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -76,7 +76,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -89,7 +89,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -102,7 +102,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes, changes);
+        numberCloser.closeAtEdges(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }

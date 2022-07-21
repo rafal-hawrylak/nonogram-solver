@@ -12,39 +12,38 @@ public class PuzzleSolver {
 
     boolean solve(Puzzle puzzle) {
 
-        var changesLast = new ChangedInIteration(puzzle);
-        var changesCurrent = new ChangedInIteration(puzzle);
+        var changes = new ChangedInIteration(puzzle);
         boolean debug = false;
         var hardStop = true;
         var iterationsToStopAfter = 50;
-        while (changesLast.firstIteration() || changesLast.anyChange()) {
-            System.out.println("iteration = " + changesLast.iteration);
+        while (changes.firstIteration() || changes.anyChange()) {
+            changes.nextIteration();
+            System.out.println("iteration = " + changes.iteration);
 
             // rules
             markRowsAsSolved(puzzle);
-            gapCloser.closeTooSmallToFitAnything(puzzle, changesLast, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeTooSmallToFitAnything");
-            numberCloser.closeAtEdges(puzzle, changesLast, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeAtEdges");
-            numberCloser.closeWithOneEnd(puzzle, changesLast, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeWithOneEnd");
-            numberCloser.closeTheOnlyCombination(puzzle, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeTheOnlyCombination");
-            gapCloser.closeWhenAllNumbersAreFound(puzzle, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeWhenAllNumbersAreFound");
-            numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changesLast, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeAllTheGapsIfAllFullMarked");
-            numberCloser.fitTheNumbersInOnlyPossibleGaps(puzzle, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeTheNumbersAlreadyFilledButNotMarked");
-            gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeWhenSingleGapWithNumbersNotFound");
-            gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changesCurrent);
-            printDebug(puzzle, changesCurrent, debug, "closeAllGapsBeforeFirstFoundNumber");
+            gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeTooSmallToFitAnything");
+            numberCloser.closeAtEdges(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeAtEdges");
+            numberCloser.closeWithOneEnd(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeWithOneEnd");
+            numberCloser.closeTheOnlyCombination(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeTheOnlyCombination");
+            gapCloser.closeWhenAllNumbersAreFound(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeWhenAllNumbersAreFound");
+            numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeAllTheGapsIfAllFullMarked");
+            numberCloser.fitTheNumbersInOnlyPossibleGaps(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeTheNumbersAlreadyFilledButNotMarked");
+            gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeWhenSingleGapWithNumbersNotFound");
+            gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changes);
+            printDebug(puzzle, changes, debug, "closeAllGapsBeforeFirstFoundNumber");
 
-            System.out.println(puzzle.toString(changesCurrent));
-            changesLast.nextIteration(changesCurrent);
+            System.out.println(puzzle.toString(changes));
 
-            if (hardStop && changesCurrent.iteration >= iterationsToStopAfter) {
+            if (hardStop && changes.iteration >= iterationsToStopAfter) {
                 break;
             }
         }
@@ -53,9 +52,9 @@ public class PuzzleSolver {
         return isPuzzleSolved(puzzle);
     }
 
-    private void printDebug(Puzzle puzzle, ChangedInIteration changesCurrent, boolean debug, String debugHeader) {
+    private void printDebug(Puzzle puzzle, ChangedInIteration changes, boolean debug, String debugHeader) {
         if (debug) {
-            System.out.println(puzzle.toString(changesCurrent, debugHeader));
+            System.out.println(puzzle.toString(changes, debugHeader));
         }
     }
 
