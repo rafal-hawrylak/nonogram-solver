@@ -111,4 +111,29 @@ public class GapFiller {
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
         }
     }
+
+    public void fillTheGapPartiallyForThreeNumbers(Gap gap, NumberToFind number1, NumberToFind number2, NumberToFind number3, int gapDiff,
+        RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+        var howManyFieldsMayBeSet = number1.number - gapDiff;
+        if (howManyFieldsMayBeSet > 0) {
+            var start = gap.start + gapDiff;
+            var end = start + howManyFieldsMayBeSet - 1;
+            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+        }
+        var start = gap.start + gapDiff + number1.number + 1;
+        var end = gap.start + number1.number + number2.number;
+        howManyFieldsMayBeSet = number2.number - gapDiff;
+        if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
+            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+        }
+        start = gap.start + gapDiff + number1.number + number2.number + 2;
+        end = gap.start + number1.number + number2.number + number3.number + 1;
+        howManyFieldsMayBeSet = number3.number - gapDiff;
+        if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
+            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+        }
+    }
 }

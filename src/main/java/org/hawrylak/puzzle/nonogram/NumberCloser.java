@@ -272,8 +272,6 @@ public class NumberCloser {
                 if (gapsTheAreCapableToFit.size() == 1) {
                     var gap = gapsTheAreCapableToFit.get(0);
                     var gapWithMaxSubsequentFullFields = gapFinder.maxSubsequentCountOfFields(puzzle, rowOrCol, gap, FieldState.FULL);
-                    // FIXME |.  .  .  .  .  .  .  .  .  ■  ■  ■  ■  ■  .| 5 5
-                    // will close first 5 from numbers but
                     if (gapWithMaxSubsequentFullFields.length == numberToFind.number) {
                         long countOfNumbersEqualtoFind = biggerNumbersFirst.stream().filter(n -> n.number == numberToFind.number).count();
                         if (countOfNumbersEqualtoFind == 1) {
