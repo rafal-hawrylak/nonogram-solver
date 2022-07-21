@@ -57,16 +57,9 @@ public class GapCloser {
                 var numbersSum = numbersNotFound.stream().map(n -> n.number).reduce(0, Integer::sum);
                 if (numbersSum + numbersNotFound.size() - 1 == gap.length) {
                     gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changesCurrent, rowOrCol, numbersNotFound, gap.start);
-                } else if (numbersNotFound.size() == 1) {
-                    gapFiller.fillTheGapPartiallyForSingleNumber(gap, numbersNotFound.get(0), rowOrCol, puzzle, changesCurrent);
-                } else if (numbersNotFound.size() == 2) {
+                } else {
                     var gapDiff = gap.length - numbersSum - numbersNotFound.size() + 1;
-                    gapFiller.fillTheGapPartiallyForTwoNumbers(gap, numbersNotFound.get(0), numbersNotFound.get(1), gapDiff, rowOrCol,
-                        puzzle, changesCurrent);
-                } else if (numbersNotFound.size() == 3) {
-                    var gapDiff = gap.length - numbersSum - numbersNotFound.size() + 1;
-                    gapFiller.fillTheGapPartiallyForThreeNumbers(gap, numbersNotFound.get(0), numbersNotFound.get(1),
-                        numbersNotFound.get(2), gapDiff, rowOrCol, puzzle, changesCurrent);
+                    gapFiller.fillTheGapPartiallyForNNumbers(gap, numbersNotFound, gapDiff, rowOrCol, puzzle, changesCurrent);
                 }
             }
         }

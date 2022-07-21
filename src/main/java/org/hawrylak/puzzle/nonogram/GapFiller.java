@@ -93,47 +93,19 @@ public class GapFiller {
         }
     }
 
-    public void fillTheGapPartiallyForTwoNumbers(Gap gap, NumberToFind number1, NumberToFind number2, int gapDiff, RowOrCol rowOrCol,
-        Puzzle puzzle,
-        ChangedInIteration changes) {
-        var howManyFieldsMayBeSet = number1.number - gapDiff;
-        if (howManyFieldsMayBeSet > 0) {
-            var start = gap.start + gapDiff;
-            var end = start + howManyFieldsMayBeSet - 1;
-            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
-            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-        }
-        var start = gap.start + gapDiff + number1.number + 1;
-        var end = gap.start + number1.number + number2.number;
-        howManyFieldsMayBeSet = number2.number - gapDiff;
-        if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
-            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
-            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-        }
-    }
-
-    public void fillTheGapPartiallyForThreeNumbers(Gap gap, NumberToFind number1, NumberToFind number2, NumberToFind number3, int gapDiff,
+    public void fillTheGapPartiallyForNNumbers(Gap gap, List<NumberToFind> numbers, int gapDiff,
         RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
-        var howManyFieldsMayBeSet = number1.number - gapDiff;
-        if (howManyFieldsMayBeSet > 0) {
-            var start = gap.start + gapDiff;
-            var end = start + howManyFieldsMayBeSet - 1;
-            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
-            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-        }
-        var start = gap.start + gapDiff + number1.number + 1;
-        var end = gap.start + number1.number + number2.number;
-        howManyFieldsMayBeSet = number2.number - gapDiff;
-        if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
-            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
-            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-        }
-        start = gap.start + gapDiff + number1.number + number2.number + 2;
-        end = gap.start + number1.number + number2.number + number3.number + 1;
-        howManyFieldsMayBeSet = number3.number - gapDiff;
-        if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
-            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
-            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+        var sumSoFar = 0;
+        for (int i = 0; i < numbers.size(); i++) {
+            var number = numbers.get(i);
+            var start = gap.start + gapDiff + sumSoFar + i;
+            var end = gap.start + sumSoFar + number.number + i - 1;
+            var howManyFieldsMayBeSet = number.number - gapDiff;
+            if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
+                var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+                fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+            }
+            sumSoFar += number.number;
         }
     }
 }
