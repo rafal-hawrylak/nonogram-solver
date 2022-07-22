@@ -1,6 +1,7 @@
 package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -65,8 +66,7 @@ public class GapCloser {
         }
     }
 
-    private void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changes,
-        RowOrCol rowOrCol) {
+    private void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol) {
         List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
         var min = rowOrCol.numbersToFind.stream().filter(n -> !n.found).map(n -> n.number).min(Integer::compareTo);
         for (Gap gap : gaps) {
@@ -125,6 +125,45 @@ public class GapCloser {
                 var gapsAfterNumber = gapFinder.gapsAfterNumber(gaps, lastNumber);
                 for (Gap gap : gapsAfterNumber) {
                     closeAsEmpty(gap, puzzle, changes);
+                }
+            }
+        }
+    }
+
+    /*
+  ex
+    x  x  .  .  ■  ■  ■  .  .  .  .  .  .  .  . | 4 1 1
+    to
+    x  x  x  .  ■  ■  ■  .  .  .  .  .  .  .  . | 4 1 1
+
+  and
+
+    x  x  .  .  .  .  .  .  .  ■  ■  ■  .  .  . | 1 1 4
+    to
+    x  x  .  .  .  .  .  .  .  ■  ■  ■  .  x  x | 1 1 4
+ */
+    public void narrowGapsBeforeFirstAndAfterLast(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var firstNotFound = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
+            if (firstNotFound.isPresent()) {
+                var number = firstNotFound.get();
+                var gap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol).get();
+                if (!gap.filledSubGaps.isEmpty()) {
+                    var firstSubGap = gap.filledSubGaps.get(0);
+                    var missingNumberPart = number.number - firstSubGap.length;
+                    if (missingNumberPart >= 0) {
+                        if (firstSubGap.start - gap.start > missingNumberPart) {
+                            var nextNumber = numberSelector.getNext(rowOrCol.numbersToFind, number);
+                            if (nextNumber.isEmpty() || nextNumber.get().found
+                                || firstSubGap.start - gap.start < number.number + nextNumber.get().number) {
+                                var fakeGap = new Gap(rowOrCol, gap.start, firstSubGap.start - missingNumberPart - 1,
+                                    firstSubGap.start - missingNumberPart - 1 - gap.start + 1, Optional.empty());
+                                closeAsEmpty(fakeGap, puzzle, changes);
+                            }
+                        }
+                    } else {
+                        // firstSubGap is not for firstNotFound but for some next
+                    }
                 }
             }
         }
