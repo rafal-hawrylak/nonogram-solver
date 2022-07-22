@@ -1,5 +1,7 @@
 package org.hawrylak.puzzle.nonogram;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,5 +66,15 @@ public class NumberSelector {
             previousField = field;
         }
         return Optional.empty();
+    }
+
+    public Optional<NumberToFind> getFirstNotFound(List<NumberToFind> numbers) {
+        return numbers.stream().filter(n -> !n.found).findFirst();
+    }
+
+    public Optional<NumberToFind> getLastNotFound(List<NumberToFind> numbers) {
+        var copy = new ArrayList<>(numbers);
+        Collections.reverse(copy);
+        return copy.stream().filter(n -> !n.found).findFirst();
     }
 }

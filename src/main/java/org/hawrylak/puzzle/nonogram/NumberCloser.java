@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class NumberCloser {
 
+    private final FieldFinder fieldFinder;
+
     private final RowSelector rowSelector;
     private final NumberSelector numberSelector;
     private final GapFinder gapFinder;
@@ -294,6 +296,39 @@ public class NumberCloser {
             var limit = rowOrCol.horizontal ? puzzle.width : puzzle.height;
             if (sumOfNumbers + countOfNumbers - 1 == limit) {
                 gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changes, rowOrCol, rowOrCol.numbersToFind, 0);
+            }
+        }
+    }
+
+    public void fillTheNumbersWithStartAndEndNotConnected(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var firstNotFound = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
+            if (firstNotFound.isPresent()) {
+                var gap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol).get();
+                if (gap.filledSubGaps.size() >= 2) {
+                    var number = firstNotFound.get();
+                    var firstSubGap = gap.filledSubGaps.get(0);
+                    var secondSubGap = gap.filledSubGaps.get(1);
+                    if (number.number >= secondSubGap.start - gap.start) {
+                        for (int i = firstSubGap.end + 1; i < secondSubGap.start; i++) {
+                            gapFiller.fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
+                        }
+                    }
+                }
+            }
+            var lastNotFound = numberSelector.getLastNotFound(rowOrCol.numbersToFind);
+            if (lastNotFound.isPresent()) {
+                var gap = gapFinder.findLastWithoutNumberAssigned(puzzle, rowOrCol).get();
+                if (gap.filledSubGaps.size() >= 2) {
+                    var number = lastNotFound.get();
+                    var lastSubGap = gap.filledSubGaps.get(gap.filledSubGaps.size() - 1);
+                    var lastButOneSubGap = gap.filledSubGaps.get(gap.filledSubGaps.size() - 2);
+                    if (number.number >= gap.end - lastButOneSubGap.end) {
+                        for (int i = lastButOneSubGap.end + 1; i < lastSubGap.start; i++) {
+                            gapFiller.fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
+                        }
+                    }
+                }
             }
         }
     }

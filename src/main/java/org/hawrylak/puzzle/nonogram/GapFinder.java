@@ -1,7 +1,11 @@
 package org.hawrylak.puzzle.nonogram;
 
+import static org.hawrylak.puzzle.nonogram.Gap.NO_FULL;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class GapFinder {
@@ -12,9 +16,10 @@ public class GapFinder {
         List<Gap> gaps = new ArrayList<>();
         var start = 0;
         var length = 0;
-        var startFilling = 0;
-        var lengthFilling = 0;
+        var firstFull = NO_FULL;
+        var lastFull = NO_FULL;
         var previousField = FieldState.OUTSIDE;
+        var subGaps = new ArrayList<SubGap>();
         for (int i = 0; i <= maxSize; i++) {
             var field = getField(puzzle, rowOrCol, i, k);
             switch (previousField) {
@@ -23,20 +28,28 @@ public class GapFinder {
                         case UNKNOWN -> length++;
                         case FULL -> {
                             length++;
-                            startFilling = i;
-                            lengthFilling = 1;
+                            firstFull = i;
+                            lastFull = i;
                         }
                     }
                 }
                 case UNKNOWN -> {
                     switch (field) {
                         case UNKNOWN -> length++;
-                        case EMPTY, OUTSIDE -> gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
-                            findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1)));
+                        case EMPTY, OUTSIDE -> {
+                            if (firstFull != NO_FULL) {
+                                subGaps.add(new SubGap(firstFull, lastFull, lastFull - firstFull + 1));
+                            }
+                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
+                                findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1), new ArrayList<>(subGaps)));
+                            firstFull = NO_FULL;
+                            lastFull = NO_FULL;
+                            subGaps.clear();
+                        }
                         case FULL -> {
                             length++;
-                            startFilling = i;
-                            lengthFilling = 1;
+                            firstFull = i;
+                            lastFull = i;
                         }
                     }
                 }
@@ -49,22 +62,34 @@ public class GapFinder {
                         case FULL -> {
                             start = i;
                             length = 1;
-                            startFilling = i;
-                            lengthFilling = 1;
+                            firstFull = i;
+                            lastFull = i;
                         }
                     }
                 }
                 case FULL -> {
                     switch (field) {
-                        case OUTSIDE, EMPTY -> gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
-                            findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1)));
+                        case OUTSIDE, EMPTY -> {
+                            if (firstFull != NO_FULL) {
+                                subGaps.add(new SubGap(firstFull, lastFull, lastFull - firstFull + 1));
+                            }
+                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
+                                findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1), new ArrayList<>(subGaps)));
+                            firstFull = NO_FULL;
+                            lastFull = NO_FULL;
+                            subGaps.clear();
+                        }
                         case UNKNOWN -> {
-                            // TODO gaps in gaps
+                            if (firstFull != NO_FULL) {
+                                subGaps.add(new SubGap(firstFull, lastFull, lastFull - firstFull + 1));
+                            }
+                            firstFull = NO_FULL;
+                            lastFull = NO_FULL;
                             length++;
                         }
                         case FULL -> {
                             length++;
-                            lengthFilling++;
+                            lastFull = i;
                         }
                     }
                 }
@@ -176,5 +201,15 @@ public class GapFinder {
             }
         }
         return foundGaps;
+    }
+
+    public Optional<Gap> findFirstWithoutNumberAssigned(Puzzle puzzle, RowOrCol rowOrCol) {
+        return find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).findFirst();
+    }
+
+    public Optional<Gap> findLastWithoutNumberAssigned(Puzzle puzzle, RowOrCol rowOrCol) {
+        var copy = new ArrayList<>(find(puzzle, rowOrCol));
+        Collections.reverse(copy);
+        return copy.stream().filter(g -> g.assignedNumber.isEmpty()).findFirst();
     }
 }

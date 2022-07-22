@@ -8,7 +8,7 @@ public class PuzzleSolver {
     private final GapFinder gapFinder = new GapFinder();
     private final GapFiller gapFiller = new GapFiller(fieldFinder);
     private final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
-    private final NumberCloser numberCloser = new NumberCloser(rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
+    private final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     boolean solve(Puzzle puzzle) {
 
@@ -40,6 +40,8 @@ public class PuzzleSolver {
             printDebug(puzzle, changes, debug, "closeWhenSingleGapWithNumbersNotFound");
             gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changes);
             printDebug(puzzle, changes, debug, "closeAllGapsBeforeFirstFoundNumber");
+            numberCloser.fillTheNumbersWithStartAndEndNotConnected(puzzle, changes);
+            printDebug(puzzle, changes, debug, "fillTheNumbersWithStartAndEndNotConnected");
 
             System.out.println(puzzle.toString(changes));
 

@@ -10,7 +10,7 @@ public class PuzzleSolverTestBase {
     protected final GapFinder gapFinder = new GapFinder();
     protected final GapFiller gapFiller = new GapFiller(fieldFinder);
     protected final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
-    protected final NumberCloser numberCloser = new NumberCloser(rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
+    protected final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     protected final PuzzleStringConverter puzzleStringConverter = new PuzzleStringConverter();
     protected void assertPuzzle(Puzzle puzzle, String expectedPuzzle) {
