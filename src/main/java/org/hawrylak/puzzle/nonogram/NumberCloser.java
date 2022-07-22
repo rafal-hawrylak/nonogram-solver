@@ -258,6 +258,10 @@ public class NumberCloser {
         x  x  .  .  x  x  x  x  .  ■  ■  ■  ■  ■  .| 2 5
         to
         x  x  .  .  x  x  x  x  x  ■  ■  ■  ■  ■  x| 2 5
+       AND...
+        x  x  .  .  x  x  x  x  .  ■  ■  ■  ■  ■  .  .  ■  ■  ■  ■  ■  .| 2 5 5
+        to
+        x  x  .  .  x  x  x  x  x  ■  ■  ■  ■  ■  x  x  ■  ■  ■  ■  ■  x| 2 5 5
      */
     public void fitTheNumbersInOnlyPossibleGaps(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
@@ -273,11 +277,17 @@ public class NumberCloser {
                     var gap = gapsTheAreCapableToFit.get(0);
                     var gapWithMaxSubsequentFullFields = gapFinder.maxSubsequentCountOfFields(puzzle, rowOrCol, gap, FieldState.FULL);
                     if (gapWithMaxSubsequentFullFields.length == numberToFind.number) {
-                        long countOfNumbersEqualtoFind = biggerNumbersFirst.stream().filter(n -> n.number == numberToFind.number).count();
-                        if (countOfNumbersEqualtoFind == 1) {
-                            var fakeGap = new Gap(rowOrCol, gapWithMaxSubsequentFullFields.start, gapWithMaxSubsequentFullFields.end,
-                                numberToFind.number, Optional.of(numberToFind));
+                        long countOfNumbersEqualToFind = biggerNumbersFirst.stream().filter(n -> n.number == numberToFind.number).count();
+                        var fakeGap = new Gap(rowOrCol, gapWithMaxSubsequentFullFields.start, gapWithMaxSubsequentFullFields.end,
+                            numberToFind.number, Optional.of(numberToFind));
+                        if (countOfNumbersEqualToFind == 1) {
                             gapFiller.fillTheGapEntirely(fakeGap, numberToFind, rowOrCol, puzzle, changes);
+                        } else if (countOfNumbersEqualToFind == 2) {
+                            if (gapWithMaxSubsequentFullFields.start - gap.start <= numberToFind.number) {
+                                gapFiller.fillTheGapEntirely(fakeGap, numberToFind, rowOrCol, puzzle, changes);
+                            } else if (gap.end - gapWithMaxSubsequentFullFields.end <= numberToFind.number) {
+                                gapFiller.fillTheGapEntirely(fakeGap, biggerNumbersFirst.get(1), rowOrCol, puzzle, changes);
+                            }
                         }
                     } else {
                         if (biggerNumbersFirst.size() == 1) {
@@ -300,6 +310,17 @@ public class NumberCloser {
         }
     }
 
+    /*
+      ex
+        .  .  ■  .  .  ■  ■  .  .  ■  ■  ■  ■  ■  .| 5 5
+        to
+        .  .  ■  ■  ■  ■  ■  .  .  ■  ■  ■  ■  ■  .| 5 5
+        AND
+
+        .  .  ■  ■  ■  ■  ■  .  .  ■  ■  .  .  ■  .| 5 5
+        to
+        .  .  ■  ■  ■  ■  ■  .  .  ■  ■  ■  ■  ■  .| 5 5
+     */
     public void fillTheNumbersWithStartAndEndNotConnected(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var firstNotFound = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
