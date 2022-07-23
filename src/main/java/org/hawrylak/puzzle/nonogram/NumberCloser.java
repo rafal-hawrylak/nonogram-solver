@@ -353,4 +353,25 @@ public class NumberCloser {
             }
         }
     }
+
+    /*
+     ex
+        16|  .  .  .  .  .  .  .  .  .  .  .  .  ■  ■  .  .  .  .  .  .| 2 2 2 2 1
+        to
+        16|  .  .  .  .  .  .  .  .  .  .  .  x  ■  ■  x  .  .  .  .  .| 2 2 2 2 1
+     */
+    public void markEndingsOfSubGapWhenThereIsNoBiggerNumber(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var gaps = gapFinder.find(puzzle, rowOrCol);
+            var biggestNumber = rowOrCol.numbersToFind.stream().map(n -> n.number).max(Integer::compareTo).get();
+            for (Gap gap : gaps) {
+                for (SubGap filledSubGap : gap.filledSubGaps) {
+                    if (filledSubGap.length == biggestNumber) {
+                        gapFiller.fillSingleField(rowOrCol, puzzle, changes, filledSubGap.start - 1, FieldState.EMPTY);
+                        gapFiller.fillSingleField(rowOrCol, puzzle, changes, filledSubGap.end + 1, FieldState.EMPTY);
+                    }
+                }
+            }
+        }
+    }
 }

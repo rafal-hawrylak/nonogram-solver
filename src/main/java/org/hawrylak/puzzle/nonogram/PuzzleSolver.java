@@ -44,6 +44,8 @@ public class PuzzleSolver {
             printDebug(puzzle, changes, debug, "fillTheNumbersWithStartAndEndNotConnected");
             gapCloser.narrowGapsBeforeFirstAndAfterLast(puzzle, changes);
             printDebug(puzzle, changes, debug, "narrowGapsBetweenFirstAndAfterLast");
+            numberCloser.markEndingsOfSubGapWhenThereIsNoBiggerNumber(puzzle, changes);
+            printDebug(puzzle, changes, debug, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
 
             System.out.println(puzzle.toString(changes));
 
