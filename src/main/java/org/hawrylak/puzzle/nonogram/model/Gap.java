@@ -5,7 +5,6 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.hawrylak.puzzle.nonogram.NumberToFind;
 
 @RequiredArgsConstructor
 @AllArgsConstructor

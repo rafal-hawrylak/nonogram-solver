@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Getter;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 public class ChangedInIteration {
 
     private final Puzzle puzzle;
+    @Getter
     int iteration = 0;
     Set<RowOrCol> changedRowsOrCols = new HashSet<>();
     boolean[][] changedFields;

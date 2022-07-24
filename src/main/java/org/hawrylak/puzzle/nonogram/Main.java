@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.SneakyThrows;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solver.PuzzleSolver;
 
 public class Main {
 

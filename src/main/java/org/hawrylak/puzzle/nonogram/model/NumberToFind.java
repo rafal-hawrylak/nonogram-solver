@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.model;
 
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
@@ -13,10 +13,10 @@ import lombok.ToString;
 public class NumberToFind {
 
     @Getter
-    final int number;
+    public final int number;
     @Include
     private final UUID id = UUID.randomUUID();
-    boolean found = false;
-    int foundStart = -1;
-    int foundEnd = -1;
+    public boolean found = false;
+    public int foundStart = -1;
+    public int foundEnd = -1;
 }

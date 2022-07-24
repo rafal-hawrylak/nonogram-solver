@@ -1,5 +1,10 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.solver;
 
+import org.hawrylak.puzzle.nonogram.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.FieldFinder;
+import org.hawrylak.puzzle.nonogram.GapFinder;
+import org.hawrylak.puzzle.nonogram.NumberSelector;
+import org.hawrylak.puzzle.nonogram.RowSelector;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
@@ -13,7 +18,7 @@ public class PuzzleSolver {
     private final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
     private final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
-    boolean solve(Puzzle puzzle) {
+    public boolean solve(Puzzle puzzle) {
 
         var changes = new ChangedInIteration(puzzle);
         boolean debug = false;
@@ -21,7 +26,7 @@ public class PuzzleSolver {
         var iterationsToStopAfter = 50;
         while (changes.firstIteration() || changes.anyChange()) {
             changes.nextIteration();
-            System.out.println("iteration = " + changes.iteration);
+            System.out.println("iteration = " + changes.getIteration());
 
             // rules
             markRowsAsSolved(puzzle);
@@ -54,7 +59,7 @@ public class PuzzleSolver {
 
             System.out.println(puzzle.toString(changes));
 
-            if (hardStop && changes.iteration >= iterationsToStopAfter) {
+            if (hardStop && changes.getIteration() >= iterationsToStopAfter) {
                 break;
             }
         }

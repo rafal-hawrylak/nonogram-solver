@@ -3,6 +3,9 @@ package org.hawrylak.puzzle.nonogram;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solver.GapCloser;
+import org.hawrylak.puzzle.nonogram.solver.GapFiller;
+import org.hawrylak.puzzle.nonogram.solver.NumberCloser;
 
 public class PuzzleSolverTestBase {
 

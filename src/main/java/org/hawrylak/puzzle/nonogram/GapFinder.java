@@ -7,13 +7,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.hawrylak.puzzle.nonogram.model.Gap;
+import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.SubGap;
 
 public class GapFinder {
 
-    List<Gap> find(Puzzle puzzle, RowOrCol rowOrCol) {
+    public List<Gap> find(Puzzle puzzle, RowOrCol rowOrCol) {
         int k = rowOrCol.number;
         var maxSize = rowOrCol.horizontal ? puzzle.width : puzzle.height;
         List<Gap> gaps = new ArrayList<>();

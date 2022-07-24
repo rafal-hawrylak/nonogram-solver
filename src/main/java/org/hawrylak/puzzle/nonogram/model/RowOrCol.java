@@ -5,7 +5,6 @@ import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.ToString;
-import org.hawrylak.puzzle.nonogram.NumberToFind;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"id"})

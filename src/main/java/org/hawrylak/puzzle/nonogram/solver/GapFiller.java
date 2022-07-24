@@ -1,8 +1,12 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.solver;
 
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.hawrylak.puzzle.nonogram.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.FieldFinder;
+import org.hawrylak.puzzle.nonogram.FieldState;
+import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
