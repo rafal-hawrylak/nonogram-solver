@@ -1,5 +1,8 @@
 package org.hawrylak.puzzle.nonogram;
 
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+
 public class RowSelector {
 
     public RowOrCol find(Puzzle puzzle, int n, boolean horizontal) {

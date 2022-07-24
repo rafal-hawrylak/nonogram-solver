@@ -2,6 +2,8 @@ package org.hawrylak.puzzle.nonogram;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+
 public class PuzzleSolverTestBase {
 
     protected final FieldFinder fieldFinder = new FieldFinder();

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 public class ChangedInIteration {
 

@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 public class NumberSelector {
 

@@ -1,17 +1,20 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.hawrylak.puzzle.nonogram.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.FieldState;
+import org.hawrylak.puzzle.nonogram.PuzzlePrinter;
 
 public class Puzzle {
 
-    final int width;
-    final int height;
+    public final int width;
+    public final int height;
 
-    final List<RowOrCol> rowsOrCols = new ArrayList<>();
+    public final List<RowOrCol> rowsOrCols = new ArrayList<>();
 
-    FieldState[][] fields;
+    public FieldState[][] fields;
 
     private final PuzzlePrinter puzzlePrinter = new PuzzlePrinter();
 

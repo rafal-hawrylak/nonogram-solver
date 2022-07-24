@@ -3,6 +3,8 @@ package org.hawrylak.puzzle.nonogram;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {

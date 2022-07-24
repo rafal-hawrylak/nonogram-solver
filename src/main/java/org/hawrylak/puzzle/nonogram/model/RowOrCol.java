@@ -1,21 +1,22 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.model;
 
 import java.util.List;
 import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.ToString;
+import org.hawrylak.puzzle.nonogram.NumberToFind;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"id"})
 public class RowOrCol {
 
-    int number;
-    boolean horizontal;
-    boolean solved = false;
+    public int number;
+    public boolean horizontal;
+    public boolean solved = false;
+    public List<NumberToFind> numbersToFind;
     @Include
     private final UUID id = UUID.randomUUID();
-    List<NumberToFind> numbersToFind;
 
     public RowOrCol(List<Integer> numbersToFind, int number, boolean horizontal) {
         this.numbersToFind = numbersToFind.stream()

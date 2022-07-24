@@ -3,6 +3,9 @@ package org.hawrylak.puzzle.nonogram;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import org.hawrylak.puzzle.nonogram.model.Gap;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 @AllArgsConstructor
 public class GapFiller {

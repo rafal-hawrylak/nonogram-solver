@@ -1,6 +1,7 @@
 package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {

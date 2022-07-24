@@ -1,6 +1,8 @@
 package org.hawrylak.puzzle.nonogram;
 
 import java.util.Optional;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 public class PuzzlePrinter {
 
