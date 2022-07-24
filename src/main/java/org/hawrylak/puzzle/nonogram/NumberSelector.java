@@ -2,6 +2,7 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -76,5 +77,34 @@ public class NumberSelector {
         var copy = new ArrayList<>(numbers);
         Collections.reverse(copy);
         return copy.stream().filter(n -> !n.found).findFirst();
+    }
+
+    public List<NumberToFind> getBiggerFirstOnlyNotFound(List<NumberToFind> numbers) {
+        return numbers.stream()
+            .filter(n -> !n.found)
+            .sorted(Comparator.comparingInt(NumberToFind::getNumber).reversed())
+            .toList();
+    }
+
+    public List<NumberToFind> getBiggestNotFound(List<NumberToFind> numbers) {
+        var biggerFirstOnlyNotFound = getBiggerFirstOnlyNotFound(numbers);
+        if (biggerFirstOnlyNotFound.isEmpty()) {
+            return Collections.emptyList();
+        }
+        var biggest = biggerFirstOnlyNotFound.get(0).number;
+        return biggerFirstOnlyNotFound.stream().filter(n -> n.number == biggest).toList();
+    }
+
+    public List<NumberToFind> getSecondBiggestNotFound(List<NumberToFind> numbers) {
+        var biggestNotFound = getBiggestNotFound(numbers);
+        if (biggestNotFound.isEmpty()) {
+            return Collections.emptyList();
+        }
+        var biggerFirstOnlyNotFound = getBiggerFirstOnlyNotFound(numbers);
+        if (biggestNotFound.size() == biggerFirstOnlyNotFound.size()) {
+            return Collections.emptyList();
+        }
+        var secondBiggest = biggerFirstOnlyNotFound.get(biggestNotFound.size()).number;
+        return biggerFirstOnlyNotFound.stream().filter(n -> n.number == secondBiggest).toList();
     }
 }

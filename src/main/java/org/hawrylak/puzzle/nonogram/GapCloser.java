@@ -218,4 +218,28 @@ public class GapCloser {
             }
         }
     }
+
+    public void findUnmergableSubGaps(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var biggestNotFound = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
+            if (biggestNotFound.isEmpty()) {
+                continue;
+            }
+            var biggest = biggestNotFound.get(0).number;
+            var gaps = gapFinder.find(puzzle, rowOrCol);
+            for (Gap gap : gaps) {
+                for (int i = 0; i < gap.filledSubGaps.size() - 1; i++) {
+                    var subGap = gap.filledSubGaps.get(i);
+                    var nextSubGap = gap.filledSubGaps.get(i + 1);
+                    var onlySingleFieldBetweenSubGaps = subGap.end + 2 == nextSubGap.start;
+                    var sizeAfterMerging = subGap.length + nextSubGap.length + 1;
+                    if (onlySingleFieldBetweenSubGaps && sizeAfterMerging > biggest) {
+                        var fakeGap = new Gap(rowOrCol, subGap.end + 1, subGap.end + 1, 1, Optional.empty());
+                        closeAsEmpty(fakeGap, puzzle, changes);
+                    }
+                }
+            }
+
+        }
+    }
 }

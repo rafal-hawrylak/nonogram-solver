@@ -46,6 +46,8 @@ public class PuzzleSolver {
             printDebug(puzzle, changes, debug, "narrowGapsBetweenFirstAndAfterLast");
             numberCloser.markEndingsOfSubGapWhenThereIsNoBiggerNumber(puzzle, changes);
             printDebug(puzzle, changes, debug, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
+            gapCloser.findUnmergableSubGaps(puzzle, changes);
+            printDebug(puzzle, changes, debug, "findUnmergableSubGaps");
 
             System.out.println(puzzle.toString(changes));
 

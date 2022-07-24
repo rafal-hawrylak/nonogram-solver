@@ -1,7 +1,5 @@
 package org.hawrylak.puzzle.nonogram;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -203,12 +201,11 @@ public class NumberCloser {
             } else {
                 /*
                   gap partially filled with the biggest number
-                     3|  .  .  .  x  ?  .  x  x  x  x  x  x| 1
-                     3|  ■  x  ■  x  ?  .  x  x  x  x  x  x| 1 1 1
+                     3|  .  .  .  x  ?  ■  ■  ■  .  .  .  .  .  x| 3 7 1
                  */
-                var biggestNumbers = getBiggestNotFound(rowOrCol.numbersToFind);
+                var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
                 var biggestNumber = biggestNumbers.get(0);
-                var secondBiggestNumbers = getSecondBiggestNotFound(rowOrCol.numbersToFind);
+                var secondBiggestNumbers = numberSelector.getSecondBiggestNotFound(rowOrCol.numbersToFind);
                 var start = getStart(rowOrCol, biggestNumber, c, r, startingFrom);
                 var fakeGapBiggestUnknown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number, Optional.empty());
                 var fakeGapBiggestKnown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number, Optional.of(biggestNumber));
@@ -287,7 +284,7 @@ public class NumberCloser {
     public void fitTheNumbersInOnlyPossibleGaps(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var notClosedGaps = gapFinder.find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
-            var biggestNumbers = getBiggestNotFound(rowOrCol.numbersToFind);
+            var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
             if (!biggestNumbers.isEmpty()) {
                 var numberToFind = biggestNumbers.get(0);
                 var gapsTheAreCapableToFit = notClosedGaps.stream().filter(g -> g.length >= numberToFind.number).toList();
@@ -322,34 +319,6 @@ public class NumberCloser {
             .toList();
     }
 
-    private List<NumberToFind> getBiggerFirstOnlyNotFound(List<NumberToFind> numbers) {
-        return numbers.stream()
-            .filter(n -> !n.found)
-            .sorted(Comparator.comparingInt(NumberToFind::getNumber).reversed())
-            .toList();
-    }
-
-    private List<NumberToFind> getBiggestNotFound(List<NumberToFind> numbers) {
-        var biggerFirstOnlyNotFound = getBiggerFirstOnlyNotFound(numbers);
-        if (biggerFirstOnlyNotFound.isEmpty()) {
-            return Collections.emptyList();
-        }
-        var biggest = biggerFirstOnlyNotFound.get(0).number;
-        return biggerFirstOnlyNotFound.stream().filter(n -> n.number == biggest).toList();
-    }
-
-    private List<NumberToFind> getSecondBiggestNotFound(List<NumberToFind> numbers) {
-        var biggestNotFound = getBiggestNotFound(numbers);
-        if (biggestNotFound.isEmpty()) {
-            return Collections.emptyList();
-        }
-        var biggerFirstOnlyNotFound = getBiggerFirstOnlyNotFound(numbers);
-        if (biggestNotFound.size() == biggerFirstOnlyNotFound.size()) {
-            return Collections.emptyList();
-        }
-        var secondBiggest = biggerFirstOnlyNotFound.get(biggestNotFound.size()).number;
-        return biggerFirstOnlyNotFound.stream().filter(n -> n.number == secondBiggest).toList();
-    }
 
     public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
