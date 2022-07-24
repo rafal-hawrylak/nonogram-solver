@@ -2,6 +2,7 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;

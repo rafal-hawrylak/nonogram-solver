@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;

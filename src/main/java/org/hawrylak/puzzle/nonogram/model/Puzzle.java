@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.FieldState;
 import org.hawrylak.puzzle.nonogram.PuzzlePrinter;
 
 public class Puzzle {

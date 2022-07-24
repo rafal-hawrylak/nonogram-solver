@@ -1,5 +1,6 @@
 package org.hawrylak.puzzle.nonogram;
 
+import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 

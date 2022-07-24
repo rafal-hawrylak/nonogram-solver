@@ -1,6 +1,7 @@
 package org.hawrylak.puzzle.nonogram;
 
 import java.util.Optional;
+import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;

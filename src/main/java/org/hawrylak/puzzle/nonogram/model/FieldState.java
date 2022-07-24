@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.model;
 
 import lombok.ToString;
 

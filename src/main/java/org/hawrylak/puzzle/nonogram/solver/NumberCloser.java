@@ -5,7 +5,7 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
-import org.hawrylak.puzzle.nonogram.FieldState;
+import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.NumberSelector;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
