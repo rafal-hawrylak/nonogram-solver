@@ -5,12 +5,12 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
-import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.NumberSelector;
-import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.RowSelector;
+import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
+import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.SubGap;
@@ -199,37 +199,97 @@ public class NumberCloser {
             }
         }
 
+        var allNotFoundNumbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
         if (!fillingSuccessful) {
-            var allNotFoundNumbers = rowOrCol.numbersToFind.stream().filter(n -> !n.found).toList();
+            /*
+              this is the only not found number
+                 3|  .  .  .  x  ?  .  x  x  x  x  x  x| 1
+                 3|  ■  x  ■  x  ?  .  x  x  x  x  x  x| 1 1 1
+             */
             if (allNotFoundNumbers.size() == 1) {
-                /*
-                  this is the only not found number
-                     3|  .  .  .  x  ?  .  x  x  x  x  x  x| 1
-                     3|  ■  x  ■  x  ?  .  x  x  x  x  x  x| 1 1 1
-                 */
                 var numberToClose = allNotFoundNumbers.get(0);
                 fillTheNumber(rowOrCol, numberToClose, c, r, startingFrom, puzzle, changes);
-            } else {
-                /*
-                  gap partially filled with the biggest number
-                     3|  .  .  .  x  ?  ■  ■  ■  .  .  .  .  .  x| 3 7 1
-                 */
-                var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
-                var biggestNumber = biggestNumbers.get(0);
-                var secondBiggestNumbers = numberSelector.getSecondBiggestNotFound(rowOrCol.numbersToFind);
-                var start = getStart(rowOrCol, biggestNumber, c, r, startingFrom);
-                var fakeGapBiggestUnknown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number, Optional.empty());
-                var fakeGapBiggestKnown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number, Optional.of(biggestNumber));
-                Optional<SubGap> subGapAtPosition = getSubGapAtPosition(gapAtPosition.filledSubGaps, rowOrCol.horizontal, c, r);
-                if (secondBiggestNumbers.isEmpty() || (subGapAtPosition.isPresent() && subGapAtPosition.get().length > secondBiggestNumbers.get(0).number)) {
-                    if (biggestNumbers.size() == 1) {
-                        gapFiller.fillTheGapEntirely(fakeGapBiggestKnown, biggestNumber, rowOrCol, puzzle, changes);
-                        fillingSuccessful = true;
-                    } else {
-                        gapFiller.fillTheGap(fakeGapBiggestUnknown, rowOrCol, puzzle, changes);
-                        fillingSuccessful = true;
-                    }
+                fillingSuccessful = true;
+            }
+        }
+        if (!fillingSuccessful) {
+            /*
+              gap partially filled with the biggest number
+                 3|  .  .  .  x  ?  ■  ■  ■  .  .  .  .  .  x| 3 7 1
+             */
+            var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
+            var biggestNumber = biggestNumbers.get(0);
+            var secondBiggestNumbers = numberSelector.getSecondBiggestNotFound(rowOrCol.numbersToFind);
+            var start = getStart(rowOrCol, biggestNumber.number, c, r, startingFrom);
+            var fakeGapBiggestUnknown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number,
+                Optional.empty());
+            var fakeGapBiggestKnown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number,
+                Optional.of(biggestNumber));
+            var subGapAtPosition = getSubGapAtPosition(gapAtPosition.filledSubGaps, rowOrCol.horizontal, c, r);
+            if (secondBiggestNumbers.isEmpty() || (subGapAtPosition.isPresent()
+                && subGapAtPosition.get().length > secondBiggestNumbers.get(0).number)) {
+                if (biggestNumbers.size() == 1) {
+                    gapFiller.fillTheGapEntirely(fakeGapBiggestKnown, biggestNumber, rowOrCol, puzzle, changes);
+                    fillingSuccessful = true;
+                } else {
+                    gapFiller.fillTheGap(fakeGapBiggestUnknown, rowOrCol, puzzle, changes);
+                    fillingSuccessful = true;
                 }
+            }
+        }
+        if (!fillingSuccessful) {
+            /*
+              the x  ■ can be expanded to x  ■  ■  ■  ■ ... if 4 is the minimal value
+                                    or to x  ■  ■  ■  ■  ■ ... if x  ■  .  ■  ■  ■ must be merged to x  ■  ■  ■  ■  ■
+                17|  .  .  .  .  .  ■  .  x  .  .  ■  ■  x  ■  .  ■  ■  ■  .  .  .  ■  .  .  .| 1 4 4 5 4
+                17|  .  .  .  .  .  ■  .  x  .  .  ■  ■  x  ■  ■  ■  ■  ■  x  .  .  ■  .  .  .| 1 4 4 5 4
+             */
+            if (startingFrom) {
+                var allPreviousNotUsedGaps = gapFinder.allPrevious(gaps, gapAtPosition).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
+                var allSubGaps = gapFinder.allSubGaps(allPreviousNotUsedGaps);
+                if (!allSubGaps.isEmpty()) {
+                    var subGapIndex = 0;
+                    var numberIndex = 0;
+                    for (; numberIndex < allNotFoundNumbers.size(); ) {
+                        var notFoundNumber = allNotFoundNumbers.get(numberIndex);
+                        var wouldBeSatisfiedBySubGaps = false;
+                        var currentSubGapIndex = subGapIndex;
+                        var firstSubGap = allSubGaps.get(subGapIndex);
+                        for (; currentSubGapIndex < allSubGaps.size(); currentSubGapIndex++) {
+                            var currentSubGap = allSubGaps.get(currentSubGapIndex);
+                            if (currentSubGapIndex == subGapIndex) {
+                                if (currentSubGap.length >= notFoundNumber.number) {
+                                    numberIndex++;
+                                    subGapIndex++;
+                                    wouldBeSatisfiedBySubGaps = true;
+                                    break;
+                                }
+                            } else {
+                                if (currentSubGap.end - firstSubGap.start + 1 > notFoundNumber.number) {
+                                    subGapIndex = currentSubGapIndex;
+                                    numberIndex++;
+                                    wouldBeSatisfiedBySubGaps = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (subGapIndex >= allSubGaps.size()) {
+                            break;
+                        }
+                        if (!wouldBeSatisfiedBySubGaps) {
+                            numberIndex++;
+                            break;
+                        }
+                    }
+                    var allNotSatisfiedNumbers = allNotFoundNumbers.subList(numberIndex, allNotFoundNumbers.size());
+                    var minimalNotSatisfied = allNotSatisfiedNumbers.stream().map(n -> n.number).min(Integer::compareTo).get();
+                    var start = getStart(rowOrCol, minimalNotSatisfied, c, r, startingFrom);
+                    var fakeGap = new Gap(rowOrCol, start, start + minimalNotSatisfied - 1, minimalNotSatisfied, Optional.empty());
+                    gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+                    fillingSuccessful = true;
+                }
+            } else {
+
             }
         }
     }
@@ -241,17 +301,17 @@ public class NumberCloser {
 
     private void fillTheNumber(RowOrCol rowOrCol, NumberToFind numberToClose, int c, int r, boolean startingFrom, Puzzle puzzle,
         ChangedInIteration changes) {
-        int start = getStart(rowOrCol, numberToClose, c, r, startingFrom);
+        int start = getStart(rowOrCol, numberToClose.number, c, r, startingFrom);
         var fakeGap = new Gap(rowOrCol, start, start + numberToClose.number - 1, numberToClose.number, Optional.empty());
         gapFiller.fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changes);
     }
 
-    private int getStart(RowOrCol rowOrCol, NumberToFind numberToClose, int c, int r, boolean startingFrom) {
+    private int getStart(RowOrCol rowOrCol, int number, int c, int r, boolean startingFrom) {
         int start;
         if (startingFrom) {
             start = rowOrCol.horizontal ? c : r;
         } else {
-            start = rowOrCol.horizontal ? c - numberToClose.number + 1 : r - numberToClose.number + 1;
+            start = rowOrCol.horizontal ? c - number + 1 : r - number + 1;
         }
         return start;
     }

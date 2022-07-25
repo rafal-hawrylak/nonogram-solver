@@ -111,4 +111,8 @@ public class NumberSelector {
         var secondBiggest = biggerFirstOnlyNotFound.get(biggestNotFound.size()).number;
         return biggerFirstOnlyNotFound.stream().filter(n -> n.number == secondBiggest).toList();
     }
+
+    public List<NumberToFind> getNotFound(List<NumberToFind> numbers) {
+        return numbers.stream().filter(n -> !n.found).toList();
+    }
 }

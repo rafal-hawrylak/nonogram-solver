@@ -151,6 +151,30 @@ public class GapFinder {
         return Optional.empty();
     }
 
+    public List<Gap> allPrevious(List<Gap> gaps, Gap gap) {
+        var foundGaps = new ArrayList<Gap>();
+        for (Gap currentGap : gaps) {
+            if (currentGap.equals(gap)) {
+                break;
+            }
+            foundGaps.add(currentGap);
+        }
+        return foundGaps;
+    }
+
+    public List<Gap> allNext(List<Gap> gaps, Gap gap) {
+        var foundGaps = new ArrayList<Gap>();
+        var startAdding = false;
+        for (Gap currentGap : gaps) {
+            if (currentGap.equals(gap)) {
+                startAdding = true;
+            } else if (startAdding) {
+                foundGaps.add(currentGap);
+            }
+        }
+        return foundGaps;
+    }
+
     public Gap maxSubsequentCountOfFields(Puzzle puzzle, RowOrCol rowOrCol, Gap gap, FieldState state) {
         var maxCount = 0;
         var count = 0;
@@ -216,5 +240,9 @@ public class GapFinder {
         var copy = new ArrayList<>(find(puzzle, rowOrCol));
         Collections.reverse(copy);
         return copy.stream().filter(g -> g.assignedNumber.isEmpty()).findFirst();
+    }
+
+    public List<SubGap> allSubGaps(List<Gap> allPreviousGaps) {
+        return allPreviousGaps.stream().flatMap(g -> g.filledSubGaps.stream()).toList();
     }
 }
