@@ -156,7 +156,7 @@ public class GapFiller {
 
     private List<NumberToFind> getNumbersBetween(List<NumberToFind> numbers, Optional<NumberToFind> numberPrevious, Optional<NumberToFind> numberNext) {
         var start = numberPrevious.isPresent() ? numbers.indexOf(numberPrevious.get()) + 1 : 0;
-        var end = numberNext.isPresent() ? numbers.indexOf(numberNext.get()) : numbers.size() - 1;
-        return start <= end ? numbers.subList(start, end + 1) : Collections.emptyList();
+        var end = numberNext.isPresent() ? numbers.indexOf(numberNext.get()) : numbers.size();
+        return start <= end ? numbers.subList(start, end) : Collections.emptyList();
     }
 }
