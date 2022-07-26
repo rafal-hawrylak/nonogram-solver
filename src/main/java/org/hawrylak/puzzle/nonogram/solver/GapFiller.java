@@ -1,13 +1,15 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
+import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
-import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Gap;
+import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
@@ -15,6 +17,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 public class GapFiller {
 
     private final FieldFinder fieldFinder;
+    private final GapFinder gapFinder;
 
     public void fillTheGapEntirely(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         fillTheGap(gap, rowOrCol, puzzle, changes);
@@ -114,5 +117,43 @@ public class GapFiller {
             }
             sumSoFar += number.number;
         }
+    }
+
+    /*
+      from  ■  x  .  .  ■  .  .  x  ■| 1 4 1
+      to    ■  x  .  ■  ■  ■  .  x  ■| 1 4 1
+      from  ■  x  x  x  ■  x  .  .  ■| 1 1 1 1
+      to    ■  x  x  x  ■  x  ■  x  ■| 1 1 1 1
+      from  ■  .  .  x  ■  x  x  x  ■| 1 1 1 1
+      to    ■  x  ■  x  ■  x  x  x  ■| 1 1 1 1
+     */
+    public void tryToFillGapsBetweenGapsWithKnownNumbers(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var gaps = gapFinder.find(puzzle, rowOrCol);
+            var gapsWithoutNumbers = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
+            for (Gap gap : gapsWithoutNumbers) {
+                if (gap.assignedNumber.isPresent()) {
+                    continue;
+                }
+                var previous = gapFinder.previous(gaps, gap);
+                var next = gapFinder.next(gaps, gap);
+                if ((previous.isEmpty() || previous.get().assignedNumber.isPresent()) && (next.isEmpty() || next.get().assignedNumber.isPresent())) {
+                    Optional<NumberToFind> numberPrevious = previous.isEmpty() ? Optional.empty() : previous.get().assignedNumber;
+                    Optional<NumberToFind> numberNext = next.isEmpty() ? Optional.empty() : next.get().assignedNumber;
+                    var numbersSubList = getNumbersBetween(rowOrCol.numbersToFind, numberPrevious, numberNext);
+                    if (!numbersSubList.isEmpty()) {
+                        var numbersSum = numbersSubList.stream().map(n -> n.number).reduce(0, Integer::sum);
+                        var gapDiff = gap.length - numbersSum - numbersSubList.size() + 1;
+                        fillTheGapPartiallyForNNumbers(gap, numbersSubList, gapDiff, rowOrCol, puzzle, changes);
+                    }
+                }
+            }
+        }
+    }
+
+    private List<NumberToFind> getNumbersBetween(List<NumberToFind> numbers, Optional<NumberToFind> numberPrevious, Optional<NumberToFind> numberNext) {
+        var start = numberPrevious.isPresent() ? numbers.indexOf(numberPrevious.get()) : 0;
+        var end = numberNext.isPresent() ? numbers.indexOf(numberNext.get()) : numbers.size() - 1;
+        return start <= end ? numbers.subList(start, end + 1) : Collections.emptyList();
     }
 }

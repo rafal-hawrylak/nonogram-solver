@@ -237,12 +237,16 @@ public class GapFinder {
     }
 
     public Optional<Gap> findLastWithoutNumberAssigned(Puzzle puzzle, RowOrCol rowOrCol) {
-        var copy = new ArrayList<>(find(puzzle, rowOrCol));
-        Collections.reverse(copy);
-        return copy.stream().filter(g -> g.assignedNumber.isEmpty()).findFirst();
+        var withoutAssignedNumber = findWithoutAssignedNumber(puzzle, rowOrCol);
+        return withoutAssignedNumber.isEmpty() ? Optional.empty()
+            : Optional.of(withoutAssignedNumber.get(withoutAssignedNumber.size() - 1));
     }
 
     public List<SubGap> allSubGaps(List<Gap> allPreviousGaps) {
         return allPreviousGaps.stream().flatMap(g -> g.filledSubGaps.stream()).toList();
+    }
+
+    public List<Gap> findWithoutAssignedNumber(Puzzle puzzle, RowOrCol rowOrCol) {
+        return find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
     }
 }

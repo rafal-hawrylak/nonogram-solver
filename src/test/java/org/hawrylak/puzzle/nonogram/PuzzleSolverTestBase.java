@@ -13,7 +13,7 @@ public class PuzzleSolverTestBase {
     protected final RowSelector rowSelector = new RowSelector();
     protected final NumberSelector numberSelector = new NumberSelector();
     protected final GapFinder gapFinder = new GapFinder();
-    protected final GapFiller gapFiller = new GapFiller(fieldFinder);
+    protected final GapFiller gapFiller = new GapFiller(fieldFinder, gapFinder);
     protected final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
     protected final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 

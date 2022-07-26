@@ -14,7 +14,7 @@ public class PuzzleSolver {
     private final RowSelector rowSelector = new RowSelector();
     private final NumberSelector numberSelector = new NumberSelector();
     private final GapFinder gapFinder = new GapFinder();
-    private final GapFiller gapFiller = new GapFiller(fieldFinder);
+    private final GapFiller gapFiller = new GapFiller(fieldFinder, gapFinder);
     private final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
     private final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
@@ -56,6 +56,8 @@ public class PuzzleSolver {
             printDebug(puzzle, changes, debug, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
             gapCloser.findUnmergableSubGaps(puzzle, changes);
             printDebug(puzzle, changes, debug, "findUnmergableSubGaps");
+            gapFiller.tryToFillGapsBetweenGapsWithKnownNumbers(puzzle, changes);
+            printDebug(puzzle, changes, debug, "tryToFillGapsBetweenGapsWithKnownNumbers");
 
             System.out.println(puzzle.toString(changes));
 

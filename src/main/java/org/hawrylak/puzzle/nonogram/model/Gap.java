@@ -3,12 +3,14 @@ package org.hawrylak.puzzle.nonogram.model;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
 @ToString
+@EqualsAndHashCode
 public class Gap {
 
     public static final int NO_FULL = -1;
