@@ -23,47 +23,90 @@ public class PuzzleSolver {
         boolean debug = true;
         var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
-        var iterationsToStopAfter = debug ? 5000 : 100;
+        var iterationsToStopAfter = debug ? 50 : 100;
         while (changes.firstIteration() || changes.anyChange()) {
+            if (hardStop && changes.getIteration() >= iterationsToStopAfter) {
+                break;
+            }
+
             changes.nextIteration();
             System.out.println("iteration = " + changes.getIteration());
 
             // rules
             markRowsAsSolved(puzzle);
+
             gapCloser.closeTooSmallToFitAnything(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeTooSmallToFitAnything");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeTooSmallToFitAnything");
+                continue;
+            }
             numberCloser.closeAtEdges(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeAtEdges");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeAtEdges");
+                continue;
+            }
             numberCloser.closeWithOneEnd(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeWithOneEnd");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeWithOneEnd");
+                continue;
+            }
             numberCloser.closeTheOnlyCombination(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeTheOnlyCombination");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeTheOnlyCombination");
+                continue;
+            }
             gapCloser.closeWhenAllNumbersAreFound(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeWhenAllNumbersAreFound");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeWhenAllNumbersAreFound");
+                continue;
+            }
             numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeAllTheGapsIfAllFullMarked");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeAllTheGapsIfAllFullMarked");
+                continue;
+            }
             numberCloser.fitTheNumbersInOnlyPossibleGaps(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeTheNumbersAlreadyFilledButNotMarked");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeTheNumbersAlreadyFilledButNotMarked");
+                continue;
+            }
             gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeWhenSingleGapWithNumbersNotFound");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeWhenSingleGapWithNumbersNotFound");
+                continue;
+            }
             gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changes);
-            printDebug(puzzle, changes, debug, "closeAllGapsBeforeFirstFoundNumber");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeAllGapsBeforeFirstFoundNumber");
+                continue;
+            }
             numberCloser.fillTheNumbersWithStartAndEndNotConnected(puzzle, changes);
-            printDebug(puzzle, changes, debug, "fillTheNumbersWithStartAndEndNotConnected");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "fillTheNumbersWithStartAndEndNotConnected");
+                continue;
+            }
             gapCloser.narrowGapsBeforeFirstAndAfterLast(puzzle, changes);
-            printDebug(puzzle, changes, debug, "narrowGapsBetweenFirstAndAfterLast");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "narrowGapsBeforeFirstAndAfterLast");
+                continue;
+            }
             numberCloser.markEndingsOfSubGapWhenThereIsNoBiggerNumber(puzzle, changes);
-            printDebug(puzzle, changes, debug, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
+                continue;
+            }
             gapCloser.findUnmergableSubGaps(puzzle, changes);
-            printDebug(puzzle, changes, debug, "findUnmergableSubGaps");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "findUnmergableSubGaps");
+                continue;
+            }
             gapFiller.tryToFillGapsBetweenGapsWithKnownNumbers(puzzle, changes);
-            printDebug(puzzle, changes, debug, "tryToFillGapsBetweenGapsWithKnownNumbers");
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "tryToFillGapsBetweenGapsWithKnownNumbers");
+                continue;
+            }
 
             System.out.println(puzzle.toString(changes));
-
-            if (hardStop && changes.getIteration() >= iterationsToStopAfter) {
-                break;
-            }
         }
 
         markRowsAsSolved(puzzle);

@@ -34,9 +34,6 @@ public class NumberCloser {
         x  >  .  .  .  .  x  .  .|
      */
     public void closeAtEdges(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (int r = 0; r < puzzle.height; r++) {
             var rowOrCol = rowSelector.find(puzzle, r, true);
             tryToCloseFromEdge(puzzle, changes, r, rowOrCol, true);
@@ -92,9 +89,6 @@ public class NumberCloser {
         .  .  .  .  v  .  .  .  .|
      */
     public void  closeWithOneEnd(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (int c = 0; c < puzzle.width; c++) {
             for (int r = 0; r < puzzle.height; r++) {
                 if (FieldState.EMPTY.equals(puzzle.fields[c][r])) {
@@ -336,9 +330,6 @@ public class NumberCloser {
      */
 
     public void closeAllTheGapsIfAllFullMarked(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
             var countOfFullFields = rowSelector.countOfFields(puzzle, rowOrCol, FieldState.FULL);
@@ -362,9 +353,6 @@ public class NumberCloser {
      */
 
     public void fitTheNumbersInOnlyPossibleGaps(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var notClosedGaps = gapFinder.find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
             var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
@@ -403,9 +391,6 @@ public class NumberCloser {
     }
 
     public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
             var countOfNumbers = rowOrCol.numbersToFind.size();
@@ -428,9 +413,6 @@ public class NumberCloser {
         .  .  ■  ■  ■  ■  ■  .  .  ■  ■  ■  ■  ■  .| 5 5
      */
     public void fillTheNumbersWithStartAndEndNotConnected(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var firstNotFound = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
             if (firstNotFound.isPresent()) {
@@ -470,9 +452,6 @@ public class NumberCloser {
         16|  .  .  .  .  .  .  .  .  .  .  .  x  ■  ■  x  .  .  .  .  .| 2 2 2 2 1
      */
     public void markEndingsOfSubGapWhenThereIsNoBiggerNumber(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var gaps = gapFinder.find(puzzle, rowOrCol);
             var biggestNumber = rowOrCol.numbersToFind.stream().map(n -> n.number).max(Integer::compareTo).get();

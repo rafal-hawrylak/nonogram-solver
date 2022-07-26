@@ -128,9 +128,6 @@ public class GapFiller {
       to    ■  x  ■  x  ■  x  x  x  ■| 1 1 1 1
      */
     public void tryToFillGapsBetweenGapsWithKnownNumbers(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var gaps = gapFinder.find(puzzle, rowOrCol);
             var gapsWithoutNumbers = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
@@ -155,7 +152,7 @@ public class GapFiller {
     }
 
     private List<NumberToFind> getNumbersBetween(List<NumberToFind> numbers, Optional<NumberToFind> numberPrevious, Optional<NumberToFind> numberNext) {
-        var start = numberPrevious.isPresent() ? numbers.indexOf(numberPrevious.get()) : 0;
+        var start = numberPrevious.isPresent() ? numbers.indexOf(numberPrevious.get()) + 1 : 0;
         var end = numberNext.isPresent() ? numbers.indexOf(numberNext.get()) : numbers.size() - 1;
         return start <= end ? numbers.subList(start, end + 1) : Collections.emptyList();
     }

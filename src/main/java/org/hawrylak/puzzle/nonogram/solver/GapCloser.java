@@ -22,18 +22,12 @@ public class GapCloser {
     private final NumberSelector numberSelector;
 
     public void closeTooSmallToFitAnything(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             closeTooSmallToFitAnything(puzzle, changes, rowOrCol);
         }
     }
 
     public void closeWhenAllNumbersAreFound(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             if (rowOrCol.numbersToFind.stream().allMatch(n -> n.found)) {
                 List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
@@ -63,9 +57,6 @@ public class GapCloser {
         x  x  ■  x  .  ■  .  .  ■  . | 1 2 2
      */
     public void closeWhenSingleGapWithNumbersNotFound(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
             var gapsWithoutFoundNumbers = gaps.stream().filter(gap -> gap.assignedNumber.isEmpty()).toList();
@@ -125,9 +116,6 @@ public class GapCloser {
         .  .  x  ■  ■  ■  x  x  x  x | 1 3
      */
     public void closeAllGapsBeforeFirstAndAfterLastFoundNumber(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             if (rowOrCol.numbersToFind.isEmpty()) {
                 continue;
@@ -163,9 +151,6 @@ public class GapCloser {
     x  x  .  .  .  .  .  .  .  ■  ■  ■  .  x  x | 1 1 4
  */
     public void narrowGapsBeforeFirstAndAfterLast(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var firstNotFound = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
             if (firstNotFound.isPresent()) {
@@ -243,9 +228,6 @@ public class GapCloser {
     }
 
     public void findUnmergableSubGaps(Puzzle puzzle, ChangedInIteration changes) {
-        if (changes.debugModeAndChangesDone()) {
-            return;
-        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var biggestNotFound = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
             if (biggestNotFound.isEmpty()) {
