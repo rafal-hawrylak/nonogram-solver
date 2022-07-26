@@ -105,6 +105,9 @@ public class GapFiller {
 
     public void fillTheGapPartiallyForNNumbers(Gap gap, List<NumberToFind> numbers, int gapDiff,
         RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+        if (gapDiff <= 0) {
+            return;
+        }
         var sumSoFar = 0;
         for (int i = 0; i < numbers.size(); i++) {
             var number = numbers.get(i);
