@@ -20,10 +20,10 @@ public class PuzzleSolver {
 
     public boolean solve(Puzzle puzzle) {
 
-        var changes = new ChangedInIteration(puzzle);
-        boolean debug = false;
+        boolean debug = true;
+        var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
-        var iterationsToStopAfter = 50;
+        var iterationsToStopAfter = debug ? 5000 : 100;
         while (changes.firstIteration() || changes.anyChange()) {
             changes.nextIteration();
             System.out.println("iteration = " + changes.getIteration());

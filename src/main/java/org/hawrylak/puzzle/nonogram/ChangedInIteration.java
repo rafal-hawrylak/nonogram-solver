@@ -13,11 +13,18 @@ public class ChangedInIteration {
     private final Puzzle puzzle;
     @Getter
     int iteration = 0;
+    @Getter
+    boolean debug;
     Set<RowOrCol> changedRowsOrCols = new HashSet<>();
     boolean[][] changedFields;
 
     public ChangedInIteration(Puzzle puzzle) {
+        this(puzzle, false);
+    }
+
+    public ChangedInIteration(Puzzle puzzle, boolean debug) {
         this.puzzle = puzzle;
+        this.debug = debug;
         changedFields = new boolean[puzzle.width][puzzle.height];
     }
 
@@ -59,5 +66,9 @@ public class ChangedInIteration {
             .filter(rc -> !rc.horizontal)
             .toList());
         return rowsAndCols;
+    }
+
+    public boolean debugModeAndChangesDone() {
+        return debug && anyChange();
     }
 }

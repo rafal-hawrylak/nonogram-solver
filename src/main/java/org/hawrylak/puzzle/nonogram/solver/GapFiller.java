@@ -128,6 +128,9 @@ public class GapFiller {
       to    ■  x  ■  x  ■  x  x  x  ■| 1 1 1 1
      */
     public void tryToFillGapsBetweenGapsWithKnownNumbers(Puzzle puzzle, ChangedInIteration changes) {
+        if (changes.debugModeAndChangesDone()) {
+            return;
+        }
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var gaps = gapFinder.find(puzzle, rowOrCol);
             var gapsWithoutNumbers = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
