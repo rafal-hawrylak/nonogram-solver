@@ -352,7 +352,7 @@ public class NumberCloser {
         x  x  .  .  x  x  x  x  x  ■  ■  ■  ■  ■  x  x  ■  ■  ■  ■  ■  x| 2 5 5
      */
 
-    public void fitTheNumbersInOnlyPossibleGaps(Puzzle puzzle, ChangedInIteration changes) {
+    public void fitTheBiggestNumbersInOnlyPossibleGaps(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var notClosedGaps = gapFinder.find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
             var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);

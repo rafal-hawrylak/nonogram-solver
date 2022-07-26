@@ -65,9 +65,9 @@ public class PuzzleSolver {
                 printDebug(puzzle, changes, debug, "closeAllTheGapsIfAllFullMarked");
                 continue;
             }
-            numberCloser.fitTheNumbersInOnlyPossibleGaps(puzzle, changes);
+            numberCloser.fitTheBiggestNumbersInOnlyPossibleGaps(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeTheNumbersAlreadyFilledButNotMarked");
+                printDebug(puzzle, changes, debug, "fitTheBiggestNumbersInOnlyPossibleGaps");
                 continue;
             }
             gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changes);
@@ -77,7 +77,7 @@ public class PuzzleSolver {
             }
             gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeAllGapsBeforeFirstFoundNumber");
+                printDebug(puzzle, changes, debug, "closeAllGapsBeforeFirstAndAfterLastFoundNumber");
                 continue;
             }
             numberCloser.fillTheNumbersWithStartAndEndNotConnected(puzzle, changes);
