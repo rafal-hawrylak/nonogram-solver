@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
+import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
@@ -13,37 +14,27 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 public class NumberSelector {
 
     public Optional<NumberToFind> getNext(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
-        for (int i = 0; i < numbersToFind.size(); i++) {
-            if (numbersToFind.get(i).equals(numberToFind)) {
-                if (i == numbersToFind.size() - 1) {
-                    return Optional.empty();
-                } else {
-                    return Optional.of(numbersToFind.get(i + 1));
-                }
-            }
-        }
-        return Optional.empty();
+        return Utils.next(numbersToFind, numberToFind);
     }
 
     public Optional<NumberToFind> getPrevious(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
-        for (int i = 0; i < numbersToFind.size(); i++) {
-            if (numbersToFind.get(i).equals(numberToFind)) {
-                if (i == 0) {
-                    return Optional.empty();
-                } else {
-                    return Optional.of(numbersToFind.get(i - 1));
-                }
-            }
-        }
-        return Optional.empty();
+        return Utils.previous(numbersToFind, numberToFind);
+    }
+
+    public List<NumberToFind> allPrevious(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
+        return Utils.allPrevious(numbersToFind, numberToFind);
+    }
+
+    public List<NumberToFind> allNext(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
+        return Utils.allNext(numbersToFind, numberToFind);
     }
 
     public Optional<NumberToFind> getLast(List<NumberToFind> numbersToFind) {
-        return numbersToFind.isEmpty() ? Optional.empty() : Optional.of(numbersToFind.get(numbersToFind.size() - 1));
+        return Utils.getLast(numbersToFind);
     }
 
     public Optional<NumberToFind> getFirst(List<NumberToFind> numbersToFind) {
-        return numbersToFind.isEmpty() ? Optional.empty() : Optional.of(numbersToFind.get(0));
+        return Utils.getFirst(numbersToFind);
     }
 
     public Optional<NumberToFind> getForPositionAssumingAllFullInTheRowOrColFilled(RowOrCol rowOrCol, Puzzle puzzle, int start, int end) {
@@ -114,5 +105,46 @@ public class NumberSelector {
 
     public List<NumberToFind> getNotFound(List<NumberToFind> numbers) {
         return numbers.stream().filter(n -> !n.found).toList();
+    }
+
+    public List<NumberToFind> getNumbersBetween(List<NumberToFind> numbers, Optional<NumberToFind> numberPrevious,
+        Optional<NumberToFind> numberNext) {
+        var start = numberPrevious.isPresent() ? numbers.indexOf(numberPrevious.get()) + 1 : 0;
+        var end = numberNext.isPresent() ? numbers.indexOf(numberNext.get()) : numbers.size();
+        return start <= end ? numbers.subList(start, end) : Collections.emptyList();
+    }
+
+    public List<NumberToFind> findNumbersPossibleToFitInGap(Gap gap, List<NumberToFind> numbers) {
+        var numbersPossibleToFit = new ArrayList<NumberToFind>();
+        var sumSoFar = 0;
+        for (NumberToFind number : numbers) {
+            if (sumSoFar + number.number <= gap.length) {
+                numbersPossibleToFit.add(number);
+                sumSoFar += number.number + 1;
+            } else {
+                break;
+            }
+        }
+        return numbersPossibleToFit;
+    }
+
+    public int calculateGapDiff(Gap gap, List<NumberToFind> numbersSubList) {
+        var numbersSum = numbersSubList.stream().map(n -> n.number).reduce(0, Integer::sum);
+        var gapDiff = gap.length - numbersSum - numbersSubList.size() + 1;
+        return gapDiff;
+    }
+
+    public List<NumberBeforeCurrentAndAfter> getAllPossibleNumberListsBefore(List<NumberToFind> numbers, int number) {
+        var allPossible = new ArrayList<NumberBeforeCurrentAndAfter>();
+        var allNumberOccurrences = numbers.stream().filter(n -> n.number == number).toList();
+        for (NumberToFind occurrence : allNumberOccurrences) {
+            var allPrevious = allPrevious(numbers, occurrence);
+            var allNext = allNext(numbers, occurrence);
+            allPossible.add(new NumberBeforeCurrentAndAfter(allPrevious, occurrence, allNext));
+        }
+        return allPossible;
+    }
+
+    public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {
     }
 }

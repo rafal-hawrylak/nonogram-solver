@@ -128,51 +128,19 @@ public class GapFinder {
     }
 
     public Optional<Gap> previous(List<Gap> gaps, Gap gap) {
-        Optional<Gap> previousGap = Optional.empty();
-        for (Gap currentGap : gaps) {
-            if (currentGap.equals(gap)) {
-                return previousGap;
-            }
-            previousGap = Optional.of(currentGap);
-        }
-        return Optional.empty();
+        return Utils.previous(gaps, gap);
     }
 
     public Optional<Gap> next(List<Gap> gaps, Gap gap) {
-        for (int i = 0; i < gaps.size(); i++) {
-            if (gaps.get(i).equals(gap)) {
-                if (i == gaps.size() - 1) {
-                    return Optional.empty();
-                } else {
-                    return Optional.of(gaps.get(i + 1));
-                }
-            }
-        }
-        return Optional.empty();
+        return Utils.next(gaps, gap);
     }
 
     public List<Gap> allPrevious(List<Gap> gaps, Gap gap) {
-        var foundGaps = new ArrayList<Gap>();
-        for (Gap currentGap : gaps) {
-            if (currentGap.equals(gap)) {
-                break;
-            }
-            foundGaps.add(currentGap);
-        }
-        return foundGaps;
+        return Utils.allPrevious(gaps, gap);
     }
 
     public List<Gap> allNext(List<Gap> gaps, Gap gap) {
-        var foundGaps = new ArrayList<Gap>();
-        var startAdding = false;
-        for (Gap currentGap : gaps) {
-            if (currentGap.equals(gap)) {
-                startAdding = true;
-            } else if (startAdding) {
-                foundGaps.add(currentGap);
-            }
-        }
-        return foundGaps;
+        return Utils.allNext(gaps, gap);
     }
 
     public Gap maxSubsequentCountOfFields(Puzzle puzzle, RowOrCol rowOrCol, Gap gap, FieldState state) {

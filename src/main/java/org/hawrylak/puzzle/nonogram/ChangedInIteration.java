@@ -50,6 +50,10 @@ public class ChangedInIteration {
         return changedRowsOrCols.contains(rowOrCol);
     }
 
+    public void markChange(RowOrCol rowOrCol) {
+        changedRowsOrCols.add(rowOrCol);
+    }
+
     public void markChangeSingle(int c, int r) {
         changedRowsOrCols.addAll(findPerpendicularRowOrCol(c, r));
         changedFields[c][r] = true;

@@ -14,7 +14,7 @@ public class PuzzleSolver {
     private final RowSelector rowSelector = new RowSelector();
     private final NumberSelector numberSelector = new NumberSelector();
     private final GapFinder gapFinder = new GapFinder();
-    private final GapFiller gapFiller = new GapFiller(fieldFinder, gapFinder);
+    private final GapFiller gapFiller = new GapFiller(fieldFinder, numberSelector, gapFinder);
     private final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
     private final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
@@ -103,6 +103,11 @@ public class PuzzleSolver {
             gapFiller.tryToFillGapsBetweenGapsWithKnownNumbers(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
                 printDebug(puzzle, changes, debug, "tryToFillGapsBetweenGapsWithKnownNumbers");
+                continue;
+            }
+            gapFiller.tryToAssignNumberToFilledGap(puzzle, changes);
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "tryToAssignNumberToFilledGap");
                 continue;
             }
 

@@ -1,22 +1,26 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
 import org.hawrylak.puzzle.nonogram.GapFinder;
+import org.hawrylak.puzzle.nonogram.NumberSelector;
+import org.hawrylak.puzzle.nonogram.NumberSelector.NumberBeforeCurrentAndAfter;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.model.SubGap;
 
 @AllArgsConstructor
 public class GapFiller {
 
     private final FieldFinder fieldFinder;
+    private final NumberSelector numberSelector;
     private final GapFinder gapFinder;
 
     public void fillTheGapEntirely(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
@@ -29,8 +33,7 @@ public class GapFiller {
     }
 
     public void fillTheGapEntirelyWithNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol,
-        List<NumberToFind> numbersToClose, int start
-    ) {
+        List<NumberToFind> numbersToClose, int start) {
         for (NumberToFind numberToClose : numbersToClose) {
             var length = numberToClose.number;
             var fakeGap = new Gap(rowOrCol, start, start + length - 1, length, Optional.of(numberToClose));
@@ -103,8 +106,8 @@ public class GapFiller {
         }
     }
 
-    public void fillTheGapPartiallyForNNumbers(Gap gap, List<NumberToFind> numbers, int gapDiff,
-        RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public void fillTheGapPartiallyForNNumbers(Gap gap, List<NumberToFind> numbers, int gapDiff, RowOrCol rowOrCol, Puzzle puzzle,
+        ChangedInIteration changes) {
         if (gapDiff <= 0) {
             return;
         }
@@ -140,13 +143,13 @@ public class GapFiller {
                 }
                 var previous = gapFinder.previous(gaps, gap);
                 var next = gapFinder.next(gaps, gap);
-                if ((previous.isEmpty() || previous.get().assignedNumber.isPresent()) && (next.isEmpty() || next.get().assignedNumber.isPresent())) {
+                if ((previous.isEmpty() || previous.get().assignedNumber.isPresent()) && (next.isEmpty()
+                    || next.get().assignedNumber.isPresent())) {
                     Optional<NumberToFind> numberPrevious = previous.isEmpty() ? Optional.empty() : previous.get().assignedNumber;
                     Optional<NumberToFind> numberNext = next.isEmpty() ? Optional.empty() : next.get().assignedNumber;
-                    var numbersSubList = getNumbersBetween(rowOrCol.numbersToFind, numberPrevious, numberNext);
+                    var numbersSubList = numberSelector.getNumbersBetween(rowOrCol.numbersToFind, numberPrevious, numberNext);
                     if (!numbersSubList.isEmpty()) {
-                        var numbersSum = numbersSubList.stream().map(n -> n.number).reduce(0, Integer::sum);
-                        var gapDiff = gap.length - numbersSum - numbersSubList.size() + 1;
+                        int gapDiff = numberSelector.calculateGapDiff(gap, numbersSubList);
                         fillTheGapPartiallyForNNumbers(gap, numbersSubList, gapDiff, rowOrCol, puzzle, changes);
                     }
                 }
@@ -154,9 +157,87 @@ public class GapFiller {
         }
     }
 
-    private List<NumberToFind> getNumbersBetween(List<NumberToFind> numbers, Optional<NumberToFind> numberPrevious, Optional<NumberToFind> numberNext) {
-        var start = numberPrevious.isPresent() ? numbers.indexOf(numberPrevious.get()) + 1 : 0;
-        var end = numberNext.isPresent() ? numbers.indexOf(numberNext.get()) : numbers.size();
-        return start <= end ? numbers.subList(start, end) : Collections.emptyList();
+    public void tryToAssignNumberToFilledGap(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var gaps = gapFinder.find(puzzle, rowOrCol);
+            for (Gap gap : gaps) {
+                if (gap.assignedNumber.isEmpty() && gap.filledSubGaps.size() == 1) {
+                    var subGap = gap.filledSubGaps.get(0);
+                    if (subGap.start == gap.start && subGap.end == gap.end) {
+                        var number = gap.length;
+                        var previousGaps = gapFinder.allPrevious(gaps, gap);
+                        var nextGaps = gapFinder.allNext(gaps, gap);
+                        var allPossibleNumberSplit = numberSelector.getAllPossibleNumberListsBefore(rowOrCol.numbersToFind, number);
+                        var splitsMatchingConditions = new ArrayList<NumberBeforeCurrentAndAfter>();
+                        for (var split : allPossibleNumberSplit) {
+                            if (split.current().found) {
+                                continue;
+                            }
+                            var doAllNumbersFitBefore = doAllNumbersFit(split.before(), previousGaps);
+                            var doAllNumbersFitAfter = doAllNumbersFit(split.after(), nextGaps);
+                            if (!doAllNumbersFitBefore || !doAllNumbersFitAfter) {
+                                continue;
+                            }
+                            var singleGapBeforeAndComplyWithSubGaps = previousGaps.size() == 1 && numbersComplyWithSubGaps(split.before(), previousGaps.get(0));
+                            var singleGapAfterAndComplyWithSubGaps = nextGaps.size() == 1 && numbersComplyWithSubGaps(split.after(), nextGaps.get(0));
+                            if (singleGapBeforeAndComplyWithSubGaps && singleGapAfterAndComplyWithSubGaps) {
+                                splitsMatchingConditions.add(split);
+                            }
+                        }
+                        if (splitsMatchingConditions.size() == 1) {
+                            splitsMatchingConditions.get(0).current().found = true;
+                            splitsMatchingConditions.get(0).current().foundStart = gap.start;
+                            splitsMatchingConditions.get(0).current().foundEnd = gap.end;
+                            changes.markChange(rowOrCol);
+                        }
+                    }
+                }
+            }
+        }
     }
+
+    private boolean numbersComplyWithSubGaps(List<NumberToFind> numbers, Gap gap) {
+        var numberIndex = 0;
+        for (SubGap subGap : gap.filledSubGaps) {
+            for (; numberIndex < numbers.size(); numberIndex++) {
+                if (subGap.length <= numbers.get(numberIndex).number) {
+                    numberIndex++;
+                    break;
+                }
+            }
+            if (numberIndex >= numbers.size()) {
+                var isLastSubGap = subGap.equals(gap.filledSubGaps.get(gap.filledSubGaps.size() - 1));
+                return isLastSubGap;
+            }
+        }
+        return true;
+    }
+
+    private boolean doAllNumbersFit(List<NumberToFind> numbers, List<Gap> gaps) {
+        if (gaps.isEmpty() && !numbers.isEmpty()) {
+            return false;
+        }
+        if (numbers.isEmpty()) {
+            return true;
+        }
+        var firstNumberIndex = 0;
+        var lastNumberIndex = numbers.size() - 1;
+        for (Gap gap : gaps) {
+            var soFarInThisGap = 0;
+            if (firstNumberIndex > lastNumberIndex) {
+                return true;
+            }
+            for (NumberToFind number : numbers.subList(firstNumberIndex, lastNumberIndex + 1)) {
+                if (soFarInThisGap + number.number <= gap.length) {
+                    soFarInThisGap += number.number + 1;
+                    firstNumberIndex++;
+                } else {
+                    break;
+                }
+            }
+        }
+        return firstNumberIndex > lastNumberIndex;
+    }
+
+
 }

@@ -46,6 +46,7 @@ public class NumberCloser {
         }
     }
 
+    // TODO - refactor simplify
     private void tryToCloseFromEdge(Puzzle puzzle, ChangedInIteration changes, int i,
         RowOrCol rowOrCol, boolean fromStart) {
         boolean hasNumbers = !rowOrCol.numbersToFind.isEmpty();
@@ -140,7 +141,7 @@ public class NumberCloser {
             var numberToClose = previousGap.isEmpty() ? numberSelector.getFirst(rowOrCol.numbersToFind)
                 : numberSelector.getNext(rowOrCol.numbersToFind, previousGap.get().assignedNumber.get());
             if (numberToClose.isPresent()) {
-                fillTheNumber(rowOrCol, numberToClose.get(), c, r, startingFrom, puzzle, changes);
+                fillTheNumberAtPosition(rowOrCol, numberToClose.get(), c, r, startingFrom, puzzle, changes);
                 fillingSuccessful = true;
             }
         }
@@ -158,7 +159,7 @@ public class NumberCloser {
             var lastButOneNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, lastNumber);
             if (lastButOneNumber.isEmpty() || lastButOneNumber.get().found
                 || lastButOneNumber.get().number + lastNumber.number + 1 > gapAtPosition.length) {
-                fillTheNumber(rowOrCol, lastNumber, c, r, startingFrom, puzzle, changes);
+                fillTheNumberAtPosition(rowOrCol, lastNumber, c, r, startingFrom, puzzle, changes);
                 fillingSuccessful = true;
             }
         }
@@ -174,7 +175,7 @@ public class NumberCloser {
                 ? numberSelector.getLast(rowOrCol.numbersToFind)
                 : numberSelector.getPrevious(rowOrCol.numbersToFind, nextGap.get().assignedNumber.get());
             if (numberToClose.isPresent()) {
-                fillTheNumber(rowOrCol, numberToClose.get(), c, r, startingFrom, puzzle, changes);
+                fillTheNumberAtPosition(rowOrCol, numberToClose.get(), c, r, startingFrom, puzzle, changes);
                 fillingSuccessful = true;
             }
         }
@@ -194,7 +195,7 @@ public class NumberCloser {
             var secondNumber = numberSelector.getNext(rowOrCol.numbersToFind, firstNumber);
             if (secondNumber.isEmpty() || secondNumber.get().found
                 || secondNumber.get().number + firstNumber.number + 1 > gapAtPosition.length) {
-                fillTheNumber(rowOrCol, firstNumber, c, r, startingFrom, puzzle, changes);
+                fillTheNumberAtPosition(rowOrCol, firstNumber, c, r, startingFrom, puzzle, changes);
                 fillingSuccessful = true;
             }
         }
@@ -208,7 +209,7 @@ public class NumberCloser {
              */
             if (allNotFoundNumbers.size() == 1) {
                 var numberToClose = allNotFoundNumbers.get(0);
-                fillTheNumber(rowOrCol, numberToClose, c, r, startingFrom, puzzle, changes);
+                fillTheNumberAtPosition(rowOrCol, numberToClose, c, r, startingFrom, puzzle, changes);
                 fillingSuccessful = true;
             }
         }
@@ -299,7 +300,7 @@ public class NumberCloser {
         return filledSubGaps.stream().filter(s -> s.start <= position).filter(s -> s.end >= position).findFirst();
     }
 
-    private void fillTheNumber(RowOrCol rowOrCol, NumberToFind numberToClose, int c, int r, boolean startingFrom, Puzzle puzzle,
+    private void fillTheNumberAtPosition(RowOrCol rowOrCol, NumberToFind numberToClose, int c, int r, boolean startingFrom, Puzzle puzzle,
         ChangedInIteration changes) {
         int start = getStart(rowOrCol, numberToClose.number, c, r, startingFrom);
         var fakeGap = new Gap(rowOrCol, start, start + numberToClose.number - 1, numberToClose.number, Optional.empty());
@@ -375,7 +376,7 @@ public class NumberCloser {
                             }
                         }
                     } else {
-                        if (getNotFound(rowOrCol.numbersToFind).size() == 1) {
+                        if (numberSelector.getNotFound(rowOrCol.numbersToFind).size() == 1) {
                             gapFiller.fillTheGapPartiallyForSingleNumber(gap, numberToFind, rowOrCol, puzzle, changes);
                         }
                     }
@@ -384,18 +385,12 @@ public class NumberCloser {
         }
     }
 
-    private List<NumberToFind> getNotFound(List<NumberToFind> numbers) {
-        return numbers.stream()
-            .filter(n -> !n.found)
-            .toList();
-    }
-
     public void closeTheOnlyCombination(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
             var countOfNumbers = rowOrCol.numbersToFind.size();
-            var limit = rowOrCol.horizontal ? puzzle.width : puzzle.height;
-            if (sumOfNumbers + countOfNumbers - 1 == limit) {
+            var targetSum = rowOrCol.horizontal ? puzzle.width : puzzle.height;
+            if (sumOfNumbers + countOfNumbers - 1 == targetSum) {
                 gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changes, rowOrCol, rowOrCol.numbersToFind, 0);
             }
         }
@@ -411,6 +406,13 @@ public class NumberCloser {
         .  .  ■  ■  ■  ■  ■  .  .  ■  ■  .  .  ■  .| 5 5
         to
         .  .  ■  ■  ■  ■  ■  .  .  ■  ■  ■  ■  ■  .| 5 5
+
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! BUG:
+         .  .  ■  ■  ■  ■  ■  .  ■  .  ■  .  .  .  .| 5 3 3
+         will produce
+         .  .  ■  ■  ■  ■  ■  .  ■  ■  ■  .  .  .  .| 5 3 3[M]
+         but can be
+         .  .  ■  ■  ■  ■  ■  .  ■  ■  ■  .  ■  ■  ■| 5 3 3[M]
      */
     public void fillTheNumbersWithStartAndEndNotConnected(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
@@ -454,10 +456,13 @@ public class NumberCloser {
     public void markEndingsOfSubGapWhenThereIsNoBiggerNumber(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var gaps = gapFinder.find(puzzle, rowOrCol);
-            var biggestNumber = rowOrCol.numbersToFind.stream().map(n -> n.number).max(Integer::compareTo).get();
+            var biggestNumber = numberSelector.getNotFound(rowOrCol.numbersToFind).stream().map(n -> n.number).max(Integer::compareTo);
+            if (biggestNumber.isEmpty()) {
+                continue;
+            }
             for (Gap gap : gaps) {
                 for (SubGap filledSubGap : gap.filledSubGaps) {
-                    if (filledSubGap.length == biggestNumber) {
+                    if (filledSubGap.length == biggestNumber.get()) {
                         gapFiller.fillSingleField(rowOrCol, puzzle, changes, filledSubGap.start - 1, FieldState.EMPTY);
                         gapFiller.fillSingleField(rowOrCol, puzzle, changes, filledSubGap.end + 1, FieldState.EMPTY);
                     }
