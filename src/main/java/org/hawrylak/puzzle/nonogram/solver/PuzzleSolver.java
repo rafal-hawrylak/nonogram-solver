@@ -23,7 +23,7 @@ public class PuzzleSolver {
         boolean debug = true;
         var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
-        var iterationsToStopAfter = debug ? 50 : 100;
+        var iterationsToStopAfter = debug ? 100 : 100;
         while (changes.firstIteration() || changes.anyChange()) {
             if (hardStop && changes.getIteration() >= iterationsToStopAfter) {
                 break;
