@@ -250,4 +250,23 @@ public class GapCloser {
 
         }
     }
+
+    public void closeToSmallToFitFirstOrLastNumber(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
+            var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
+            if (firstGap.isPresent() && firstNumber.isPresent()) {
+                if (firstNumber.get().number > firstGap.get().length) {
+                    closeAsEmpty(firstGap.get(), puzzle, changes);
+                }
+            }
+            var lastGap = gapFinder.findLastWithoutNumberAssigned(puzzle, rowOrCol);
+            var lastNumber = numberSelector.getLastNotFound(rowOrCol.numbersToFind);
+            if (lastGap.isPresent() && lastNumber.isPresent()) {
+                if (lastNumber.get().number > lastGap.get().length) {
+                    closeAsEmpty(lastGap.get(), puzzle, changes);
+                }
+            }
+        }
+    }
 }

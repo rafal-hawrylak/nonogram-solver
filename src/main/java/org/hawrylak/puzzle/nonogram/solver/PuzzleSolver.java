@@ -110,6 +110,11 @@ public class PuzzleSolver {
                 printDebug(puzzle, changes, debug, "tryToAssignNumberToFilledGap");
                 continue;
             }
+            gapCloser.closeToSmallToFitFirstOrLastNumber(puzzle, changes);
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "closeToSmallToFitFirstOrLastNumber");
+                continue;
+            }
 
             System.out.println(puzzle.toString(changes));
         }
