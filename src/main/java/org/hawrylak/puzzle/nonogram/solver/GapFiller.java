@@ -109,7 +109,7 @@ public class GapFiller {
     public void fillTheGapPartiallyForNNumbers(Gap gap, List<NumberToFind> numbers, RowOrCol rowOrCol, Puzzle puzzle,
         ChangedInIteration changes) {
         var gapDiff = numberSelector.calculateGapDiff(gap, numbers);
-        if (gapDiff <= 0) {
+        if (gapDiff < 0) {
             return;
         }
         var sumSoFar = 0;
@@ -172,9 +172,6 @@ public class GapFiller {
             var gaps = gapFinder.find(puzzle, rowOrCol);
             var gapsWithoutNumbers = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
             for (Gap gap : gapsWithoutNumbers) {
-                if (gap.assignedNumber.isPresent()) {
-                    continue;
-                }
                 var previous = gapFinder.previous(gaps, gap);
                 var next = gapFinder.next(gaps, gap);
                 if ((previous.isEmpty() || previous.get().assignedNumber.isPresent()) && (next.isEmpty()
@@ -182,6 +179,7 @@ public class GapFiller {
                     Optional<NumberToFind> numberPrevious = previous.isEmpty() ? Optional.empty() : previous.get().assignedNumber;
                     Optional<NumberToFind> numberNext = next.isEmpty() ? Optional.empty() : next.get().assignedNumber;
                     var numbersSubList = numberSelector.getNumbersBetween(rowOrCol.numbersToFind, numberPrevious, numberNext);
+                    // TODO numbersSubList can be trimmed from numbers that are found - should be done smart
                     if (!numbersSubList.isEmpty()) {
                         fillTheGapPartiallyForNNumbers(gap, numbersSubList, rowOrCol, puzzle, changes);
                     }
