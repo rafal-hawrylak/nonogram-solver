@@ -3,7 +3,6 @@ package org.hawrylak.puzzle.nonogram;
 import static org.hawrylak.puzzle.nonogram.model.Gap.NO_FULL;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
@@ -216,5 +215,15 @@ public class GapFinder {
 
     public List<Gap> findWithoutAssignedNumber(Puzzle puzzle, RowOrCol rowOrCol) {
         return find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
+    }
+
+    public Optional<Gap> refreshSubGaps(Gap gap, Puzzle puzzle, RowOrCol rowOrCol) {
+        var gaps = find(puzzle, rowOrCol);
+        return gaps.stream().filter(g -> g.start == gap.start && g.end == gap.end).findFirst();
+    }
+
+    public boolean areSubGapsMergeable(int number, SubGap subGap, SubGap nextSubGap) {
+        var sizeAfterMerging = nextSubGap.end - subGap.start + 1;
+        return sizeAfterMerging <= number;
     }
 }

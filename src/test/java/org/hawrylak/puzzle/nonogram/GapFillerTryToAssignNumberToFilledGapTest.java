@@ -7,7 +7,7 @@ import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.junit.jupiter.api.Test;
 
-public class GapFillerTestTryToAssignNumberToFilledGap extends PuzzleSolverTestBase {
+public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestBase {
 
     @Test
     void tryToAssignNumberToFilledGap() {

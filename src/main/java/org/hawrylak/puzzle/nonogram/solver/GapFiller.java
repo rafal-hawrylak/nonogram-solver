@@ -123,6 +123,39 @@ public class GapFiller {
             }
             sumSoFar += number.number;
         }
+
+        gap = gapFinder.refreshSubGaps(gap, puzzle, rowOrCol).get();
+        if (numbers.size() == 1 && gap.filledSubGaps.size() == 2) {
+            mergeSubGaps(puzzle, changes, rowOrCol, gap, numbers.get(0), true);
+        }
+        if (numbers.size() == 2 && gap.filledSubGaps.size() == 2) {
+            var firstNumber = numbers.get(0);
+            var secondNumber = numbers.get(1);
+            var firstSubGap = gap.filledSubGaps.get(0);
+            var secondSubGap = gap.filledSubGaps.get(1);
+            var mergeableForFirstNumber = gapFinder.areSubGapsMergeable(firstNumber.number, firstSubGap, secondSubGap);
+            var mergeableForSecondNumber = gapFinder.areSubGapsMergeable(secondNumber.number, firstSubGap, secondSubGap);
+            if (!mergeableForFirstNumber && !mergeableForSecondNumber) {
+                var minLength = secondSubGap.start - gap.start - 1;
+                if (minLength == firstNumber.number) {
+                    var fakeGap = new Gap(rowOrCol, gap.start, gap.start + minLength - 1, minLength, Optional.empty());
+                    fillTheGapEntirely(fakeGap, firstNumber, rowOrCol, puzzle, changes);
+                }
+            }
+        }
+    }
+
+    public void mergeSubGaps(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol, Gap gap, NumberToFind number, boolean first) {
+        if (gap.filledSubGaps.size() >= 2) {
+            var firstSubGap = first ? gap.filledSubGaps.get(0) : gap.filledSubGaps.get(gap.filledSubGaps.size() - 2);
+            var secondSubGap = first ? gap.filledSubGaps.get(1) : gap.filledSubGaps.get(gap.filledSubGaps.size() - 1);
+            var distanceFromEdge = first ? secondSubGap.start - gap.start : gap.end - firstSubGap.end;
+            if (number.number >= distanceFromEdge) {
+                for (int i = firstSubGap.end + 1; i < secondSubGap.start; i++) {
+                    fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
+                }
+            }
+        }
     }
 
     /*
@@ -178,8 +211,10 @@ public class GapFiller {
                             if (!doAllNumbersFitBefore || !doAllNumbersFitAfter) {
                                 continue;
                             }
-                            var singleGapBeforeAndComplyWithSubGaps = previousGaps.size() == 1 && numbersComplyWithSubGaps(split.before(), previousGaps.get(0));
-                            var singleGapAfterAndComplyWithSubGaps = nextGaps.size() == 1 && numbersComplyWithSubGaps(split.after(), nextGaps.get(0));
+                            var singleGapBeforeAndComplyWithSubGaps =
+                                previousGaps.size() == 1 && numbersComplyWithSubGaps(split.before(), previousGaps.get(0));
+                            var singleGapAfterAndComplyWithSubGaps =
+                                nextGaps.size() == 1 && numbersComplyWithSubGaps(split.after(), nextGaps.get(0));
                             if (singleGapBeforeAndComplyWithSubGaps && singleGapAfterAndComplyWithSubGaps) {
                                 splitsMatchingConditions.add(split);
                             }
@@ -238,6 +273,5 @@ public class GapFiller {
         }
         return firstNumberIndex > lastNumberIndex;
     }
-
 
 }

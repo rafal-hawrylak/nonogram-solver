@@ -5,9 +5,9 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
-import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.NumberSelector;
+import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
@@ -239,9 +239,9 @@ public class GapCloser {
                 for (int i = 0; i < gap.filledSubGaps.size() - 1; i++) {
                     var subGap = gap.filledSubGaps.get(i);
                     var nextSubGap = gap.filledSubGaps.get(i + 1);
+                    boolean mergeable = gapFinder.areSubGapsMergeable(biggest, subGap, nextSubGap);
                     var onlySingleFieldBetweenSubGaps = subGap.end + 2 == nextSubGap.start;
-                    var sizeAfterMerging = subGap.length + nextSubGap.length + 1;
-                    if (onlySingleFieldBetweenSubGaps && sizeAfterMerging > biggest) {
+                    if (!mergeable && onlySingleFieldBetweenSubGaps) {
                         var fakeGap = new Gap(rowOrCol, subGap.end + 1, subGap.end + 1, 1, Optional.empty());
                         closeAsEmpty(fakeGap, puzzle, changes);
                     }
