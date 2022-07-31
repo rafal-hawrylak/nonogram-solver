@@ -20,7 +20,7 @@ public class GapFillerFillTheGapPartiallyForNNumbersTest extends PuzzleSolverTes
         var rowOrCol = puzzle.rowsOrCols.get(0);
         var gap = gapFinder.find(puzzle, rowOrCol).get(2);
         var numbers = rowOrCol.numbersToFind.subList(2, 4);
-        gapFiller.fillTheGapPartiallyForNNumbers(gap, numbers, 7, rowOrCol, puzzle, changes);
+        gapFiller.fillTheGapPartiallyForNNumbers(gap, numbers, rowOrCol, puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(2).found);
@@ -37,7 +37,7 @@ public class GapFillerFillTheGapPartiallyForNNumbersTest extends PuzzleSolverTes
         var rowOrCol = puzzle.rowsOrCols.get(0);
         var gap = gapFinder.find(puzzle, rowOrCol).get(0);
         var numbers = rowOrCol.numbersToFind.subList(0, 2);
-        gapFiller.fillTheGapPartiallyForNNumbers(gap, numbers, 7, rowOrCol, puzzle, changes);
+        gapFiller.fillTheGapPartiallyForNNumbers(gap, numbers, rowOrCol, puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         puzzle.rowsOrCols.get(0).numbersToFind.forEach(n -> assertFalse(n.found));

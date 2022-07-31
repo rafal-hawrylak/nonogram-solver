@@ -106,8 +106,9 @@ public class GapFiller {
         }
     }
 
-    public void fillTheGapPartiallyForNNumbers(Gap gap, List<NumberToFind> numbers, int gapDiff, RowOrCol rowOrCol, Puzzle puzzle,
+    public void fillTheGapPartiallyForNNumbers(Gap gap, List<NumberToFind> numbers, RowOrCol rowOrCol, Puzzle puzzle,
         ChangedInIteration changes) {
+        var gapDiff = numberSelector.calculateGapDiff(gap, numbers);
         if (gapDiff <= 0) {
             return;
         }
@@ -182,8 +183,7 @@ public class GapFiller {
                     Optional<NumberToFind> numberNext = next.isEmpty() ? Optional.empty() : next.get().assignedNumber;
                     var numbersSubList = numberSelector.getNumbersBetween(rowOrCol.numbersToFind, numberPrevious, numberNext);
                     if (!numbersSubList.isEmpty()) {
-                        int gapDiff = numberSelector.calculateGapDiff(gap, numbersSubList);
-                        fillTheGapPartiallyForNNumbers(gap, numbersSubList, gapDiff, rowOrCol, puzzle, changes);
+                        fillTheGapPartiallyForNNumbers(gap, numbersSubList, rowOrCol, puzzle, changes);
                     }
                 }
             }

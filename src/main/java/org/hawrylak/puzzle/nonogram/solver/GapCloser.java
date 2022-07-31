@@ -67,8 +67,7 @@ public class GapCloser {
                 if (numbersSum + numbersNotFound.size() - 1 == gap.length) {
                     gapFiller.fillTheGapEntirelyWithNumbers(puzzle, changes, rowOrCol, numbersNotFound, gap.start);
                 } else {
-                    var gapDiff = gap.length - numbersSum - numbersNotFound.size() + 1;
-                    gapFiller.fillTheGapPartiallyForNNumbers(gap, numbersNotFound, gapDiff, rowOrCol, puzzle, changes);
+                    gapFiller.fillTheGapPartiallyForNNumbers(gap, numbersNotFound, rowOrCol, puzzle, changes);
                 }
             }
         }
