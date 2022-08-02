@@ -154,5 +154,6 @@ public class NumberSelector {
     }
 
     public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {
+
     }
 }

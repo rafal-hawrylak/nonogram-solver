@@ -9,6 +9,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {
+
     @Test
     void markSingle() {
         String puzzleCase = "■x";

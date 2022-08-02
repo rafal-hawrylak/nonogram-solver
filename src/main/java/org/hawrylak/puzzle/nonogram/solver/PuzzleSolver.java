@@ -131,7 +131,9 @@ public class PuzzleSolver {
 
     private void markRowsAsSolved(Puzzle puzzle) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            if (rowOrCol.solved) continue;
+            if (rowOrCol.solved) {
+                continue;
+            }
             if (rowOrCol.numbersToFind.stream().noneMatch(n -> !n.found)) {
                 rowOrCol.solved = true;
             }

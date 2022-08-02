@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Utils {
+
     public static <T> List<T> reverse(List<T> list) {
         var newList = new ArrayList<>(list);
         Collections.reverse(newList);

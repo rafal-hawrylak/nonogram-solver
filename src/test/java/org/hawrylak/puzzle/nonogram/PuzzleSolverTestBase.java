@@ -18,6 +18,7 @@ public class PuzzleSolverTestBase {
     protected final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     protected final PuzzleStringConverter puzzleStringConverter = new PuzzleStringConverter();
+
     protected void assertPuzzle(Puzzle puzzle, String expectedPuzzle) {
         var actual = puzzleStringConverter.fromPuzzle(puzzle);
         assertEquals(expectedPuzzle, actual);

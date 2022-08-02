@@ -197,20 +197,23 @@ public class GapFiller {
                     var subGap = gap.filledSubGaps.get(0);
                     if (subGap.start == gap.start && subGap.end == gap.end) {
                         var number = gap.length;
-                        var numbersMatchingNumber = numberSelector.getNotFound(rowOrCol.numbersToFind).stream().filter(n -> n.number == number).toList();
+                        var numbersMatchingNumber = numberSelector.getNotFound(rowOrCol.numbersToFind).stream()
+                            .filter(n -> n.number == number).toList();
                         if (numbersMatchingNumber.size() == 1) {
                             fillTheGapEntirely(gap, numbersMatchingNumber.get(0), rowOrCol, puzzle, changes);
                             continue;
                         }
                         var allPossibleSplitsAtNumber = numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number);
-                        findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gap, allPossibleSplitsAtNumber, true, true);
+                        findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gap, allPossibleSplitsAtNumber, true,
+                            true);
                     }
                 }
             }
         }
     }
 
-    public boolean findTheOnlyPossibleCombinationForNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol, List<Gap> gaps, Gap gap,
+    public boolean findTheOnlyPossibleCombinationForNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol, List<Gap> gaps,
+        Gap gap,
         List<NumberBeforeCurrentAndAfter> allPossibleSplitsAtNumber, boolean startingFrom, boolean endingAt) {
         var previousGaps = gapFinder.allPrevious(gaps, gap);
         var nextGaps = gapFinder.allNext(gaps, gap);

@@ -290,7 +290,8 @@ public class NumberCloser {
             for (var number : notFoundNumberValues) {
                 allPossibleSplitsAtNumber.addAll(numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number));
             }
-            fillingSuccessful = gapFiller.findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gapAtPosition, allPossibleSplitsAtNumber, startingFrom, !startingFrom);
+            fillingSuccessful = gapFiller.findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gapAtPosition,
+                allPossibleSplitsAtNumber, startingFrom, !startingFrom);
         }
     }
 

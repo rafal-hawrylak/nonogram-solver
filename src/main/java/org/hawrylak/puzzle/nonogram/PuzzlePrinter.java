@@ -76,8 +76,7 @@ public class PuzzlePrinter {
         if (compact) {
             color = true;
             sb.append(Colors.ANSI_BLACK);
-        }
-        else if (changes.isPresent()) {
+        } else if (changes.isPresent()) {
             if (changes.get().changedFields[c][r]) {
                 color = true;
                 sb.append(puzzle.fields[c][r].equals(FieldState.EMPTY) ? Colors.ANSI_RED
@@ -89,12 +88,12 @@ public class PuzzlePrinter {
                 case UNKNOWN, OUTSIDE, EMPTY -> " ";
                 case FULL -> "■";
             }
-        :
-            switch (puzzle.fields[c][r]) {
-            case UNKNOWN, OUTSIDE -> ".";
-            case EMPTY -> "x";
-            case FULL -> "■";
-        };
+            :
+                switch (puzzle.fields[c][r]) {
+                    case UNKNOWN, OUTSIDE -> ".";
+                    case EMPTY -> "x";
+                    case FULL -> "■";
+                };
         int colWidth = compact ? 2 : COL_WIDTH;
         sb.append(StringUtils.pad(value, ' ', colWidth));
         if (color) {

@@ -8,6 +8,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class SubGap {
+
     public final int start;
     public final int end;
     public final int length;
