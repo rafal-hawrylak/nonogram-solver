@@ -376,8 +376,14 @@ public class NumberCloser {
                             }
                         }
                     } else {
-                        if (numberSelector.getNotFound(rowOrCol.numbersToFind).size() == 1) {
+                        var notFound = numberSelector.getNotFound(rowOrCol.numbersToFind);
+                        if (notFound.size() == 1) {
                             gapFiller.fillTheGapPartiallyForSingleNumber(gap, numberToFind, rowOrCol, puzzle, changes);
+                        } else {
+                            var onlyCandidatesThatFit = numberSelector.findNumbersPossibleToFitInGap(gap, notFound);
+                            if (onlyCandidatesThatFit.size() == 1 && onlyCandidatesThatFit.get(0).equals(numberToFind)) {
+                                gapFiller.fillTheGapPartiallyForSingleNumber(gap, numberToFind, rowOrCol, puzzle, changes);
+                            }
                         }
                     }
                 }
