@@ -1,5 +1,6 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
 import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.NumberSelector;
+import org.hawrylak.puzzle.nonogram.NumberSelector.NumberBeforeCurrentAndAfter;
 import org.hawrylak.puzzle.nonogram.RowSelector;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
@@ -269,6 +271,26 @@ public class NumberCloser {
             } else {
 
             }
+        }
+        if (!fillingSuccessful) {
+            /*
+                     0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19
+                23|  .  .  .  ■  .  .  x  ■  .  x  .  .  .  ■  .  .  x  .  .  .| 2 1 2 2 2 2
+                                          ^ - this can't be "1" because "2 2 2 2" is not possible on the right side
+                27|  .  .  .  .  .  .  x  ■  .  .  .  .  .  .  .  .  x  .  .  .| 1 1 1 1 2 1 1
+                                          ^ - this can't be "2" because "1 1 1 1" is ont possible on the left side
+             */
+            var subGap = startingFrom ? gapAtPosition.getFirstSubGap().get() : gapAtPosition.getLastSubGap().get();
+            var notFoundNumberValues = numberSelector.getNotFound(rowOrCol.numbersToFind).stream()
+                .map(n -> n.number)
+                .filter(n -> n >= subGap.length)
+                .filter(n -> n <= gapAtPosition.length)
+                .distinct().toList();
+            var allPossibleSplitsAtNumber = new ArrayList<NumberBeforeCurrentAndAfter>();
+            for (var number : notFoundNumberValues) {
+                allPossibleSplitsAtNumber.addAll(numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number));
+            }
+            fillingSuccessful = gapFiller.findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gapAtPosition, allPossibleSplitsAtNumber, startingFrom, !startingFrom);
         }
     }
 

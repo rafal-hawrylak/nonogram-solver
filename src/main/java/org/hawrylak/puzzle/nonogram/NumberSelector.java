@@ -134,7 +134,7 @@ public class NumberSelector {
         return gapDiff;
     }
 
-    public List<NumberBeforeCurrentAndAfter> getAllPossibleNumberListsBefore(List<NumberToFind> numbers, int number) {
+    public List<NumberBeforeCurrentAndAfter> getAllPossibleSplitsAtNumber(List<NumberToFind> numbers, int number) {
         var allPossible = new ArrayList<NumberBeforeCurrentAndAfter>();
         var allNumberOccurrences = numbers.stream().filter(n -> n.number == number).toList();
         for (NumberToFind occurrence : allNumberOccurrences) {
@@ -143,6 +143,14 @@ public class NumberSelector {
             allPossible.add(new NumberBeforeCurrentAndAfter(allPrevious, occurrence, allNext));
         }
         return allPossible;
+    }
+
+    public List<NumberToFind> mergeLists(List<NumberToFind> numbers, NumberToFind number) {
+        return Utils.mergeLists(numbers, number);
+    }
+
+    public List<NumberToFind> mergeLists(NumberToFind number, List<NumberToFind> numbers) {
+        return Utils.mergeLists(number, numbers);
     }
 
     public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {

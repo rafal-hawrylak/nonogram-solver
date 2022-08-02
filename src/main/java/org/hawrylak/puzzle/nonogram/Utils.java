@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 
 public class Utils {
     public static <T> List<T> reverse(List<T> list) {
@@ -66,5 +67,18 @@ public class Utils {
 
     public static <T> Optional<T> getFirst(List<T> elements) {
         return elements.isEmpty() ? Optional.empty() : Optional.of(elements.get(0));
+    }
+
+    public static <T> List<T> mergeLists(List<T> elements, T element) {
+        List<T> newList = new ArrayList<>(elements);
+        newList.add(element);
+        return newList;
+    }
+
+    public static <T> List<T> mergeLists(T element, List<T> elements) {
+        List<T> newList = new ArrayList<>();
+        newList.add(element);
+        newList.addAll(elements);
+        return newList;
     }
 }

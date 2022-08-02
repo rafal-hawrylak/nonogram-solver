@@ -226,4 +226,12 @@ public class GapFinder {
         var sizeAfterMerging = nextSubGap.end - subGap.start + 1;
         return sizeAfterMerging <= number;
     }
+
+    public List<Gap> mergeLists(List<Gap> gaps, Gap gap) {
+        return Utils.mergeLists(gaps, gap);
+    }
+
+    public List<Gap> mergeLists(Gap gap, List<Gap> gaps) {
+        return Utils.mergeLists(gap, gaps);
+    }
 }

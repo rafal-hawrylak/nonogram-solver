@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.hawrylak.puzzle.nonogram.Utils;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -20,4 +21,12 @@ public class Gap {
     public final int length;
     public final Optional<NumberToFind> assignedNumber;
     public List<SubGap> filledSubGaps;
+
+    public Optional<SubGap> getFirstSubGap() {
+        return Utils.getFirst(filledSubGaps);
+    }
+
+    public Optional<SubGap> getLastSubGap() {
+        return Utils.getLast(filledSubGaps);
+    }
 }
