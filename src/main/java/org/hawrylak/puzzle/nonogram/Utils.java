@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 
 public class Utils {
     public static <T> List<T> reverse(List<T> list) {
