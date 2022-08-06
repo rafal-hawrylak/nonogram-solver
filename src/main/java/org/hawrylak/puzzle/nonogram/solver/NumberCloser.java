@@ -522,7 +522,32 @@ public class NumberCloser {
 
     public void secondSubGapMayBeClosed(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            // TODO first
+            var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
+            if (firstGap.isEmpty()) {
+                continue;
+            }
+            var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
+            if (firstNumber.isEmpty()) {
+                continue;
+            }
+            var gap = firstGap.get();
+            var number = firstNumber.get();
+            var nextNumber = numberSelector.getNext(rowOrCol.numbersToFind, number);
+            if (gap.filledSubGaps.size() >= 2 && nextNumber.isPresent()) {
+                var firstSubGap = Utils.getFirst(gap.filledSubGaps).get();
+                var secondSubGap = Utils.next(gap.filledSubGaps, firstSubGap).get();
+                var missingNumberPart = number.number - firstSubGap.length;
+                if (missingNumberPart >= 0 && firstSubGap.start - gap.start <= missingNumberPart) {
+                    if (!gapFinder.areSubGapsMergeable(number.number, firstSubGap, secondSubGap)) {
+                        if (!gapFinder.numberFitsBetweenSubGaps(nextNumber.get().number, firstSubGap, secondSubGap)) {
+                            if (nextNumber.get().number == secondSubGap.length) {
+                                var fakeGap = new Gap(rowOrCol, secondSubGap.start, secondSubGap.end, secondSubGap.length, Optional.of(nextNumber.get()));
+                                gapFiller.fillTheGapEntirely(fakeGap, nextNumber.get(), rowOrCol, puzzle, changes);
+                            }
+                        }
+                    }
+                }
+            }
 
             var lastGap = gapFinder.findLastWithoutNumberAssigned(puzzle, rowOrCol);
             if (lastGap.isEmpty()) {
@@ -532,8 +557,8 @@ public class NumberCloser {
             if (lastNumber.isEmpty()) {
                 continue;
             }
-            var gap = lastGap.get();
-            var number = lastNumber.get();
+            gap = lastGap.get();
+            number = lastNumber.get();
             var previousNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, number);
             if (gap.filledSubGaps.size() >= 2 && previousNumber.isPresent()) {
                 var lastSubGap = Utils.getLast(gap.filledSubGaps).get();
