@@ -227,6 +227,11 @@ public class GapFinder {
         return sizeAfterMerging <= number;
     }
 
+    public boolean numberFitsBetweenSubGaps(int number, SubGap subGap, SubGap nextSubGap) {
+        var spaceBetween = nextSubGap.start - subGap.end - 1;
+        return spaceBetween >= number + 2; // + 2 for both "x" at ends
+    }
+
     public List<Gap> mergeLists(List<Gap> gaps, Gap gap) {
         return Utils.mergeLists(gaps, gap);
     }

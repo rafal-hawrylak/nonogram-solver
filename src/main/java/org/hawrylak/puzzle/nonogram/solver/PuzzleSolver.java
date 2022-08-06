@@ -125,6 +125,11 @@ public class PuzzleSolver {
                 printDebug(puzzle, changes, debug, "ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately");
                 continue;
             }
+            numberCloser.secondSubGapMayBeClosed(puzzle, changes);
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "secondSubGapMayBeClosed");
+                continue;
+            }
 
             System.out.println(puzzle.toString(changes));
         }

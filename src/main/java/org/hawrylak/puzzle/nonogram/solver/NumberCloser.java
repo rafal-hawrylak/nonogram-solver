@@ -519,4 +519,37 @@ public class NumberCloser {
             }
         }
     }
+
+    public void secondSubGapMayBeClosed(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            // TODO first
+
+            var lastGap = gapFinder.findLastWithoutNumberAssigned(puzzle, rowOrCol);
+            if (lastGap.isEmpty()) {
+                continue;
+            }
+            var lastNumber = numberSelector.getLastNotFound(rowOrCol.numbersToFind);
+            if (lastNumber.isEmpty()) {
+                continue;
+            }
+            var gap = lastGap.get();
+            var number = lastNumber.get();
+            var previousNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, number);
+            if (gap.filledSubGaps.size() >= 2 && previousNumber.isPresent()) {
+                var lastSubGap = Utils.getLast(gap.filledSubGaps).get();
+                var lastButOneSubGap = Utils.previous(gap.filledSubGaps, lastSubGap).get();
+                var missingNumberPart = number.number - lastSubGap.length;
+                if (missingNumberPart >= 0 && gap.end - lastSubGap.end <= missingNumberPart) {
+                    if (!gapFinder.areSubGapsMergeable(number.number, lastButOneSubGap, lastSubGap)) {
+                        if (!gapFinder.numberFitsBetweenSubGaps(previousNumber.get().number, lastButOneSubGap, lastSubGap)) {
+                            if (previousNumber.get().number == lastButOneSubGap.length) {
+                                var fakeGap = new Gap(rowOrCol, lastButOneSubGap.start, lastButOneSubGap.end, lastButOneSubGap.length, Optional.of(previousNumber.get()));
+                                gapFiller.fillTheGapEntirely(fakeGap, previousNumber.get(), rowOrCol, puzzle, changes);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
