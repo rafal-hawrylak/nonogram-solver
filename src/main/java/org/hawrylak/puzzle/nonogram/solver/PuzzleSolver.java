@@ -115,6 +115,11 @@ public class PuzzleSolver {
                 printDebug(puzzle, changes, debug, "closeToSmallToFitFirstOrLastNumber");
                 continue;
             }
+            numberCloser.extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber(puzzle, changes);
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber");
+                continue;
+            }
 
             System.out.println(puzzle.toString(changes));
         }

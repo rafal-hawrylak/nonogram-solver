@@ -10,6 +10,7 @@ import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.NumberSelector;
 import org.hawrylak.puzzle.nonogram.NumberSelector.NumberBeforeCurrentAndAfter;
 import org.hawrylak.puzzle.nonogram.RowSelector;
+import org.hawrylak.puzzle.nonogram.Utils;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
@@ -453,6 +454,54 @@ public class NumberCloser {
                     if (filledSubGap.length == biggestNumber.get()) {
                         gapFiller.fillSingleField(rowOrCol, puzzle, changes, filledSubGap.start - 1, FieldState.EMPTY);
                         gapFiller.fillSingleField(rowOrCol, puzzle, changes, filledSubGap.end + 1, FieldState.EMPTY);
+                    }
+                }
+            }
+        }
+    }
+
+    public void extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
+            if (firstGap.isEmpty()) {
+                continue;
+            }
+            var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
+            if (firstNumber.isEmpty()) {
+                continue;
+            }
+            var gap = firstGap.get();
+            var number = firstNumber.get();
+            if (!gap.filledSubGaps.isEmpty()) {
+                var firstSubGap = gap.filledSubGaps.get(0);
+                var missingNumberPart = number.number - firstSubGap.length;
+                if (missingNumberPart >= 0) {
+                    if (firstSubGap.start - gap.start < missingNumberPart) {
+                        var end = gap.start + number.number - 1;
+                        var fakeGap = new Gap(rowOrCol, firstSubGap.start, end, end - firstSubGap.start + 1, Optional.empty());
+                        gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+                    }
+                }
+            }
+
+            var lastGap = gapFinder.findLastWithoutNumberAssigned(puzzle, rowOrCol);
+            if (lastGap.isEmpty()) {
+                continue;
+            }
+            var lastNumber = numberSelector.getLastNotFound(rowOrCol.numbersToFind);
+            if (lastNumber.isEmpty()) {
+                continue;
+            }
+            gap = lastGap.get();
+            number = lastNumber.get();
+            if (!gap.filledSubGaps.isEmpty()) {
+                var lastSubGap = Utils.getLast(gap.filledSubGaps).get();
+                var missingNumberPart = number.number - lastSubGap.length;
+                if (missingNumberPart >= 0) {
+                    if (gap.end - lastSubGap.end < missingNumberPart) {
+                        var start = gap.end - number.number + 1;
+                        var fakeGap = new Gap(rowOrCol, start, lastSubGap.end, lastSubGap.end - start + 1, Optional.empty());
+                        gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
                     }
                 }
             }
