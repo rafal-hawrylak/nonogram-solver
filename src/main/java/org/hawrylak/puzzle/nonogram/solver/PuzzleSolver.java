@@ -120,6 +120,11 @@ public class PuzzleSolver {
                 printDebug(puzzle, changes, debug, "extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber");
                 continue;
             }
+            numberCloser.ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately(puzzle, changes);
+            if (changes.debugModeAndChangesDone()) {
+                printDebug(puzzle, changes, debug, "ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately");
+                continue;
+            }
 
             System.out.println(puzzle.toString(changes));
         }

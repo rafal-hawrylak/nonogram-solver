@@ -153,6 +153,10 @@ public class NumberSelector {
         return Utils.mergeLists(number, numbers);
     }
 
+    public int sum(List<NumberToFind> numbers) {
+        return numbers.stream().mapToInt(n -> n.number).sum();
+    }
+
     public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {
 
     }

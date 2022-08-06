@@ -507,4 +507,16 @@ public class NumberCloser {
             }
         }
     }
+
+    public void ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var gaps = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
+            var numbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
+            var sum = numberSelector.sum(numbers);
+            if (gaps.size() == 2 && numbers.size() == 2 && sum > gaps.get(0).length && sum > gaps.get(1).length) {
+                gapFiller.fillTheGapPartiallyForSingleNumber(gaps.get(0), numbers.get(0), rowOrCol, puzzle, changes);
+                gapFiller.fillTheGapPartiallyForSingleNumber(gaps.get(1), numbers.get(1), rowOrCol, puzzle, changes);
+            }
+        }
+    }
 }
