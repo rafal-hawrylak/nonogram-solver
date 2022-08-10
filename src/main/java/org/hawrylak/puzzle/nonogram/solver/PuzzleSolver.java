@@ -1,5 +1,7 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
 import org.hawrylak.puzzle.nonogram.GapFinder;
@@ -21,6 +23,7 @@ public class PuzzleSolver {
     public boolean solve(Puzzle puzzle) {
 
         boolean debug = true;
+        Map<String, Integer> stats = new HashMap<>();
         var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
         var iterationsToStopAfter = debug ? 200 : 100;
@@ -37,110 +40,115 @@ public class PuzzleSolver {
 
             gapCloser.closeTooSmallToFitAnything(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeTooSmallToFitAnything");
+                statsAndPrintDebug(puzzle, changes, stats, "closeTooSmallToFitAnything");
                 continue;
             }
             numberCloser.closeAtEdges(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeAtEdges");
+                statsAndPrintDebug(puzzle, changes, stats, "closeAtEdges");
                 continue;
             }
             numberCloser.closeWithOneEnd(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeWithOneEnd");
+                statsAndPrintDebug(puzzle, changes, stats, "closeWithOneEnd");
                 continue;
             }
             numberCloser.closeTheOnlyCombination(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeTheOnlyCombination");
+                statsAndPrintDebug(puzzle, changes, stats, "closeTheOnlyCombination");
                 continue;
             }
             gapCloser.closeWhenAllNumbersAreFound(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeWhenAllNumbersAreFound");
+                statsAndPrintDebug(puzzle, changes, stats, "closeWhenAllNumbersAreFound");
                 continue;
             }
             numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeAllTheGapsIfAllFullMarked");
+                statsAndPrintDebug(puzzle, changes, stats, "closeAllTheGapsIfAllFullMarked");
                 continue;
             }
             numberCloser.fitTheBiggestNumbersInOnlyPossibleGaps(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "fitTheBiggestNumbersInOnlyPossibleGaps");
+                statsAndPrintDebug(puzzle, changes, stats, "fitTheBiggestNumbersInOnlyPossibleGaps");
                 continue;
             }
             gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeWhenSingleGapWithNumbersNotFound");
+                statsAndPrintDebug(puzzle, changes, stats, "closeWhenSingleGapWithNumbersNotFound");
                 continue;
             }
             gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeAllGapsBeforeFirstAndAfterLastFoundNumber");
+                statsAndPrintDebug(puzzle, changes, stats, "closeAllGapsBeforeFirstAndAfterLastFoundNumber");
                 continue;
             }
             numberCloser.fillTheNumbersWithStartAndEndNotConnected(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "fillTheNumbersWithStartAndEndNotConnected");
+                statsAndPrintDebug(puzzle, changes, stats, "fillTheNumbersWithStartAndEndNotConnected");
                 continue;
             }
             gapCloser.narrowGapsBeforeFirstAndAfterLast(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "narrowGapsBeforeFirstAndAfterLast");
+                statsAndPrintDebug(puzzle, changes, stats, "narrowGapsBeforeFirstAndAfterLast");
                 continue;
             }
             numberCloser.markEndingsOfSubGapWhenThereIsNoBiggerNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
+                statsAndPrintDebug(puzzle, changes, stats, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
                 continue;
             }
             gapCloser.findUnmergableSubGaps(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "findUnmergableSubGaps");
+                statsAndPrintDebug(puzzle, changes, stats, "findUnmergableSubGaps");
                 continue;
             }
             gapFiller.tryToFillGapsBetweenGapsWithKnownNumbers(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "tryToFillGapsBetweenGapsWithKnownNumbers");
+                statsAndPrintDebug(puzzle, changes, stats, "tryToFillGapsBetweenGapsWithKnownNumbers");
                 continue;
             }
             gapFiller.tryToAssignNumberToFilledGap(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "tryToAssignNumberToFilledGap");
+                statsAndPrintDebug(puzzle, changes, stats, "tryToAssignNumberToFilledGap");
                 continue;
             }
             gapCloser.closeToSmallToFitFirstOrLastNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "closeToSmallToFitFirstOrLastNumber");
+                statsAndPrintDebug(puzzle, changes, stats, "closeToSmallToFitFirstOrLastNumber");
                 continue;
             }
             numberCloser.extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber");
+                statsAndPrintDebug(puzzle, changes, stats, "extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber");
                 continue;
             }
             numberCloser.ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately");
+                statsAndPrintDebug(puzzle, changes, stats, "ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately");
                 continue;
             }
             numberCloser.secondSubGapMayBeClosed(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                printDebug(puzzle, changes, debug, "secondSubGapMayBeClosed");
+                statsAndPrintDebug(puzzle, changes, stats, "secondSubGapMayBeClosed");
                 continue;
             }
 
             System.out.println(puzzle.toString(changes));
         }
-
         markRowsAsSolved(puzzle);
+
+        if (changes.isDebug()) {
+            System.out.println("stats = " + stats.toString().replaceAll(",", System.lineSeparator()) + System.lineSeparator());
+        }
         return isPuzzleSolved(puzzle);
     }
 
-    private void printDebug(Puzzle puzzle, ChangedInIteration changes, boolean debug, String debugHeader) {
-        if (debug) {
+    private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, Map<String, Integer> stats, String debugHeader) {
+        if (changes.isDebug()) {
             System.out.println(puzzle.toString(changes, debugHeader));
+            var counter = stats.getOrDefault(debugHeader, 0);
+            stats.put(debugHeader, counter + 1);
         }
     }
 
