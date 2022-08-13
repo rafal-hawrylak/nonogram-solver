@@ -301,27 +301,27 @@ public class NumberCloser {
                  2|  ■  ■  x  .  x  ■  x  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .| 2 1 1 1 1 2
                                     ^ - only "1" possible as other bigger number is "2" and "1 1 1 1" would not fit into previous gap
              */
-            // TODO only if (startingFrom) implemented
+            var smallest = numberSelector.smallest(numberCandidates).get().number;
+            var allBigger = numberSelector.getAllBigger(numberCandidates, smallest);
+            Gap fakeGap;
             if (startingFrom) {
-                var smallest = numberSelector.smallest(numberCandidates).get().number;
-                var allBigger = numberSelector.getAllBigger(numberCandidates, smallest);
-                var fakeGap = new Gap(rowOrCol, gapAtPosition.start, gapAtPosition.start + smallest - 1, smallest, Optional.empty());
-                if (allBigger.isEmpty()) {
-                    gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-                    fillingSuccessful = true;
-                } else {
-                    var allPossibleSplitsAtNumber = new ArrayList<NumberBeforeCurrentAndAfter>();
-                    for (var number : numberCandidates) {
-                        allPossibleSplitsAtNumber.addAll(numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number.number));
-                    }
-                    fillingSuccessful = gapFiller.findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gapAtPosition,
-                        allPossibleSplitsAtNumber, startingFrom, !startingFrom);
-                    if (!fillingSuccessful) {
-                        fillingSuccessful = gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-                    }
-                }
+                fakeGap = new Gap(rowOrCol, gapAtPosition.start, gapAtPosition.start + smallest - 1, smallest, Optional.empty());
             } else {
-
+                fakeGap = new Gap(rowOrCol, gapAtPosition.end - smallest + 1, gapAtPosition.end, smallest, Optional.empty());
+            }
+            if (allBigger.isEmpty()) {
+                gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+                fillingSuccessful = true;
+            } else {
+                var allPossibleSplitsAtNumber = new ArrayList<NumberBeforeCurrentAndAfter>();
+                for (var number : numberCandidates) {
+                    allPossibleSplitsAtNumber.addAll(numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number.number));
+                }
+                fillingSuccessful = gapFiller.findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gapAtPosition,
+                    allPossibleSplitsAtNumber, startingFrom, !startingFrom);
+                if (!fillingSuccessful) {
+                    fillingSuccessful = gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+                }
             }
         }
     }
