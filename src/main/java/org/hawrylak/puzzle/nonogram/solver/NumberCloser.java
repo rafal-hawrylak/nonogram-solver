@@ -180,13 +180,16 @@ public class NumberCloser {
             }
         }
 
+        var subGap = startingFrom ? gapAtPosition.getFirstSubGap().get() : gapAtPosition.getLastSubGap().get();
         var allNotFoundNumbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
+        var numberCandidates = numberSelector.between(allNotFoundNumbers, subGap.length, gapAtPosition.length);
         if (!fillingSuccessful) {
             /*
               this is the only not found number
                  3|  .  .  .  x  ?  .  x  x  x  x  x  x| 1
                  3|  ■  x  ■  x  ?  .  x  x  x  x  x  x| 1 1 1
              */
+            // TODO check on numberCandidates
             if (allNotFoundNumbers.size() == 1) {
                 var numberToClose = allNotFoundNumbers.get(0);
                 fillTheNumberAtPosition(rowOrCol, numberToClose, c, r, startingFrom, puzzle, changes);
@@ -218,6 +221,7 @@ public class NumberCloser {
             }
         }
         if (!fillingSuccessful) {
+            // TODO only if (startingFrom) implemented
             /*
               the x  ■ can be expanded to x  ■  ■  ■  ■ ... if 4 is the minimal value
                                     or to x  ■  ■  ■  ■  ■ ... if x  ■  .  ■  ■  ■ must be merged to x  ■  ■  ■  ■  ■
@@ -281,11 +285,8 @@ public class NumberCloser {
                 27|  .  .  .  .  .  .  x  ■  .  .  .  .  .  .  .  .  x  .  .  .| 1 1 1 1 2 1 1
                                           ^ - this can't be "2" because "1 1 1 1" is ont possible on the left side
              */
-            var subGap = startingFrom ? gapAtPosition.getFirstSubGap().get() : gapAtPosition.getLastSubGap().get();
-            var notFoundNumberValues = numberSelector.getNotFound(rowOrCol.numbersToFind).stream()
+            var notFoundNumberValues = numberCandidates.stream()
                 .map(n -> n.number)
-                .filter(n -> n >= subGap.length)
-                .filter(n -> n <= gapAtPosition.length)
                 .distinct().toList();
             var allPossibleSplitsAtNumber = new ArrayList<NumberBeforeCurrentAndAfter>();
             for (var number : notFoundNumberValues) {
@@ -293,6 +294,36 @@ public class NumberCloser {
             }
             fillingSuccessful = gapFiller.findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gapAtPosition,
                 allPossibleSplitsAtNumber, startingFrom, !startingFrom);
+        }
+        if (!fillingSuccessful) {
+            /*
+                     0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
+                 2|  ■  ■  x  .  x  ■  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .| 2 1 1 1 1 2
+                 2|  ■  ■  x  .  x  ■  x  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .  .| 2 1 1 1 1 2
+                                    ^ - only "1" possible as other bigger number is "2" and "1 1 1 1" would not fit into previous gap
+             */
+            // TODO only if (startingFrom) implemented
+            if (startingFrom) {
+                var smallest = numberSelector.smallest(numberCandidates).get().number;
+                var allBigger = numberSelector.getAllBigger(numberCandidates, smallest);
+                var fakeGap = new Gap(rowOrCol, gapAtPosition.start, gapAtPosition.start + smallest - 1, smallest, Optional.empty());
+                if (allBigger.isEmpty()) {
+                    gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+                    fillingSuccessful = true;
+                } else {
+                    var allPossibleSplitsAtNumber = new ArrayList<NumberBeforeCurrentAndAfter>();
+                    for (var number : numberCandidates) {
+                        allPossibleSplitsAtNumber.addAll(numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number.number));
+                    }
+                    fillingSuccessful = gapFiller.findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gapAtPosition,
+                        allPossibleSplitsAtNumber, startingFrom, !startingFrom);
+                    if (!fillingSuccessful) {
+                        fillingSuccessful = gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+                    }
+                }
+            } else {
+
+            }
         }
     }
 

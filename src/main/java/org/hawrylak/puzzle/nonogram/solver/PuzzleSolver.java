@@ -113,9 +113,9 @@ public class PuzzleSolver {
                 statsAndPrintDebug(puzzle, changes, stats, "tryToAssignNumberToFilledGap");
                 continue;
             }
-            gapCloser.closeToSmallToFitFirstOrLastNumber(puzzle, changes);
+            gapCloser.closeTooSmallToFitFirstOrLastNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeToSmallToFitFirstOrLastNumber");
+                statsAndPrintDebug(puzzle, changes, stats, "closeTooSmallToFitFirstOrLastNumber");
                 continue;
             }
             numberCloser.extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber(puzzle, changes);

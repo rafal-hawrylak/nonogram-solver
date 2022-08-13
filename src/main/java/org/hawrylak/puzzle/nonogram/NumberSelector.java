@@ -157,6 +157,28 @@ public class NumberSelector {
         return numbers.stream().mapToInt(n -> n.number).sum();
     }
 
+    public Optional<NumberToFind> smallest(List<NumberToFind> numbers) {
+        return bigger(numbers, 0);
+    }
+
+    public Optional<NumberToFind> bigger(List<NumberToFind> numbers, int number) {
+        if (numbers.isEmpty()) {
+            return Optional.empty();
+        }
+        return numbers.stream().filter(n -> n.number > number).min(Comparator.comparingInt(n -> n.number));
+    }
+
+    public List<NumberToFind> between(List<NumberToFind> numbers, int lower, int upper) {
+        if (numbers.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return numbers.stream().filter(n -> n.number >= lower).filter(n -> n.number <= upper).toList();
+    }
+
+    public List<Integer> getAllBigger(List<NumberToFind> numbers, int number) {
+        return numbers.stream().map(n -> n.number).filter(n -> n > number).distinct().toList();
+    }
+
     public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {
 
     }

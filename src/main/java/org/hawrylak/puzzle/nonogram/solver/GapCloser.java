@@ -250,7 +250,7 @@ public class GapCloser {
         }
     }
 
-    public void closeToSmallToFitFirstOrLastNumber(Puzzle puzzle, ChangedInIteration changes) {
+    public void closeTooSmallToFitFirstOrLastNumber(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
             var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);

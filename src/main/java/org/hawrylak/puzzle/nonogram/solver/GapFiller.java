@@ -44,12 +44,13 @@ public class GapFiller {
         }
     }
 
-    public void fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
+    public boolean fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
         if (rowOrCol.horizontal) {
             if (i >= 0 && i < puzzle.width) {
                 if (!state.equals(puzzle.fields[i][rowOrCol.number])) {
                     puzzle.fields[i][rowOrCol.number] = state;
                     changes.markChangeSingle(i, rowOrCol.number);
+                    return true;
                 }
             }
         } else {
@@ -57,15 +58,20 @@ public class GapFiller {
                 if (!state.equals(puzzle.fields[rowOrCol.number][i])) {
                     puzzle.fields[rowOrCol.number][i] = state;
                     changes.markChangeSingle(rowOrCol.number, i);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
-    public void fillTheGap(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public boolean fillTheGap(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+        var anyFilled = false;
         for (int i = gap.start; i <= gap.end; i++) {
-            fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
+            var filled = fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
+            anyFilled = anyFilled || filled;
         }
+        return anyFilled;
     }
 
     public void fillTheGapPartiallyForSingleNumber(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle,
@@ -213,8 +219,7 @@ public class GapFiller {
     }
 
     public boolean findTheOnlyPossibleCombinationForNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol, List<Gap> gaps,
-        Gap gap,
-        List<NumberBeforeCurrentAndAfter> allPossibleSplitsAtNumber, boolean startingFrom, boolean endingAt) {
+        Gap gap, List<NumberBeforeCurrentAndAfter> allPossibleSplitsAtNumber, boolean startingFrom, boolean endingAt) {
         var previousGaps = gapFinder.allPrevious(gaps, gap);
         var nextGaps = gapFinder.allNext(gaps, gap);
         var splitsMatchingConditions = new ArrayList<NumberBeforeCurrentAndAfter>();
@@ -253,8 +258,14 @@ public class GapFiller {
             var start = startingFrom ? gap.start : gap.end - number + 1;
             var end = endingAt ? gap.end : gap.start + number - 1;
             var fakeGap = new Gap(rowOrCol, start, end, number, Optional.empty());
-            fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-            return true;
+            var anyFilled = fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+            if (startingFrom && !endingAt) {
+                return fillSingleField(rowOrCol, puzzle, changes, end + 1, FieldState.EMPTY) || anyFilled;
+            }
+            if (!startingFrom && endingAt) {
+                return fillSingleField(rowOrCol, puzzle, changes, start - 1, FieldState.EMPTY) || anyFilled;
+            }
+            return anyFilled;
         }
         return false;
     }
