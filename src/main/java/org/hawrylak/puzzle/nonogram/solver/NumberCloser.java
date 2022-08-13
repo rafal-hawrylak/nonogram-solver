@@ -189,9 +189,8 @@ public class NumberCloser {
                  3|  .  .  .  x  ?  .  x  x  x  x  x  x| 1
                  3|  ■  x  ■  x  ?  .  x  x  x  x  x  x| 1 1 1
              */
-            // TODO check on numberCandidates
-            if (allNotFoundNumbers.size() == 1) {
-                var numberToClose = allNotFoundNumbers.get(0);
+            if (numberCandidates.size() == 1) {
+                var numberToClose = numberCandidates.get(0);
                 fillTheNumberAtPosition(rowOrCol, numberToClose, c, r, startingFrom, puzzle, changes);
                 fillingSuccessful = true;
             }
