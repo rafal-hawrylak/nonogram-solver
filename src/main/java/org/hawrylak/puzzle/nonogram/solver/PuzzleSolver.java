@@ -98,9 +98,9 @@ public class PuzzleSolver {
                 statsAndPrintDebug(puzzle, changes, stats, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
                 continue;
             }
-            gapCloser.findUnmergableSubGaps(puzzle, changes);
+            gapCloser.findUnmergableSubGapsForBiggest(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "findUnmergableSubGaps");
+                statsAndPrintDebug(puzzle, changes, stats, "findUnmergableSubGapsForBiggest");
                 continue;
             }
             gapFiller.tryToFillGapsBetweenGapsWithKnownNumbers(puzzle, changes);
@@ -116,6 +116,11 @@ public class PuzzleSolver {
             gapCloser.closeTooSmallToFitFirstOrLastNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
                 statsAndPrintDebug(puzzle, changes, stats, "closeTooSmallToFitFirstOrLastNumber");
+                continue;
+            }
+            gapCloser.findUnmergableSubGapsForBiggestForFirstAndLastNotFound(puzzle, changes);
+            if (changes.debugModeAndChangesDone()) {
+                statsAndPrintDebug(puzzle, changes, stats, "findUnmergableSubGapsForBiggestForFirstAndLastNotFound");
                 continue;
             }
             numberCloser.extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber(puzzle, changes);

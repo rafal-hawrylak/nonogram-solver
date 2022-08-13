@@ -7,6 +7,7 @@ import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
 import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.NumberSelector;
+import org.hawrylak.puzzle.nonogram.Utils;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
@@ -226,7 +227,7 @@ public class GapCloser {
         }
     }
 
-    public void findUnmergableSubGaps(Puzzle puzzle, ChangedInIteration changes) {
+    public void findUnmergableSubGapsForBiggest(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var biggestNotFound = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
             if (biggestNotFound.isEmpty()) {
@@ -246,7 +247,6 @@ public class GapCloser {
                     }
                 }
             }
-
         }
     }
 
@@ -264,6 +264,50 @@ public class GapCloser {
             if (lastGap.isPresent() && lastNumber.isPresent()) {
                 if (lastNumber.get().number > lastGap.get().length) {
                     closeAsEmpty(lastGap.get(), puzzle, changes);
+                }
+            }
+        }
+    }
+
+    public void findUnmergableSubGapsForBiggestForFirstAndLastNotFound(Puzzle puzzle, ChangedInIteration changes) {
+        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+            var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
+            var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
+            if (firstGap.isPresent() && firstNumber.isPresent()) {
+                if (firstGap.get().filledSubGaps.size() >= 2) {
+                    var subGap = firstGap.get().filledSubGaps.get(0);
+                    var nextSubGap = firstGap.get().filledSubGaps.get(1);
+                    var missingNumberPart = firstNumber.get().number - subGap.length;
+                    if (missingNumberPart >= 0) {
+                        if (subGap.start - firstGap.get().start > missingNumberPart) {
+                            boolean mergeable = gapFinder.areSubGapsMergeable(firstNumber.get().number, subGap, nextSubGap);
+                            var onlySingleFieldBetweenSubGaps = subGap.end + 2 == nextSubGap.start;
+                            if (!mergeable && onlySingleFieldBetweenSubGaps) {
+                                var fakeGap = new Gap(rowOrCol, subGap.end + 1, subGap.end + 1, 1, Optional.empty());
+                                closeAsEmpty(fakeGap, puzzle, changes);
+                            }
+                        }
+                    }
+
+                }
+            }
+            var lastGap = gapFinder.findLastWithoutNumberAssigned(puzzle, rowOrCol);
+            var lastNumber = numberSelector.getLastNotFound(rowOrCol.numbersToFind);
+            if (lastGap.isPresent() && lastNumber.isPresent()) {
+                if (lastGap.get().filledSubGaps.size() >= 2) {
+                    var subGap = Utils.getLast(lastGap.get().filledSubGaps).get();
+                    var prevSubGap = Utils.previous(lastGap.get().filledSubGaps, subGap).get();
+                    var missingNumberPart = lastNumber.get().number - subGap.length;
+                    if (missingNumberPart >= 0) {
+                        if (lastGap.get().end - subGap.end > missingNumberPart) {
+                            boolean mergeable = gapFinder.areSubGapsMergeable(lastNumber.get().number, prevSubGap, subGap);
+                            var onlySingleFieldBetweenSubGaps = prevSubGap.end + 2 == subGap.start;
+                            if (!mergeable && onlySingleFieldBetweenSubGaps) {
+                                var fakeGap = new Gap(rowOrCol, prevSubGap.end + 1, prevSubGap.end + 1, 1, Optional.empty());
+                                closeAsEmpty(fakeGap, puzzle, changes);
+                            }
+                        }
+                    }
                 }
             }
         }
