@@ -490,7 +490,7 @@ public class NumberCloser {
         }
     }
 
-    public void extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber(Puzzle puzzle, ChangedInIteration changes) {
+    public void extendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
             var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
             if (firstGap.isEmpty()) {

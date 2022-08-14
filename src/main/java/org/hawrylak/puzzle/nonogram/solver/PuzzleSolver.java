@@ -123,9 +123,9 @@ public class PuzzleSolver {
                 statsAndPrintDebug(puzzle, changes, stats, "findUnmergableSubGapsForBiggestForFirstAndLastNotFound");
                 continue;
             }
-            numberCloser.extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber(puzzle, changes);
+            numberCloser.extendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber(puzzle, changes);
             if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "extendSubGapsAsMayFieldsAsPossibleForFirstAndLastNumber");
+                statsAndPrintDebug(puzzle, changes, stats, "extendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber");
                 continue;
             }
             numberCloser.ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately(puzzle, changes);
