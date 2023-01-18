@@ -426,6 +426,50 @@ public class Main {
         return puzzle;
     }
 
+    private Puzzle getTestPuzzle11_2() {
+        var width = 15;
+        var height = 15;
+        var rows = new ArrayList<List<Integer>>();
+        var cols = new ArrayList<List<Integer>>();
+        rows.add(List.of(1,2));
+        rows.add(List.of(7));
+        rows.add(List.of(7));
+        rows.add(List.of(7,3));
+        rows.add(List.of(7,2));
+
+        rows.add(List.of(2,5,2));
+        rows.add(List.of(1,4,1));
+        rows.add(List.of(1,5,1));
+        rows.add(List.of(1,5,1));
+        rows.add(List.of(2,4));
+
+        rows.add(List.of(3,3));
+        rows.add(List.of(13));
+        rows.add(List.of(11));
+        rows.add(List.of(9));
+        rows.add(List.of(4));
+
+        cols.add(List.of(5));
+        cols.add(List.of(2,3));
+        cols.add(List.of(2,3));
+        cols.add(List.of(3,4));
+        cols.add(List.of(6,3));
+
+        cols.add(List.of(7,3));
+        cols.add(List.of(7,3));
+        cols.add(List.of(9,4));
+        cols.add(List.of(4,2,4));
+        cols.add(List.of(2,2,4));
+
+        cols.add(List.of(3,2,4));
+        cols.add(List.of(1,6));
+        cols.add(List.of(2,4));
+        cols.add(List.of(2,3));
+        cols.add(List.of(5));
+        var puzzle = new Puzzle(width, height, rows, cols);
+        return puzzle;
+    }
+
     private Puzzle getTestPuzzle12ProfessionalLevel1() {
         var width = 25;
         var height = 25;

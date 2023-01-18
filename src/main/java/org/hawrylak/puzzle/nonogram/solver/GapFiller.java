@@ -10,6 +10,7 @@ import org.hawrylak.puzzle.nonogram.FieldFinder;
 import org.hawrylak.puzzle.nonogram.GapFinder;
 import org.hawrylak.puzzle.nonogram.NumberSelector;
 import org.hawrylak.puzzle.nonogram.NumberSelector.NumberBeforeCurrentAndAfter;
+import org.hawrylak.puzzle.nonogram.Utils;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
@@ -210,30 +211,56 @@ public class GapFiller {
                             continue;
                         }
                         var allPossibleSplitsAtNumber = numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number);
-                        findTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gap, allPossibleSplitsAtNumber, true,
-                            true);
+                        var gapMode = OnlyPossibleCombinationGapMode.builder().enabled(true).startingFrom(true).endingAt(true).build();
+                        findAndMarkTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gap, allPossibleSplitsAtNumber, gapMode);
                     }
                 }
             }
         }
     }
 
-    public boolean findTheOnlyPossibleCombinationForNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol, List<Gap> gaps,
-        Gap gap, List<NumberBeforeCurrentAndAfter> allPossibleSplitsAtNumber, boolean startingFrom, boolean endingAt) {
+    public boolean findAndMarkTheOnlyPossibleCombinationForNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol,
+        List<Gap> gaps, Gap gap, List<NumberBeforeCurrentAndAfter> allPossibleSplitsAtNumber, OnlyPossibleCombinationGapMode gapMode) {
+
+        var result = findTheOnlyPossibleCombinationForNumbers(rowOrCol, gaps, gap, allPossibleSplitsAtNumber, gapMode,
+            OnlyPossibleCombinationSubGapMode.NO);
+        if (result.isNumber()) {
+            var number = result.getNumber();
+            var start = gapMode.isStartingFrom() ? gap.start : gap.end - number.number + 1;
+            var end = gapMode.isEndingAt() ? gap.end : gap.start + number.number - 1;
+            var fakeGap = new Gap(rowOrCol, start, end, number.number, Optional.of(number));
+            fillTheGapEntirely(fakeGap, number, rowOrCol, puzzle, changes);
+            return true;
+        } else if (result.isValue()) {
+            var number = result.getValue();
+            var start = gapMode.isStartingFrom() ? gap.start : gap.end - number + 1;
+            var end = gapMode.isEndingAt() ? gap.end : gap.start + number - 1;
+            var fakeGap = new Gap(rowOrCol, start, end, number, Optional.empty());
+            var anyFilled = fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+            if (gapMode.isStartingFrom() && !gapMode.isEndingAt()) {
+                return fillSingleField(rowOrCol, puzzle, changes, end + 1, FieldState.EMPTY) || anyFilled;
+            }
+            if (!gapMode.isStartingFrom() && gapMode.isEndingAt()) {
+                return fillSingleField(rowOrCol, puzzle, changes, start - 1, FieldState.EMPTY) || anyFilled;
+            }
+            return anyFilled;
+        }
+        return false;
+    }
+
+    public OnlyPossibleCombinationResult findTheOnlyPossibleCombinationForNumbers(RowOrCol rowOrCol, List<Gap> gaps, Gap gap,
+        List<NumberBeforeCurrentAndAfter> allPossibleSplitsAtNumber, OnlyPossibleCombinationGapMode gapMode,
+        OnlyPossibleCombinationSubGapMode subGapMode) {
         var previousGaps = gapFinder.allPrevious(gaps, gap);
         var nextGaps = gapFinder.allNext(gaps, gap);
         var splitsMatchingConditions = new ArrayList<NumberBeforeCurrentAndAfter>();
-        var splitsMatchingConditionsNyNumberValue = new HashMap<Integer, NumberBeforeCurrentAndAfter>();
+        var splitsMatchingConditionsByNumberValue = new HashMap<Integer, NumberBeforeCurrentAndAfter>();
         for (var split : allPossibleSplitsAtNumber) {
             if (split.current().found) {
                 continue;
             }
-            var beforeAndCurrentNumber = startingFrom ? split.before() : numberSelector.mergeLists(split.before(), split.current());
-            var afterAndCurrentNumber = endingAt ? split.after() : numberSelector.mergeLists(split.current(), split.after());
-            var previousAndCurrentGaps = startingFrom ? previousGaps : gapFinder.mergeLists(previousGaps, gap);
-            var nextAndCurrentGaps = endingAt ? nextGaps : gapFinder.mergeLists(gap, nextGaps);
-            var doAllNumbersFitBefore = doAllNumbersFit(beforeAndCurrentNumber, previousAndCurrentGaps);
-            var doAllNumbersFitAfter = doAllNumbersFit(afterAndCurrentNumber, nextAndCurrentGaps);
+            boolean doAllNumbersFitBefore = doAllNumbersFitBefore(rowOrCol, gap, previousGaps, split, gapMode, subGapMode);
+            boolean doAllNumbersFitAfter = doAllNumbersFitAfter(rowOrCol, gap, nextGaps, split, gapMode, subGapMode);
             if (!doAllNumbersFitBefore || !doAllNumbersFitAfter) {
                 continue;
             }
@@ -243,57 +270,64 @@ public class GapFiller {
                 numbersComplyWithSubGaps(split.after(), nextGaps);
             if (complyWithSubGapsBefore && complyWithSubGapsAfter) {
                 splitsMatchingConditions.add(split);
-                splitsMatchingConditionsNyNumberValue.put(split.current().number, split);
+                splitsMatchingConditionsByNumberValue.put(split.current().number, split);
             }
         }
+        var result = OnlyPossibleCombinationResult.builder();
         if (splitsMatchingConditions.size() == 1) {
-            var number = splitsMatchingConditions.get(0).current();
-            var start = startingFrom ? gap.start : gap.end - number.number + 1;
-            var end = endingAt ? gap.end : gap.start + number.number - 1;
-            var fakeGap = new Gap(rowOrCol, start, end, number.number, Optional.of(number));
-            fillTheGapEntirely(fakeGap, number, rowOrCol, puzzle, changes);
-            return true;
-        } else if (splitsMatchingConditionsNyNumberValue.size() == 1) {
-            var number = splitsMatchingConditionsNyNumberValue.keySet().stream().findFirst().get();
-            var start = startingFrom ? gap.start : gap.end - number + 1;
-            var end = endingAt ? gap.end : gap.start + number - 1;
-            var fakeGap = new Gap(rowOrCol, start, end, number, Optional.empty());
-            var anyFilled = fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-            if (startingFrom && !endingAt) {
-                return fillSingleField(rowOrCol, puzzle, changes, end + 1, FieldState.EMPTY) || anyFilled;
+            result.number(splitsMatchingConditions.get(0).current());
+        } else if (splitsMatchingConditionsByNumberValue.size() == 1) {
+            result.value(splitsMatchingConditionsByNumberValue.keySet().stream().findFirst().get());
+        }
+        return result.build();
+    }
+
+    private boolean doAllNumbersFitBefore(RowOrCol rowOrCol, Gap gap, List<Gap> previousGaps, NumberBeforeCurrentAndAfter split,
+        OnlyPossibleCombinationGapMode gapMode, OnlyPossibleCombinationSubGapMode subGapMode) {
+        if (gapMode.isEnabled()) {
+            var beforeAndCurrentNumber = gapMode.isStartingFrom() ? split.before() : Utils.mergeLists(split.before(), split.current());
+            var previousAndCurrentGaps = gapMode.isStartingFrom() ? previousGaps : Utils.mergeLists(previousGaps, gap);
+            return doAllNumbersFitInGaps(beforeAndCurrentNumber, previousAndCurrentGaps);
+        } else if (subGapMode.isEnabled()) {
+            var beforeAndCurrentNumber = split.before();
+            List<Gap> previousAndCurrentGaps;
+            if (gap.start == subGapMode.subGap.start) {
+                previousAndCurrentGaps = previousGaps;
+            } else {
+                var partialGapBeforeSubGap = new Gap(rowOrCol, gap.start, subGapMode.subGap.start - 1, subGapMode.subGap.start - gap.start, Optional.empty());
+                previousAndCurrentGaps = Utils.mergeLists(previousGaps, partialGapBeforeSubGap);
             }
-            if (!startingFrom && endingAt) {
-                return fillSingleField(rowOrCol, puzzle, changes, start - 1, FieldState.EMPTY) || anyFilled;
-            }
-            return anyFilled;
+            return doAllNumbersFitInGaps(beforeAndCurrentNumber, previousAndCurrentGaps);
         }
         return false;
     }
 
-    private boolean numbersComplyWithSubGaps(List<NumberToFind> numbers, List<Gap> gaps) {
-        var numberIndex = 0;
-        for (Gap gap : gaps) {
-            for (SubGap subGap : gap.filledSubGaps) {
-                for (; numberIndex < numbers.size(); numberIndex++) {
-                    if (subGap.length <= numbers.get(numberIndex).number) {
-                        numberIndex++;
-                        break;
-                    }
-                }
-                if (numberIndex >= numbers.size()) {
-                    return subGap.equals(gap.filledSubGaps.get(gap.filledSubGaps.size() - 1));
-                }
+    private boolean doAllNumbersFitAfter(RowOrCol rowOrCol, Gap gap, List<Gap> nextGaps, NumberBeforeCurrentAndAfter split,
+        OnlyPossibleCombinationGapMode gapMode, OnlyPossibleCombinationSubGapMode subGapMode) {
+        if (gapMode.isEnabled()) {
+            var afterAndCurrentNumber = gapMode.isEndingAt() ? split.after() : Utils.mergeLists(split.current(), split.after());
+            var nextAndCurrentGaps = gapMode.isEndingAt() ? nextGaps : Utils.mergeLists(gap, nextGaps);
+            return doAllNumbersFitInGaps(afterAndCurrentNumber, nextAndCurrentGaps);
+        } else if (subGapMode.isEnabled()) {
+            var afterAndCurrentNumber = split.after();
+            List<Gap> nextAndCurrentGaps;
+            if (gap.end == subGapMode.subGap.end) {
+                nextAndCurrentGaps = nextGaps;
+            } else {
+                var partialGapAfterSubGap = new Gap(rowOrCol, subGapMode.subGap.end + 1, gap.end, gap.end - subGapMode.subGap.end, Optional.empty());
+                nextAndCurrentGaps = Utils.mergeLists(partialGapAfterSubGap, nextGaps);
             }
+            return doAllNumbersFitInGaps(afterAndCurrentNumber, nextAndCurrentGaps);
         }
-        return true;
+        return false;
     }
 
-    private boolean doAllNumbersFit(List<NumberToFind> numbers, List<Gap> gaps) {
-        if (gaps.isEmpty() && !numbers.isEmpty()) {
-            return false;
-        }
+    private boolean doAllNumbersFitInGaps(List<NumberToFind> numbers, List<Gap> gaps) {
         if (numbers.isEmpty()) {
             return true;
+        }
+        if (gaps.isEmpty()) {
+            return false;
         }
         var firstNumberIndex = 0;
         var lastNumberIndex = numbers.size() - 1;
@@ -314,4 +348,21 @@ public class GapFiller {
         return firstNumberIndex > lastNumberIndex;
     }
 
+    private boolean numbersComplyWithSubGaps(List<NumberToFind> numbers, List<Gap> gaps) {
+        var numberIndex = 0;
+        for (Gap gap : gaps) {
+            for (SubGap subGap : gap.filledSubGaps) {
+                for (; numberIndex < numbers.size(); numberIndex++) {
+                    if (subGap.length <= numbers.get(numberIndex).number) {
+                        numberIndex++;
+                        break;
+                    }
+                }
+                if (numberIndex >= numbers.size()) {
+                    return subGap.equals(gap.filledSubGaps.get(gap.filledSubGaps.size() - 1));
+                }
+            }
+        }
+        return true;
+    }
 }

@@ -138,6 +138,11 @@ public class PuzzleSolver {
                 statsAndPrintDebug(puzzle, changes, stats, "secondSubGapMayBeClosed");
                 continue;
             }
+            numberCloser.markMinimalAndMaximalSubgaps(puzzle, changes);
+            if (changes.debugModeAndChangesDone()) {
+                statsAndPrintDebug(puzzle, changes, stats, "markMinimalAndMaximalSubgaps");
+                continue;
+            }
 
             System.out.println(puzzle.toString(changes));
         }

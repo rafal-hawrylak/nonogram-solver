@@ -19,6 +19,7 @@ public class Gap {
     public final int start;
     public final int end;
     public final int length;
+    //TODO remove final - all the object creations must be fixed
     public final Optional<NumberToFind> assignedNumber;
     public List<SubGap> filledSubGaps;
 

@@ -145,14 +145,6 @@ public class NumberSelector {
         return allPossible;
     }
 
-    public List<NumberToFind> mergeLists(List<NumberToFind> numbers, NumberToFind number) {
-        return Utils.mergeLists(numbers, number);
-    }
-
-    public List<NumberToFind> mergeLists(NumberToFind number, List<NumberToFind> numbers) {
-        return Utils.mergeLists(number, numbers);
-    }
-
     public int sum(List<NumberToFind> numbers) {
         return numbers.stream().mapToInt(n -> n.number).sum();
     }

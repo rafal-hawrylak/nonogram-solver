@@ -209,8 +209,8 @@ public class GapFinder {
             : Optional.of(withoutAssignedNumber.get(withoutAssignedNumber.size() - 1));
     }
 
-    public List<SubGap> allSubGaps(List<Gap> allPreviousGaps) {
-        return allPreviousGaps.stream().flatMap(g -> g.filledSubGaps.stream()).toList();
+    public List<SubGap> allSubGaps(List<Gap> gaps) {
+        return gaps.stream().flatMap(g -> g.filledSubGaps.stream()).toList();
     }
 
     public List<Gap> findWithoutAssignedNumber(Puzzle puzzle, RowOrCol rowOrCol) {
@@ -230,13 +230,5 @@ public class GapFinder {
     public boolean numberFitsBetweenSubGaps(int number, SubGap subGap, SubGap nextSubGap) {
         var spaceBetween = nextSubGap.start - subGap.end - 1;
         return spaceBetween >= number + 2; // + 2 for both "x" at ends
-    }
-
-    public List<Gap> mergeLists(List<Gap> gaps, Gap gap) {
-        return Utils.mergeLists(gaps, gap);
-    }
-
-    public List<Gap> mergeLists(Gap gap, List<Gap> gaps) {
-        return Utils.mergeLists(gap, gaps);
     }
 }
