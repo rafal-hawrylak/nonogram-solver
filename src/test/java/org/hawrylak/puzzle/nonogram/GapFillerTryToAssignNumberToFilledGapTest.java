@@ -53,7 +53,7 @@ public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestB
 
     @Test
     void tryToAssignNumberToFilledGap2() {
-        String puzzleCase = "..■..■■.x■■xxx■■.....■■..";
+        String puzzleCase =     "..■..■■.x■■xxx■■.....■■..";
         String expectedPuzzle = "..■..■■.x■■xxx■■.....■■..";
         List<Integer> numbersToFind = List.of(3, 2, 2, 2, 5);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);

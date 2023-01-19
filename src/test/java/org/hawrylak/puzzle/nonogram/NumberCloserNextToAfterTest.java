@@ -83,7 +83,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
     @Test
     void closeWithAfterEmptyLastGapWithAmbiguousSituation() {
         String puzzleCase = "...x■....";
-        String expectedPuzzle = "...x■....";
+        String expectedPuzzle = "...x■■...";
         List<Integer> numbersToFind = List.of(2, 2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
@@ -96,7 +96,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
     @Test
     void closeWithAfterEmptyLastGapWithAmbiguousSituation2() {
         String puzzleCase = ".x■....";
-        String expectedPuzzle = ".x■....";
+        String expectedPuzzle = ".x■■...";
         List<Integer> numbersToFind = List.of(2, 2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
@@ -196,7 +196,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
     @Test
     void closeWithBeforeEmptyFirstGapWithAmbiguousSituation() {
         String puzzleCase = "....■x...";
-        String expectedPuzzle = "....■x...";
+        String expectedPuzzle = "...■■x...";
         List<Integer> numbersToFind = List.of(2, 2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
@@ -209,7 +209,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
     @Test
     void closeWithBeforeEmptyFirstGapWithAmbiguousSituation2() {
         String puzzleCase = "....■x.";
-        String expectedPuzzle = "....■x.";
+        String expectedPuzzle = "...■■x.";
         List<Integer> numbersToFind = List.of(2, 2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
@@ -262,6 +262,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundEnd = 0;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
+        numberCloser.closeWithOneEnd(puzzle, changes);
         numberCloser.closeWithOneEnd(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
