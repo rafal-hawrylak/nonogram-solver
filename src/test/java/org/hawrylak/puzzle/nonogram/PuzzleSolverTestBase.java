@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.solver.GapCloser;
 import org.hawrylak.puzzle.nonogram.solver.GapFiller;
-import org.hawrylak.puzzle.nonogram.solver.NumberCloser;
 
 public class PuzzleSolverTestBase {
 
@@ -14,8 +13,7 @@ public class PuzzleSolverTestBase {
     protected final NumberSelector numberSelector = new NumberSelector();
     protected final GapFinder gapFinder = new GapFinder();
     protected final GapFiller gapFiller = new GapFiller(fieldFinder, numberSelector, gapFinder);
-    protected final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
-    protected final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
+    protected final GapCloser gapCloser = new GapCloser(fieldFinder, gapFiller, numberSelector);
 
     protected final PuzzleStringConverter puzzleStringConverter = new PuzzleStringConverter();
 

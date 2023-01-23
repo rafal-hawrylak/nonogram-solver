@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 public class Utils {
 
@@ -80,5 +81,13 @@ public class Utils {
         newList.add(element);
         newList.addAll(elements);
         return newList;
+    }
+
+    public static int getStart(RowOrCol rowOrCol, int number, int c, int r, boolean startingFrom) {
+        if (startingFrom) {
+            return rowOrCol.horizontal ? c : r;
+        } else {
+            return rowOrCol.horizontal ? c - number + 1 : r - number + 1;
+        }
     }
 }

@@ -6,9 +6,12 @@ import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.solvers.CloseAllTheGapsIfAllFullMarkedSolver;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {
+
+    private CloseAllTheGapsIfAllFullMarkedSolver solver = new CloseAllTheGapsIfAllFullMarkedSolver(gapFinder, rowSelector, gapCloser);
 
     @Test
     void markSingle() {
@@ -18,7 +21,7 @@ public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         assertEachNumberIsFound(puzzle.rowsOrCols);
@@ -32,7 +35,7 @@ public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         assertEachNumberIsFound(puzzle.rowsOrCols);

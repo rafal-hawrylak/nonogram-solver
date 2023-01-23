@@ -2,9 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solvers.CloseAtEdgesSolver;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
+
+    private CloseAtEdgesSolver solver = new CloseAtEdgesSolver(rowSelector, gapFiller);
 
     @Test
     void closeAtEdgeWithOne() {
@@ -13,7 +16,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -26,7 +29,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -39,7 +42,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -52,7 +55,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -64,7 +67,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -77,7 +80,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -90,7 +93,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -103,7 +106,7 @@ public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeAtEdges(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }

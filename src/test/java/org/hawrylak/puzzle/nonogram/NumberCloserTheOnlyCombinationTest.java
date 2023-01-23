@@ -2,10 +2,13 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solvers.CloseTheOnlyCombinationSolver;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
 
+    private CloseTheOnlyCombinationSolver solver = new CloseTheOnlyCombinationSolver(gapFiller);
+    
     @Test
     void closeWithSingleOne() {
         String puzzleCase = ".";
@@ -14,7 +17,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -27,7 +30,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -40,7 +43,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -53,7 +56,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -66,7 +69,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -79,7 +82,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -92,7 +95,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -105,7 +108,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -118,7 +121,7 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeTheOnlyCombination(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }

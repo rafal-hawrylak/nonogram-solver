@@ -5,9 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solvers.TryToAssignNumberToFilledGapSolver;
 import org.junit.jupiter.api.Test;
 
 public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestBase {
+
+    private TryToAssignNumberToFilledGapSolver solver = new TryToAssignNumberToFilledGapSolver(gapFinder, numberSelector, gapFiller);
 
     @Test
     void tryToAssignNumberToFilledGap() {
@@ -17,7 +20,7 @@ public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestB
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapFiller.tryToAssignNumberToFilledGap(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(2).found);
@@ -31,7 +34,7 @@ public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestB
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapFiller.tryToAssignNumberToFilledGap(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         puzzle.rowsOrCols.get(0).numbersToFind.forEach(n -> assertFalse(n.found));
@@ -45,7 +48,7 @@ public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestB
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapFiller.tryToAssignNumberToFilledGap(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         puzzle.rowsOrCols.get(0).numbersToFind.forEach(n -> assertFalse(n.found));
@@ -59,7 +62,7 @@ public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestB
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapFiller.tryToAssignNumberToFilledGap(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
         assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(2).found);

@@ -1,5 +1,7 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
+import static org.hawrylak.puzzle.nonogram.Utils.getStart;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +45,13 @@ public class GapFiller {
             rowOrCol.solved = true;
             start += length + 1;
         }
+    }
+
+    public void fillTheNumberAtPosition(RowOrCol rowOrCol, NumberToFind numberToClose, int c, int r, boolean startingFrom, Puzzle puzzle,
+        ChangedInIteration changes) {
+        int start = getStart(rowOrCol, numberToClose.number, c, r, startingFrom);
+        var fakeGap = new Gap(rowOrCol, start, start + numberToClose.number - 1, numberToClose.number, Optional.empty());
+        fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changes);
     }
 
     public boolean fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
@@ -167,58 +176,6 @@ public class GapFiller {
         }
     }
 
-    /*
-      from  ■  x  .  .  ■  .  .  x  ■| 1 4 1
-      to    ■  x  .  ■  ■  ■  .  x  ■| 1 4 1
-      from  ■  x  x  x  ■  x  .  .  ■| 1 1 1 1
-      to    ■  x  x  x  ■  x  ■  x  ■| 1 1 1 1
-      from  ■  .  .  x  ■  x  x  x  ■| 1 1 1 1
-      to    ■  x  ■  x  ■  x  x  x  ■| 1 1 1 1
-     */
-    public void tryToFillGapsBetweenGapsWithKnownNumbers(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            var gaps = gapFinder.find(puzzle, rowOrCol);
-            var gapsWithoutNumbers = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
-            for (Gap gap : gapsWithoutNumbers) {
-                var previous = gapFinder.previous(gaps, gap);
-                var next = gapFinder.next(gaps, gap);
-                if ((previous.isEmpty() || previous.get().assignedNumber.isPresent()) && (next.isEmpty()
-                    || next.get().assignedNumber.isPresent())) {
-                    Optional<NumberToFind> numberPrevious = previous.isEmpty() ? Optional.empty() : previous.get().assignedNumber;
-                    Optional<NumberToFind> numberNext = next.isEmpty() ? Optional.empty() : next.get().assignedNumber;
-                    var numbersSubList = numberSelector.getNumbersBetween(rowOrCol.numbersToFind, numberPrevious, numberNext);
-                    // TODO numbersSubList can be trimmed from numbers that are found - should be done smart
-                    if (!numbersSubList.isEmpty()) {
-                        fillTheGapPartiallyForNNumbers(gap, numbersSubList, rowOrCol, puzzle, changes);
-                    }
-                }
-            }
-        }
-    }
-
-    public void tryToAssignNumberToFilledGap(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
-            var gaps = gapFinder.find(puzzle, rowOrCol);
-            for (Gap gap : gaps) {
-                if (gap.assignedNumber.isEmpty() && gap.filledSubGaps.size() == 1) {
-                    var subGap = gap.filledSubGaps.get(0);
-                    if (subGap.start == gap.start && subGap.end == gap.end) {
-                        var number = gap.length;
-                        var numbersMatchingNumber = numberSelector.getNotFound(rowOrCol.numbersToFind).stream()
-                            .filter(n -> n.number == number).toList();
-                        if (numbersMatchingNumber.size() == 1) {
-                            fillTheGapEntirely(gap, numbersMatchingNumber.get(0), rowOrCol, puzzle, changes);
-                            continue;
-                        }
-                        var allPossibleSplitsAtNumber = numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number);
-                        var gapMode = OnlyPossibleCombinationGapMode.builder().enabled(true).startingFrom(true).endingAt(true).build();
-                        findAndMarkTheOnlyPossibleCombinationForNumbers(puzzle, changes, rowOrCol, gaps, gap, allPossibleSplitsAtNumber, gapMode);
-                    }
-                }
-            }
-        }
-    }
-
     public boolean findAndMarkTheOnlyPossibleCombinationForNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol,
         List<Gap> gaps, Gap gap, List<NumberBeforeCurrentAndAfter> allPossibleSplitsAtNumber, OnlyPossibleCombinationGapMode gapMode) {
 
@@ -294,7 +251,8 @@ public class GapFiller {
             if (gap.start == subGapMode.subGap.start) {
                 previousAndCurrentGaps = previousGaps;
             } else {
-                var partialGapBeforeSubGap = new Gap(rowOrCol, gap.start, subGapMode.subGap.start - 1, subGapMode.subGap.start - gap.start, Optional.empty());
+                var partialGapBeforeSubGap = new Gap(rowOrCol, gap.start, subGapMode.subGap.start - 1, subGapMode.subGap.start - gap.start,
+                    Optional.empty());
                 previousAndCurrentGaps = Utils.mergeLists(previousGaps, partialGapBeforeSubGap);
             }
             return doAllNumbersFitInGaps(beforeAndCurrentNumber, previousAndCurrentGaps);
@@ -314,7 +272,8 @@ public class GapFiller {
             if (gap.end == subGapMode.subGap.end) {
                 nextAndCurrentGaps = nextGaps;
             } else {
-                var partialGapAfterSubGap = new Gap(rowOrCol, subGapMode.subGap.end + 1, gap.end, gap.end - subGapMode.subGap.end, Optional.empty());
+                var partialGapAfterSubGap = new Gap(rowOrCol, subGapMode.subGap.end + 1, gap.end, gap.end - subGapMode.subGap.end,
+                    Optional.empty());
                 nextAndCurrentGaps = Utils.mergeLists(partialGapAfterSubGap, nextGaps);
             }
             return doAllNumbersFitInGaps(afterAndCurrentNumber, nextAndCurrentGaps);

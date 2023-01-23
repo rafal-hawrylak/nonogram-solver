@@ -231,4 +231,9 @@ public class GapFinder {
         var spaceBetween = nextSubGap.start - subGap.end - 1;
         return spaceBetween >= number + 2; // + 2 for both "x" at ends
     }
+
+    public Optional<SubGap> getSubGapAtPosition(List<SubGap> filledSubGaps, boolean horizontal, int c, int r) {
+        var position = horizontal ? c : r;
+        return filledSubGaps.stream().filter(s -> s.start <= position).filter(s -> s.end >= position).findFirst();
+    }
 }

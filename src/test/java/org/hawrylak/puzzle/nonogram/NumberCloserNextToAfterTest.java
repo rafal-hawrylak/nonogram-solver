@@ -2,10 +2,13 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solvers.CloseWithOneEndSolver;
 import org.junit.jupiter.api.Test;
 
 class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
 
+    private CloseWithOneEndSolver solver = new CloseWithOneEndSolver(gapFinder, numberSelector, gapFiller);
+    
     @Test
     void closeWithAfterEmptyLastGapOfBiggerSize() {
         String puzzleCase = "...x■.";
@@ -13,7 +16,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -25,7 +28,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -37,7 +40,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -49,7 +52,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -62,7 +65,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -75,7 +78,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -88,7 +91,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -101,7 +104,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -113,7 +116,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -125,7 +128,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -137,7 +140,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -149,7 +152,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -162,7 +165,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -175,7 +178,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -188,7 +191,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -201,7 +204,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -214,7 +217,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -227,7 +230,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -246,7 +249,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 19;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -262,8 +265,8 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundEnd = 0;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -279,7 +282,7 @@ class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(4).foundEnd = 9;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        numberCloser.closeWithOneEnd(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }

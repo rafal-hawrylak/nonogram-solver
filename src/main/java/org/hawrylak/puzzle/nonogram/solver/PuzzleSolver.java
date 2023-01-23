@@ -1,6 +1,7 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.FieldFinder;
@@ -9,16 +10,30 @@ import org.hawrylak.puzzle.nonogram.NumberSelector;
 import org.hawrylak.puzzle.nonogram.RowSelector;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.solvers.CloseAllGapsBeforeFirstAndAfterLastFoundNumberSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseAllTheGapsIfAllFullMarkedSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseAtEdgesSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseTheOnlyCombinationSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseTooSmallToFitAnythingSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseTooSmallToFitFirstOrLastNumberSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseWhenAllNumbersAreFoundSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseWhenSingleGapWithNumbersNotFoundSolver;
+import org.hawrylak.puzzle.nonogram.solvers.CloseWithOneEndSolver;
+import org.hawrylak.puzzle.nonogram.solvers.ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumberSolver;
+import org.hawrylak.puzzle.nonogram.solvers.FillTheNumbersWithStartAndEndNotConnectedSolver;
+import org.hawrylak.puzzle.nonogram.solvers.FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundSolver;
+import org.hawrylak.puzzle.nonogram.solvers.FindUnmergableSubGapsForBiggestSolver;
+import org.hawrylak.puzzle.nonogram.solvers.FitTheBiggestNumbersInOnlyPossibleGapsSolver;
+import org.hawrylak.puzzle.nonogram.solvers.IfAllNumbersWontFitIntoSingleGapTryToFitThemSeparatelySolver;
+import org.hawrylak.puzzle.nonogram.solvers.MarkEndingsOfSubGapWhenThereIsNoBiggerNumberSolver;
+import org.hawrylak.puzzle.nonogram.solvers.MarkMinimalAndMaximalSubgapsSolver;
+import org.hawrylak.puzzle.nonogram.solvers.NarrowGapsBeforeFirstAndAfterLastSolver;
+import org.hawrylak.puzzle.nonogram.solvers.SecondSubGapMayBeClosedSolver;
+import org.hawrylak.puzzle.nonogram.solvers.Solver;
+import org.hawrylak.puzzle.nonogram.solvers.TryToAssignNumberToFilledGapSolver;
+import org.hawrylak.puzzle.nonogram.solvers.TryToFillGapsBetweenGapsWithKnownNumbersSolver;
 
 public class PuzzleSolver {
-
-    private final FieldFinder fieldFinder = new FieldFinder();
-    private final RowSelector rowSelector = new RowSelector();
-    private final NumberSelector numberSelector = new NumberSelector();
-    private final GapFinder gapFinder = new GapFinder();
-    private final GapFiller gapFiller = new GapFiller(fieldFinder, numberSelector, gapFinder);
-    private final GapCloser gapCloser = new GapCloser(fieldFinder, gapFinder, gapFiller, numberSelector);
-    private final NumberCloser numberCloser = new NumberCloser(fieldFinder, rowSelector, numberSelector, gapFinder, gapFiller, gapCloser);
 
     public boolean solve(Puzzle puzzle) {
 
@@ -27,6 +42,9 @@ public class PuzzleSolver {
         var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
         var iterationsToStopAfter = debug ? 200 : 100;
+
+        Map<String, Solver> solvers = getOrderedSolvers();
+
         while (changes.firstIteration() || changes.anyChange()) {
             if (hardStop && changes.getIteration() >= iterationsToStopAfter) {
                 break;
@@ -38,109 +56,17 @@ public class PuzzleSolver {
             // rules
             markRowsAsSolved(puzzle);
 
-            gapCloser.closeTooSmallToFitAnything(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeTooSmallToFitAnything");
-                continue;
+            var breakAndContinue = false;
+            for (String solverName : solvers.keySet()) {
+                var solver = solvers.get(solverName);
+                solver.apply(puzzle, changes);
+                if (changes.debugModeAndChangesDone()) {
+                    statsAndPrintDebug(puzzle, changes, stats, solverName);
+                    breakAndContinue = true;
+                    break;
+                }
             }
-            numberCloser.closeAtEdges(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeAtEdges");
-                continue;
-            }
-            numberCloser.closeWithOneEnd(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeWithOneEnd");
-                continue;
-            }
-            numberCloser.closeTheOnlyCombination(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeTheOnlyCombination");
-                continue;
-            }
-            gapCloser.closeWhenAllNumbersAreFound(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeWhenAllNumbersAreFound");
-                continue;
-            }
-            numberCloser.closeAllTheGapsIfAllFullMarked(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeAllTheGapsIfAllFullMarked");
-                continue;
-            }
-            numberCloser.fitTheBiggestNumbersInOnlyPossibleGaps(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "fitTheBiggestNumbersInOnlyPossibleGaps");
-                continue;
-            }
-            gapCloser.closeWhenSingleGapWithNumbersNotFound(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeWhenSingleGapWithNumbersNotFound");
-                continue;
-            }
-            gapCloser.closeAllGapsBeforeFirstAndAfterLastFoundNumber(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeAllGapsBeforeFirstAndAfterLastFoundNumber");
-                continue;
-            }
-            numberCloser.fillTheNumbersWithStartAndEndNotConnected(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "fillTheNumbersWithStartAndEndNotConnected");
-                continue;
-            }
-            gapCloser.narrowGapsBeforeFirstAndAfterLast(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "narrowGapsBeforeFirstAndAfterLast");
-                continue;
-            }
-            numberCloser.markEndingsOfSubGapWhenThereIsNoBiggerNumber(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "markEndingsOfSubGapWhenThereIsNoBiggerNumber");
-                continue;
-            }
-            gapCloser.findUnmergableSubGapsForBiggest(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "findUnmergableSubGapsForBiggest");
-                continue;
-            }
-            gapFiller.tryToFillGapsBetweenGapsWithKnownNumbers(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "tryToFillGapsBetweenGapsWithKnownNumbers");
-                continue;
-            }
-            gapFiller.tryToAssignNumberToFilledGap(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "tryToAssignNumberToFilledGap");
-                continue;
-            }
-            gapCloser.closeTooSmallToFitFirstOrLastNumber(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "closeTooSmallToFitFirstOrLastNumber");
-                continue;
-            }
-            gapCloser.findUnmergableSubGapsForBiggestForFirstAndLastNotFound(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "findUnmergableSubGapsForBiggestForFirstAndLastNotFound");
-                continue;
-            }
-            numberCloser.extendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "extendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber");
-                continue;
-            }
-            numberCloser.ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "ifAllNumbersWontFitIntoSingleGapTryToFitThemSeparately");
-                continue;
-            }
-            numberCloser.secondSubGapMayBeClosed(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "secondSubGapMayBeClosed");
-                continue;
-            }
-            numberCloser.markMinimalAndMaximalSubgaps(puzzle, changes);
-            if (changes.debugModeAndChangesDone()) {
-                statsAndPrintDebug(puzzle, changes, stats, "markMinimalAndMaximalSubgaps");
+            if (breakAndContinue) {
                 continue;
             }
 
@@ -152,6 +78,44 @@ public class PuzzleSolver {
             System.out.println("stats = " + stats.toString().replaceAll(",", System.lineSeparator()) + System.lineSeparator());
         }
         return isPuzzleSolved(puzzle);
+    }
+
+    private Map<String, Solver> getOrderedSolvers() {
+        FieldFinder fieldFinder = new FieldFinder();
+        RowSelector rowSelector = new RowSelector();
+        NumberSelector numberSelector = new NumberSelector();
+        GapFinder gapFinder = new GapFinder();
+        GapFiller gapFiller = new GapFiller(fieldFinder, numberSelector, gapFinder);
+        GapCloser gapCloser = new GapCloser(fieldFinder, gapFiller, numberSelector);
+
+        Map<String, Solver> solvers = new LinkedHashMap<>();
+        addSolver(solvers, new CloseTooSmallToFitAnythingSolver(gapFinder, gapCloser));
+        addSolver(solvers, new CloseAtEdgesSolver(rowSelector, gapFiller));
+        addSolver(solvers, new CloseWithOneEndSolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new CloseTheOnlyCombinationSolver(gapFiller));
+        addSolver(solvers, new CloseWhenAllNumbersAreFoundSolver(gapFinder, gapCloser));
+        addSolver(solvers, new CloseAllTheGapsIfAllFullMarkedSolver(gapFinder, rowSelector, gapCloser));
+        addSolver(solvers, new FitTheBiggestNumbersInOnlyPossibleGapsSolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new CloseWhenSingleGapWithNumbersNotFoundSolver(gapFinder, gapFiller));
+        addSolver(solvers, new CloseAllGapsBeforeFirstAndAfterLastFoundNumberSolver(gapFinder, gapCloser));
+        addSolver(solvers, new FillTheNumbersWithStartAndEndNotConnectedSolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new NarrowGapsBeforeFirstAndAfterLastSolver(gapFinder, gapCloser, numberSelector));
+        addSolver(solvers, new MarkEndingsOfSubGapWhenThereIsNoBiggerNumberSolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new FindUnmergableSubGapsForBiggestSolver(gapFinder, gapCloser, numberSelector));
+        addSolver(solvers, new TryToFillGapsBetweenGapsWithKnownNumbersSolver(gapFinder, gapFiller, numberSelector));
+        addSolver(solvers, new TryToAssignNumberToFilledGapSolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new CloseTooSmallToFitFirstOrLastNumberSolver(gapFinder, gapCloser, numberSelector));
+        addSolver(solvers, new FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundSolver(gapFinder, gapCloser, numberSelector));
+        addSolver(solvers, new ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumberSolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new IfAllNumbersWontFitIntoSingleGapTryToFitThemSeparatelySolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new SecondSubGapMayBeClosedSolver(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new MarkMinimalAndMaximalSubgapsSolver(gapFinder, numberSelector, gapFiller));
+
+        return solvers;
+    }
+
+    private void addSolver(Map<String, Solver> solvers, Solver solver) {
+        solvers.put(solver.getName(), solver);
     }
 
     private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, Map<String, Integer> stats, String debugHeader) {

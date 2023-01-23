@@ -2,9 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solvers.CloseTooSmallToFitAnythingSolver;
 import org.junit.jupiter.api.Test;
 
 public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
+
+    private CloseTooSmallToFitAnythingSolver solver = new CloseTooSmallToFitAnythingSolver(gapFinder, gapCloser);
 
     @Test
     void closeTooSmallToFitAnythingSingleBigGapWhenNumberNotFound() {
@@ -14,7 +17,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -28,7 +31,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -42,7 +45,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -56,7 +59,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -70,7 +73,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -83,7 +86,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -97,7 +100,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -111,7 +114,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -125,7 +128,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -139,7 +142,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -153,7 +156,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -167,7 +170,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -181,7 +184,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -195,7 +198,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -209,7 +212,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
@@ -223,7 +226,7 @@ public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
-        gapCloser.closeTooSmallToFitAnything(puzzle, changes);
+        solver.apply(puzzle, changes);
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
