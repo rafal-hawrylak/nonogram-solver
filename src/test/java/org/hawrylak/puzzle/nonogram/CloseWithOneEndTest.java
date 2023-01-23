@@ -5,7 +5,7 @@ import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.solver.CloseWithOneEnd;
 import org.junit.jupiter.api.Test;
 
-class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
+class CloseWithOneEndTest extends PuzzleSolverTestBase {
 
     private CloseWithOneEnd solver = new CloseWithOneEnd(gapFinder, numberSelector, gapFiller);
     
