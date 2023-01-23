@@ -2,12 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solvers.CloseTheOnlyCombinationSolver;
+import org.hawrylak.puzzle.nonogram.solver.CloseTheOnlyCombination;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
 
-    private CloseTheOnlyCombinationSolver solver = new CloseTheOnlyCombinationSolver(gapFiller);
+    private CloseTheOnlyCombination solver = new CloseTheOnlyCombination(gapFiller);
     
     @Test
     void closeWithSingleOne() {

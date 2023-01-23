@@ -2,12 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solvers.CloseTooSmallToFitAnythingSolver;
+import org.hawrylak.puzzle.nonogram.solver.CloseTooSmallToFitAnything;
 import org.junit.jupiter.api.Test;
 
 public class GapCloserToSmallToFitAnythingTest extends PuzzleSolverTestBase {
 
-    private CloseTooSmallToFitAnythingSolver solver = new CloseTooSmallToFitAnythingSolver(gapFinder, gapCloser);
+    private CloseTooSmallToFitAnything solver = new CloseTooSmallToFitAnything(gapFinder, gapCloser);
 
     @Test
     void closeTooSmallToFitAnythingSingleBigGapWhenNumberNotFound() {

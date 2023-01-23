@@ -5,12 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solvers.TryToAssignNumberToFilledGapSolver;
+import org.hawrylak.puzzle.nonogram.solver.TryToAssignNumberToFilledGap;
 import org.junit.jupiter.api.Test;
 
 public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestBase {
 
-    private TryToAssignNumberToFilledGapSolver solver = new TryToAssignNumberToFilledGapSolver(gapFinder, numberSelector, gapFiller);
+    private TryToAssignNumberToFilledGap solver = new TryToAssignNumberToFilledGap(gapFinder, numberSelector, gapFiller);
 
     @Test
     void tryToAssignNumberToFilledGap() {

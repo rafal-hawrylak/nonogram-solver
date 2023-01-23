@@ -2,12 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solvers.CloseWithOneEndSolver;
+import org.hawrylak.puzzle.nonogram.solver.CloseWithOneEnd;
 import org.junit.jupiter.api.Test;
 
 class NumberCloserNextToAfterTest extends PuzzleSolverTestBase {
 
-    private CloseWithOneEndSolver solver = new CloseWithOneEndSolver(gapFinder, numberSelector, gapFiller);
+    private CloseWithOneEnd solver = new CloseWithOneEnd(gapFinder, numberSelector, gapFiller);
     
     @Test
     void closeWithAfterEmptyLastGapOfBiggerSize() {

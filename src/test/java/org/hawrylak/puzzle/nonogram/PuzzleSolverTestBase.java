@@ -3,8 +3,12 @@ package org.hawrylak.puzzle.nonogram;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solver.GapCloser;
-import org.hawrylak.puzzle.nonogram.solver.GapFiller;
+import org.hawrylak.puzzle.nonogram.utils.FieldFinder;
+import org.hawrylak.puzzle.nonogram.utils.GapCloser;
+import org.hawrylak.puzzle.nonogram.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.utils.RowSelector;
 
 public class PuzzleSolverTestBase {
 

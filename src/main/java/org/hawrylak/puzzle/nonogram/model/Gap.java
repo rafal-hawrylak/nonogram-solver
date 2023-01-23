@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import org.hawrylak.puzzle.nonogram.Utils;
+import org.hawrylak.puzzle.nonogram.utils.Utils;
 
 @RequiredArgsConstructor
 @AllArgsConstructor

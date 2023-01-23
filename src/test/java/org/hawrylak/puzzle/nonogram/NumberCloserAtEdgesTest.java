@@ -2,12 +2,12 @@ package org.hawrylak.puzzle.nonogram;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solvers.CloseAtEdgesSolver;
+import org.hawrylak.puzzle.nonogram.solver.CloseAtEdges;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
 
-    private CloseAtEdgesSolver solver = new CloseAtEdgesSolver(rowSelector, gapFiller);
+    private CloseAtEdges solver = new CloseAtEdges(rowSelector, gapFiller);
 
     @Test
     void closeAtEdgeWithOne() {

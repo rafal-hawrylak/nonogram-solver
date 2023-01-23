@@ -6,12 +6,12 @@ import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.solvers.CloseAllTheGapsIfAllFullMarkedSolver;
+import org.hawrylak.puzzle.nonogram.solver.CloseAllTheGapsIfAllFullMarked;
 import org.junit.jupiter.api.Test;
 
 public class NumberCloserMarkAllNumbersFoundTest extends PuzzleSolverTestBase {
 
-    private CloseAllTheGapsIfAllFullMarkedSolver solver = new CloseAllTheGapsIfAllFullMarkedSolver(gapFinder, rowSelector, gapCloser);
+    private CloseAllTheGapsIfAllFullMarked solver = new CloseAllTheGapsIfAllFullMarked(gapFinder, rowSelector, gapCloser);
 
     @Test
     void markSingle() {
