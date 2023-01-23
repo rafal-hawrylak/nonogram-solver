@@ -1,5 +1,5 @@
 Backlog:
-- framework to run plugins
+- [done] framework to run plugins
 - fix failing/disabled tests
 - bug in FillTheNumbersWithStartAndEndNotConnectedSolver
 - order of solvers impact the result

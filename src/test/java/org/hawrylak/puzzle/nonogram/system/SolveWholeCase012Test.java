@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.utils.PuzzleSolver;
+import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.junit.jupiter.api.Test;
 
 public class SolveWholeCase012Test extends PuzzleSolverTestBase {
