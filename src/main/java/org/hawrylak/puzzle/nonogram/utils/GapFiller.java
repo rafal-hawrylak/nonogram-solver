@@ -53,7 +53,9 @@ public class GapFiller {
     public boolean fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
         if (rowOrCol.horizontal) {
             if (i >= 0 && i < puzzle.width) {
-                if (!state.equals(puzzle.fields[i][rowOrCol.number])) {
+                FieldState currentState = puzzle.fields[i][rowOrCol.number];
+                validateStateChange(changes, state, currentState);
+                if (!state.equals(currentState)) {
                     puzzle.fields[i][rowOrCol.number] = state;
                     changes.markChangeSingle(i, rowOrCol.number);
                     return true;
@@ -61,7 +63,9 @@ public class GapFiller {
             }
         } else {
             if (i >= 0 && i < puzzle.height) {
-                if (!state.equals(puzzle.fields[rowOrCol.number][i])) {
+                FieldState currentState = puzzle.fields[rowOrCol.number][i];
+                validateStateChange(changes, state, currentState);
+                if (!state.equals(currentState)) {
                     puzzle.fields[rowOrCol.number][i] = state;
                     changes.markChangeSingle(rowOrCol.number, i);
                     return true;
@@ -69,6 +73,15 @@ public class GapFiller {
             }
         }
         return false;
+    }
+
+    private static void validateStateChange(ChangedInIteration changes, FieldState state, FieldState currentState) {
+        if (FieldState.EMPTY.equals(state) && FieldState.FULL.equals(currentState)) {
+            throw new IllegalStateException("Changing state of the field from " + currentState + " to " + state + " is not allowed. iteration = " + changes.getIteration());
+        }
+        if (FieldState.EMPTY.equals(currentState) && FieldState.FULL.equals(state)) {
+            throw new IllegalStateException("Changing state of the field from " + currentState + " to " + state + " is not allowed. iteration = " + changes.getIteration());
+        }
     }
 
     public boolean fillTheGap(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
