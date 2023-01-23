@@ -40,6 +40,7 @@ public class PuzzlePrinter {
                 for (NumberToFind number : rows.get(r).numbersToFind) {
                     appendNumber(sb, number.found, " " + number.number);
                 }
+                appendChangedRowOrCol(sb, changes, rows.get(r));
             }
             sb.append("\n");
         }
@@ -49,12 +50,14 @@ public class PuzzlePrinter {
             if (!cols.isEmpty()) {
                 var maxHeight = cols.stream().map(c -> c.numbersToFind.size()).max(Integer::compareTo)
                     .get();
-                for (int h = 1; h <= maxHeight; h++) {
+                for (int h = 1; h <= maxHeight + 1; h++) {
                     sb.append(StringUtils.pad("", ' ', COL_WIDTH));
                     for (RowOrCol col : cols) {
                         if (col.numbersToFind.size() >= h) {
                             appendNumber(sb, col.numbersToFind.get(h - 1).found,
                                 StringUtils.pad("" + col.numbersToFind.get(h - 1).number, ' ', COL_WIDTH));
+                        } else if (col.numbersToFind.size() == h - 1 && appendChangedRowOrCol(sb, changes, col)) {
+
                         } else {
                             sb.append(StringUtils.pad("", ' ', COL_WIDTH));
                         }
@@ -64,6 +67,18 @@ public class PuzzlePrinter {
             }
         }
         return sb.toString();
+    }
+
+    private boolean appendChangedRowOrCol(StringBuilder sb, Optional<ChangedInIteration> changes, RowOrCol rowOrCol) {
+        if (changes.isPresent()) {
+            if (changes.get().changedRowsOrCols.contains(rowOrCol)) {
+                sb.append(Colors.ANSI_CYAN);
+                sb.append(StringUtils.pad("¤", ' ', COL_WIDTH));
+                sb.append(Colors.ANSI_RESET);
+                return true;
+            }
+        }
+        return false;
     }
 
     public String printCompact(Puzzle puzzle) {
