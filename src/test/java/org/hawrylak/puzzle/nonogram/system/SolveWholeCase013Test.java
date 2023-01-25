@@ -13,24 +13,33 @@ import org.junit.jupiter.api.Test;
 public class SolveWholeCase013Test extends PuzzleSolverTestBase {
 
     @Test
-    @Disabled("failing")
     void test() {
         String expectedPuzzle = """
-xxxxx■x■■xxxxxx
-xxxx■■■■■■■xxxx
-xxxx■■■■■■■xxxx
-xx■■■■■■■x■■■xx
-x■■■■■■■xxxx■■x
-■■x■■■■■xxxxx■■
-■xxx■■■■xxxxxx■
-■xxxxx■■■■■xxx■
-■xxxxxx■■■■■xx■
-■■xxxxxxxxx■■■■
-x■■■xxxxxxx■■■x
-x■■■■■■■■■■■■■x
-xx■■■■■■■■■■■xx
-xxx■■■■■■■■■xxx
-xxxxxxx■■■■xxxx""";
+xxxxxxxxxxx■■■x■■■xxxxxxx
+xxxxxxxxxxxx■■x■■■■xxxxxx
+xxxxxxxxxxxx■■■x■■■■x■xxx
+xxxxxxxxxxxxx■■■x■■■■■xxx
+xxxxxxxxxxxxxx■■x■■■■xxxx
+xxxxxxxxxxxxxxx■■x■■■xxxx
+xx■xxxxxxxxxxxx■■x■■■x■xx
+xx■■x■xxxxxxxxxx■x■■■■■xx
+xxx■■■xxxxxxxxxx■x■■■■xxx
+xxxx■■xxxxxxxxx■■x■■■xx■x
+xx■x■■xxxxxxxxx■x■■■■x■■x
+xx■■x■■xxxxxxx■■■■■■■■■xx
+xxx■■■■■xxxxx■■■■■■■■xxxx
+■■xx■■■■■■x■■■■■■■■xxxxxx
+x■■■■■■■■■■■■■■xxxxxxxxxx
+x■■■■xxxx■■■■xxxxxxxxxxxx
+■■xxxxx■■■■■x■■■xxxxxxxxx
+xxxxxx■■■■■■■■■xxxxxxxxxx
+xxxx■■■x■■■■■■xxxxxxxx■■■
+x■■■■■■■■■■■■■■■■xxx■■■■■
+■■■■■■■■■■■■■■■■■■■■■■■■■
+■■■■■■■■■■■■■x■■■■■■■■■■■
+■■■■■■■■■■x■■x■■■■■■■■■■■
+x■■xx■■■■x■■■■x■■■■■■■■■■
+xxxxxxxxxxx■■■■■■■■■■■■■■""";
         Puzzle puzzle = getTestPuzzle12ProfessionalLevel1();
         print("before", puzzle);
 

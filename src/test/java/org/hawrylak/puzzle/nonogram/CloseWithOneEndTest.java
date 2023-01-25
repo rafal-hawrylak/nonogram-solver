@@ -1,5 +1,7 @@
 package org.hawrylak.puzzle.nonogram;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.solver.CloseWithOneEnd;
@@ -287,4 +289,33 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         assertPuzzle(puzzle, expectedPuzzle);
     }
 
+    @Test
+    void case01FromSolveWholeCase013Test() {
+        String puzzleCase =     "xx.■.■■xxxx..x.■..■■■...x";
+        String expectedPuzzle = "xx.■x■■xxxx..x.■..■■■...x";
+        List<Integer> numbersToFind = List.of(2, 2, 9);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        solver.apply(puzzle, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
+
+    @Test
+    void case02FromSolveWholeCase013Test() {
+        String puzzleCase =     "xx.■x■■xxxx..x.■..■■■...x";
+        String expectedPuzzle = "xx■■x■■xxxx..x.■..■■■...x";
+        List<Integer> numbersToFind = List.of(2, 2, 9);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        puzzle.rowsOrCols.get(0).numbersToFind.get(1).found = true;
+        puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundStart = 6;
+        puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundEnd = 7;
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        solver.apply(puzzle, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+        assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(1).found);
+    }
 }

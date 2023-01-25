@@ -67,5 +67,4 @@ public class GapFillerTryToAssignNumberToFilledGapTest extends PuzzleSolverTestB
         assertPuzzle(puzzle, expectedPuzzle);
         assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(2).found);
     }
-
 }
