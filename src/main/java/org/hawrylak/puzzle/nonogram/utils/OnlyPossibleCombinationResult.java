@@ -3,10 +3,12 @@ package org.hawrylak.puzzle.nonogram.utils;
 import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 
 @Getter
 @Builder
+@ToString
 public class OnlyPossibleCombinationResult {
 
     private NumberToFind number;
