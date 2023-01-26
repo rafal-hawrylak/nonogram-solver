@@ -32,6 +32,8 @@ xxxxxx■■xx""";
         print("after", puzzle);
         assertTrue(solved);
         assertPuzzle(puzzle, expectedPuzzle);
+
+        System.out.println(puzzle.compact());
     }
     private Puzzle getTestPuzzle3() {
         var width = 10;

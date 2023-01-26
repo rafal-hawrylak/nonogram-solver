@@ -54,6 +54,8 @@ x■xx■xx■x■x■■xx■xxx■
         print("after", puzzle);
         assertTrue(solved);
         assertPuzzle(puzzle, expectedPuzzle);
+
+        System.out.println(puzzle.compact());
     }
 
     private Puzzle getTestPuzzle17ProfessionalLevel2() {
