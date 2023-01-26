@@ -13,10 +13,33 @@ import org.junit.jupiter.api.Test;
 public class SolveWholeCase020Test extends PuzzleSolverTestBase {
 
     @Test
-    @Disabled("waiting for MarkMinimalAndMaximalSubgaps implementation")
     void test() {
         String expectedPuzzle = """
-""";
+■■■■■xxxx■■■■xxxxxxxxxxxxxxxxxxxxxx
+■■■x■■xx■■x■■■xxxxxxxxxxxxxxxxxxxxx
+■■x■x■xx■x■x■■xxxxxxxxxxxxxxxxxxxxx
+■xxxx■xx■xxxx■xxxxxxxxxxxxxxxxxxxxx
+■■xx■xxxx■xx■xxxxxxxxxxxxxxxxxxxxxx
+x■x■xxxxxx■■xxxxx■■■■■■■■■xxxxxxxxx
+x■■■xxxxx■■■■xxx■■xxxxxxx■xxxxxxxxx
+■■■■■xxxx■■x■xx■■x■x■x■xx■xxxxxxxxx
+x■■■■■xxx■■x■x■■xxx■x■xx■■■■■■■■■■x
+x■■■x■■■x■■x■x■■xxxxxxx■■xxxxxxx■■x
+■x■■xxxxx■■■■■■■■■■■xx■■xxxxx■■■■■x
+x■x■xx■■■■■■■■■■■■■■■■■■xx■■■■■■■■x
+x■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■xxx■
+x■■■■■xxxxx■■■■■■■■■■■■■x■xx■■xx■■x
+■■■■■x■x■x■x■■xxxxx■■■■■x■■■■xx■■xx
+■■■■■x■x■x■x■xx■■■xx■■■■x■■■■x■■■■x
+■■x■■x■x■x■x■x■■■■■xx■■■x■■■■x■■x■x
+■xx■x■■■■■■■■■■■■■■■x■■■■■xxxx■■x■x
+■xx■xxxxxx■■■■■■■x■■xx■xxxx■■■■■■■x
+■■x■■■■■■xxxx■■■xxx■■xxx■■■■xxx■■xx
+■■■■■xxx■■■■■■■■xxx■■■■■■xxxxxxxxxx
+■■■■■xxxxxxxx■■■■x■■xxxxxxxxxxxxxxx
+x■■■xxxxxxxxx■■■■■■■xxxxxxxxxxxxxxx
+xxxxxxxxxxxxxx■■■■■xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxx■■■xxxxxxxxxxxxxxxxx""";
         Puzzle puzzle = getTestPuzzle19ProfessionalLevel2();
         print("before", puzzle);
 

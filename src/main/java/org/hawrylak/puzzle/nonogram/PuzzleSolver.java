@@ -15,7 +15,7 @@ public class PuzzleSolver {
         Map<String, Integer> stats = new HashMap<>();
         var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
-        var iterationsToStopAfter = debug ? 200 : 100;
+        var iterationsToStopAfter = debug ? 250 : 100;
 
         Map<String, Solver> solvers = new OriginalOrderSolversProvider().provide();
 
