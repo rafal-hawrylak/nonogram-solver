@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class SolveWholeCase020Test extends PuzzleSolverTestBase {
 
     @Test
-    @Disabled("not finishing")
+    @Disabled("waiting for MarkMinimalAndMaximalSubgaps implementation")
     void test() {
         String expectedPuzzle = """
 """;

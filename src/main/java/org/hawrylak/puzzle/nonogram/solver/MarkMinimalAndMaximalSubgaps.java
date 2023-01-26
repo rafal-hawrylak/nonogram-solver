@@ -2,8 +2,11 @@ package org.hawrylak.puzzle.nonogram.solver;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.model.Gap;
+import org.hawrylak.puzzle.nonogram.model.SubGap;
 import org.hawrylak.puzzle.nonogram.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
@@ -13,6 +16,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.utils.GapFiller;
 import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationGapMode;
 import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationSubGapMode;
+import org.hawrylak.puzzle.nonogram.utils.Utils;
 
 @AllArgsConstructor
 public class MarkMinimalAndMaximalSubgaps implements Solver {
@@ -44,44 +48,53 @@ public class MarkMinimalAndMaximalSubgaps implements Solver {
             var result = gapFiller.findTheOnlyPossibleCombinationForNumbers(
                 rowOrCol, unassignedGaps, gap, allPossibleSplitsAtNumber, OnlyPossibleCombinationGapMode.NO, subGapMode);
             // TODO is value useful?
-            if (result.isNone() || result.isValue()) {
-                continue;
+            if (result.isNumber()) {
+                var theOnlyNumberMatching = result.getNumber();
+
+                var previousSubGaps = Utils.allPrevious(subGaps, maxSubGap);
+                var previousNumbers = Utils.allPrevious(notFoundNumbers, theOnlyNumberMatching);
+                if (!previousSubGaps.isEmpty()) {
+                    var previousSubGap = Utils.previous(subGaps, maxSubGap).get();
+                    var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, previousSubGap, maxSubGap);
+                    if (mergeable) {
+                        if (maxSubGap.length == theOnlyNumberMatching.number) {
+                            var fakeGap = new Gap(rowOrCol, maxSubGap.start, maxSubGap.end, maxSubGap.length, Optional.empty());
+                            gapFiller.fillTheGapEntirely(fakeGap, theOnlyNumberMatching, rowOrCol, puzzle, changes);
+                            return;
+                        }
+                        previousSubGaps.remove(previousSubGap);
+                    }
+                    var maxPreviousNumber = previousNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
+                    for (SubGap subGap : previousSubGaps) {
+                        if (subGap.length == maxPreviousNumber.number) {
+                            var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
+                            gapFiller.fillTheGapEntirelyWithNumberUnknown(fakeGap, rowOrCol, puzzle, changes);
+                        }
+                    }
+                }
+
+                var nextSubGaps = Utils.allNext(subGaps, maxSubGap);
+                var nextNumbers = Utils.allNext(notFoundNumbers, theOnlyNumberMatching);
+                if (!nextSubGaps.isEmpty()) {
+                    var nextSubGap = Utils.next(subGaps, maxSubGap).get();
+                    var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, maxSubGap, nextSubGap);
+                    if (mergeable) {
+                        if (maxSubGap.length == theOnlyNumberMatching.number) {
+                            var fakeGap = new Gap(rowOrCol, maxSubGap.start, maxSubGap.end, maxSubGap.length, Optional.empty());
+                            gapFiller.fillTheGapEntirely(fakeGap, theOnlyNumberMatching, rowOrCol, puzzle, changes);
+                            return;
+                        }
+                        nextSubGaps.remove(nextSubGap);
+                    }
+                    var maxNextNumber = nextNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
+                    for (SubGap subGap : nextSubGaps) {
+                        if (subGap.length == maxNextNumber.number) {
+                            var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
+                            gapFiller.fillTheGapEntirelyWithNumberUnknown(fakeGap, rowOrCol, puzzle, changes);
+                        }
+                    }
+                }
             }
-//            var theOnlyNumberMatching = result.getNumber();
-//
-//            var previousSubGaps = Utils.allPrevious(subGaps, maxSubGap);
-//            var previousNumbers = Utils.allPrevious(notFoundNumbers, theOnlyNumberMatching);
-//            if (!previousSubGaps.isEmpty()) {
-//                var previousSubGap = Utils.previous(subGaps, maxSubGap).get();
-//                var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, previousSubGap, maxSubGap);
-//                if (mergeable) {
-//                    previousSubGaps.remove(previousSubGap);
-//                }
-//                var maxPreviousNumber = previousNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
-//                for (SubGap subGap : previousSubGaps) {
-//                    if (subGap.length == maxPreviousNumber.number) {
-//                        var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
-//                        gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-//                    }
-//                }
-//            }
-//
-//            var nextSubGaps = Utils.allNext(subGaps, maxSubGap);
-//            var nextNumbers = Utils.allNext(notFoundNumbers, theOnlyNumberMatching);
-//            if (!nextSubGaps.isEmpty()) {
-//                var nextSubGap = Utils.next(subGaps, maxSubGap).get();
-//                var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, maxSubGap, nextSubGap);
-//                if (mergeable) {
-//                    nextSubGaps.remove(nextSubGap);
-//                }
-//                var maxNextNumber = nextNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
-//                for (SubGap subGap : nextSubGaps) {
-//                    if (subGap.length == maxNextNumber.number) {
-//                        var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
-//                        gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
-//                    }
-//                }
-//            }
         }
     }
 }

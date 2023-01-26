@@ -32,6 +32,12 @@ public class GapFiller {
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
     }
 
+    public void fillTheGapEntirelyWithNumberUnknown(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+        fillTheGap(gap, rowOrCol, puzzle, changes);
+        fillSingleField(rowOrCol, puzzle, changes, gap.start - 1, FieldState.EMPTY);
+        fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
+    }
+
     public void fillTheGapEntirelyWithNumbers(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol,
         List<NumberToFind> numbersToClose, int start) {
         for (NumberToFind numberToClose : numbersToClose) {
