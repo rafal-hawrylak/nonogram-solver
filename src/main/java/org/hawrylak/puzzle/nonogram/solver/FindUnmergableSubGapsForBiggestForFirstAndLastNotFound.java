@@ -25,15 +25,16 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound implements S
             var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
             if (firstGap.isPresent() && firstNumber.isPresent()) {
                 if (firstGap.get().filledSubGaps.size() >= 2) {
-                    var subGap = firstGap.get().filledSubGaps.get(0);
+                    var firstSubGap = firstGap.get().filledSubGaps.get(0);
                     var nextSubGap = firstGap.get().filledSubGaps.get(1);
-                    var missingNumberPart = firstNumber.get().number - subGap.length;
+                    var missingNumberPart = firstNumber.get().number - firstSubGap.length;
                     if (missingNumberPart >= 0) {
-                        if (subGap.start - firstGap.get().start > missingNumberPart) {
-                            boolean mergeable = gapFinder.areSubGapsMergeable(firstNumber.get().number, subGap, nextSubGap);
-                            var onlySingleFieldBetweenSubGaps = subGap.end + 2 == nextSubGap.start;
+                        if (firstSubGap.start - firstGap.get().start >= missingNumberPart &&
+                            firstSubGap.start - firstGap.get().start <= firstNumber.get().number) {
+                            boolean mergeable = gapFinder.areSubGapsMergeable(firstNumber.get().number, firstSubGap, nextSubGap);
+                            var onlySingleFieldBetweenSubGaps = firstSubGap.end + 2 == nextSubGap.start;
                             if (!mergeable && onlySingleFieldBetweenSubGaps) {
-                                var fakeGap = new Gap(rowOrCol, subGap.end + 1, subGap.end + 1, 1, Optional.empty());
+                                var fakeGap = new Gap(rowOrCol, firstSubGap.end + 1, firstSubGap.end + 1, 1, Optional.empty());
                                 gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                             }
                         }
@@ -45,13 +46,14 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound implements S
             var lastNumber = numberSelector.getLastNotFound(rowOrCol.numbersToFind);
             if (lastGap.isPresent() && lastNumber.isPresent()) {
                 if (lastGap.get().filledSubGaps.size() >= 2) {
-                    var subGap = Utils.getLast(lastGap.get().filledSubGaps).get();
-                    var prevSubGap = Utils.previous(lastGap.get().filledSubGaps, subGap).get();
-                    var missingNumberPart = lastNumber.get().number - subGap.length;
+                    var lastSubGap = Utils.getLast(lastGap.get().filledSubGaps).get();
+                    var prevSubGap = Utils.previous(lastGap.get().filledSubGaps, lastSubGap).get();
+                    var missingNumberPart = lastNumber.get().number - lastSubGap.length;
                     if (missingNumberPart >= 0) {
-                        if (lastGap.get().end - subGap.end > missingNumberPart) {
-                            boolean mergeable = gapFinder.areSubGapsMergeable(lastNumber.get().number, prevSubGap, subGap);
-                            var onlySingleFieldBetweenSubGaps = prevSubGap.end + 2 == subGap.start;
+                        if (lastGap.get().end - lastSubGap.end >= missingNumberPart &&
+                            lastGap.get().end - lastSubGap.end <= lastNumber.get().number) {
+                            boolean mergeable = gapFinder.areSubGapsMergeable(lastNumber.get().number, prevSubGap, lastSubGap);
+                            var onlySingleFieldBetweenSubGaps = prevSubGap.end + 2 == lastSubGap.start;
                             if (!mergeable && onlySingleFieldBetweenSubGaps) {
                                 var fakeGap = new Gap(rowOrCol, prevSubGap.end + 1, prevSubGap.end + 1, 1, Optional.empty());
                                 gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
