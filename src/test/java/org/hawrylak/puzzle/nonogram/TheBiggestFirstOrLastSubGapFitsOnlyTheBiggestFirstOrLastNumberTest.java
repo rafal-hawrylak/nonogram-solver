@@ -257,4 +257,56 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
+
+    @Test
+    void realCase01() {
+        String puzzleCase = "..................■...........";
+        String expectedPuzzle = "..................■...........";
+        List<Integer> numbersToFind = List.of(5,6);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        solver.apply(puzzle, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
+
+    @Test
+    void realCase02() {
+        String puzzleCase = "...................■..........";
+        String expectedPuzzle = "...................■..........";
+        List<Integer> numbersToFind = List.of(5,6);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        solver.apply(puzzle, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
+
+    @Test
+    void realCase03() {
+        String puzzleCase = "....................■.........";
+        String expectedPuzzle = "....................■.........";
+        List<Integer> numbersToFind = List.of(5,6);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        solver.apply(puzzle, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
+
+    @Test
+    void realCase04() {
+        String puzzleCase = ".....................■........";
+        String expectedPuzzle = ".....................■........";
+        List<Integer> numbersToFind = List.of(5,6);
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        solver.apply(puzzle, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
 }

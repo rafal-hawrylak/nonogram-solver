@@ -22,6 +22,7 @@ import org.hawrylak.puzzle.nonogram.solver.MarkMinimalAndMaximalSubgaps;
 import org.hawrylak.puzzle.nonogram.solver.NarrowGapsBeforeFirstAndAfterLast;
 import org.hawrylak.puzzle.nonogram.solver.SecondSubGapMayBeClosed;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
+import org.hawrylak.puzzle.nonogram.solver.TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber;
 import org.hawrylak.puzzle.nonogram.solver.TryToAssignNumberToFilledGap;
 import org.hawrylak.puzzle.nonogram.solver.TryToFillGapsBetweenGapsWithKnownNumbers;
 import org.hawrylak.puzzle.nonogram.utils.FieldFinder;
@@ -64,6 +65,7 @@ public class OriginalOrderSolversProvider implements SolversProvider {
         addSolver(solvers, new IfAllNumbersWontFitIntoSingleGapTryToFitThemSeparately(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new SecondSubGapMayBeClosed(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new MarkMinimalAndMaximalSubgaps(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber(gapFinder, numberSelector, gapFiller));
 
         return solvers;
     }

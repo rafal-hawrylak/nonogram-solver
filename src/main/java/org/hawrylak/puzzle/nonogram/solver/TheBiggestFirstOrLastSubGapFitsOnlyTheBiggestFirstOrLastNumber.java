@@ -72,18 +72,18 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber impl
             return true;
         }
         var size = sumFieldsUpToNumber(allNumbersNotFound, firstNumberMatchingTheSize.get());
-        var allowedSize = biggestSubGap.end - firstGap.start + 1;
+        var allowedSize = biggestSubGap.start - firstGap.start;
         return size > allowedSize;
     }
 
     private boolean isTheLastNumberTheOnlyMatch(Gap lastGap, SubGap biggestSubGap, List<NumberToFind> allNumbersNotFound,
         NumberToFind lastNumberNotFound) {
-        var lastNumberMatchingTheSize = findFirstNumberMatchingTheSize(Utils.reverse(numberSelector.allNext(allNumbersNotFound, lastNumberNotFound)), biggestSubGap.length);
+        var lastNumberMatchingTheSize = findFirstNumberMatchingTheSize(Utils.reverse(numberSelector.allPrevious(allNumbersNotFound, lastNumberNotFound)), biggestSubGap.length);
         if (lastNumberMatchingTheSize.isEmpty()) {
             return true;
         }
         var size = sumFieldsUpToNumber(Utils.reverse(allNumbersNotFound), lastNumberMatchingTheSize.get());
-        var allowedSize = lastGap.end - biggestSubGap.start + 1;
+        var allowedSize = lastGap.end - biggestSubGap.end;
         return size > allowedSize;
     }
 
@@ -92,13 +92,15 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber impl
     }
 
     private int sumFieldsUpToNumber(List<NumberToFind> numbers, NumberToFind lastNumber) {
-        var sum = 1;
+        var sum = 0;
+        var numbersSummed = 0;
         for (var number : numbers) {
-            sum += number.number + 1;
             if (number.equals(lastNumber)) {
                 break;
             }
+            numbersSummed++;
+            sum += number.number;
         }
-        return sum - 1;
+        return sum + numbersSummed - 1;
     }
 }
