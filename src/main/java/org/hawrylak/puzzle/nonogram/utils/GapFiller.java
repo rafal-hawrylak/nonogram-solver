@@ -163,6 +163,25 @@ public class GapFiller {
         if (numbers.size() == 1 && gap.filledSubGaps.size() == 2) {
             mergeSubGaps(puzzle, changes, rowOrCol, gap, numbers.get(0), true);
         }
+        if (numbers.size() == 2 && gap.filledSubGaps.size() == 1) {
+            var firstNumber = numbers.get(0);
+            var secondNumber = numbers.get(1);
+            var subGap = gap.filledSubGaps.get(0);
+            var fromGapStartToSubGapStart = subGap.start - gap.start + 1;
+            var fromGapStartToSubGapEnd = subGap.end - gap.start + 1;
+            if (fromGapStartToSubGapStart > firstNumber.number && fromGapStartToSubGapStart < firstNumber.number + 2) {
+                var howManyToMark = fromGapStartToSubGapEnd - firstNumber.number;
+                var fakeGap = new Gap(rowOrCol, gap.start, gap.start + howManyToMark - 1, howManyToMark, Optional.empty());
+                fillTheGap(fakeGap, FieldState.EMPTY, rowOrCol, puzzle, changes);
+            }
+            var fromSubGapEndToGapEnd = gap.end - subGap.end + 1;
+            var fromSubGapStartToGapEnd = gap.end - subGap.start + 1;
+            if (fromSubGapEndToGapEnd > secondNumber.number && fromSubGapEndToGapEnd < secondNumber.number + 2) {
+                var howManyToMark = fromSubGapStartToGapEnd - secondNumber.number;
+                var fakeGap = new Gap(rowOrCol, gap.end - howManyToMark + 1, gap.end, howManyToMark, Optional.empty());
+                fillTheGap(fakeGap, FieldState.EMPTY, rowOrCol, puzzle, changes);
+            }
+        }
         if (numbers.size() == 2 && gap.filledSubGaps.size() == 2) {
             var firstNumber = numbers.get(0);
             var secondNumber = numbers.get(1);
