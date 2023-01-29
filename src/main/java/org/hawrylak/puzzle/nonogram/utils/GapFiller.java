@@ -89,9 +89,13 @@ public class GapFiller {
     }
 
     public boolean fillTheGap(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+        return fillTheGap(gap, FieldState.FULL, rowOrCol, puzzle, changes);
+    }
+
+    public boolean fillTheGap(Gap gap, FieldState state, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         var anyFilled = false;
         for (int i = gap.start; i <= gap.end; i++) {
-            var filled = fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
+            var filled = fillSingleField(rowOrCol, puzzle, changes, i, state);
             anyFilled = anyFilled || filled;
         }
         return anyFilled;
