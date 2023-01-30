@@ -66,7 +66,7 @@ public class OriginalOrderSolversProvider implements SolversProvider {
         addSolver(solvers, new IfAllNumbersWontFitIntoSingleGapTryToFitThemSeparately(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new SecondSubGapMayBeClosed(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new MarkMinimalAndMaximalSubgaps(gapFinder, numberSelector, gapFiller));
-//        addSolver(solvers, new TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new TryToNarrowGapsBetweenGapsWithKnownNumbers(gapFinder, gapFiller, numberSelector));
 
         return solvers;

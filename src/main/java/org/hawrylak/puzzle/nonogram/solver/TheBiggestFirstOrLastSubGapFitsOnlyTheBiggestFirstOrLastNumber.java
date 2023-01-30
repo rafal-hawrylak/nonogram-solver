@@ -37,9 +37,9 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber impl
             var biggestNumberNotFound = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
             var biggestSubGap = gapsWithoutAssignedNumber.stream().flatMap(g -> g.filledSubGaps.stream())
                 .max(Comparator.comparingInt(s -> s.length));
-            var firstGap = gapsWithoutAssignedNumber.get(0);
-            var lastGap = Utils.getLast(gapsWithoutAssignedNumber).get();
             if (biggestSubGap.isPresent()) {
+                var firstGap = gapsWithoutAssignedNumber.get(0);
+                var lastGap = Utils.getLast(gapsWithoutAssignedNumber).get();
                 var firstSubGapOptional = Utils.getFirst(firstGap.filledSubGaps);
                 var lastSubGapOptional = Utils.getLast(lastGap.filledSubGaps);
                 if (firstSubGapOptional.isPresent() && biggestSubGap.get().equals(firstSubGapOptional.get())

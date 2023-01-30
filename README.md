@@ -1,7 +1,7 @@
 Backlog:
 - [done] framework to run plugins
 - [done] fix failing/disabled tests
-- fix TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber
+- [done] fix TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber
 - skip solved rows and cols
 - solve SolveWholeCase021Test
 - solve SolveWholeCase020Test
