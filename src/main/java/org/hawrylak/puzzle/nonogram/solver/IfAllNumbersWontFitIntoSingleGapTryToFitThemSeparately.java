@@ -17,7 +17,7 @@ public class IfAllNumbersWontFitIntoSingleGapTryToFitThemSeparately implements S
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var gaps = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
             var numbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
             var sum = numberSelector.sum(numbers);

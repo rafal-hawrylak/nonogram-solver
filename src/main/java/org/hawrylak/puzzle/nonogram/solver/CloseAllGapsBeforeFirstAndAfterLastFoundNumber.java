@@ -28,7 +28,7 @@ public class CloseAllGapsBeforeFirstAndAfterLastFoundNumber implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             if (rowOrCol.numbersToFind.isEmpty()) {
                 continue;
             }

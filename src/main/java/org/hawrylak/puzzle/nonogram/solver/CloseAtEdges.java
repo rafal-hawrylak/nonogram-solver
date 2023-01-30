@@ -37,6 +37,9 @@ public class CloseAtEdges implements Solver {
     }
 
     private void tryToCloseFromEdge(Puzzle puzzle, ChangedInIteration changes, int i, RowOrCol rowOrCol, boolean fromStart) {
+        if (rowOrCol.solved) {
+            return;
+        }
         boolean hasNumbers = !rowOrCol.numbersToFind.isEmpty();
         var indexOfNumber = fromStart ? 0 : rowOrCol.numbersToFind.size() - 1;
         if (hasNumbers && !rowOrCol.numbersToFind.get(indexOfNumber).found) {

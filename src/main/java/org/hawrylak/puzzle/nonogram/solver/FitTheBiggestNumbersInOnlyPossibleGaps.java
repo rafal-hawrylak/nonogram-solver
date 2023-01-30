@@ -30,7 +30,7 @@ public class FitTheBiggestNumbersInOnlyPossibleGaps implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var notClosedGaps = gapFinder.find(puzzle, rowOrCol).stream().filter(g -> g.assignedNumber.isEmpty()).toList();
             var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
             if (!biggestNumbers.isEmpty()) {

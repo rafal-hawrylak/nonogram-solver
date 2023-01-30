@@ -20,7 +20,7 @@ public class SecondSubGapMayBeClosed implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
             if (firstGap.isEmpty()) {
                 continue;

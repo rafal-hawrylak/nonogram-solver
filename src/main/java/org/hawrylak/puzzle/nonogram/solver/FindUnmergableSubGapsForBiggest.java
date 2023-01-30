@@ -19,7 +19,7 @@ public class FindUnmergableSubGapsForBiggest implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var biggestNotFound = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
             if (biggestNotFound.isEmpty()) {
                 continue;

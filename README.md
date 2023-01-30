@@ -2,7 +2,8 @@ Backlog:
 - [done] framework to run plugins
 - [done] fix failing/disabled tests
 - [done] fix TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber
-- skip solved rows and cols
+- [done] skip solved rows and cols
+- implement filling the gap if the only matching
 - solve SolveWholeCase021Test
 - solve SolveWholeCase020Test
 - bug in FillTheNumbersWithStartAndEndNotConnectedSolver

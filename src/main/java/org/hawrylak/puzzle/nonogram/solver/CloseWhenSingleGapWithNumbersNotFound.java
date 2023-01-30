@@ -35,7 +35,7 @@ public class CloseWhenSingleGapWithNumbersNotFound implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
             var gapsWithoutFoundNumbers = gaps.stream().filter(gap -> gap.assignedNumber.isEmpty()).toList();
             if (gapsWithoutFoundNumbers.size() == 1) {

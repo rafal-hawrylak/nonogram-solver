@@ -3,6 +3,7 @@ package org.hawrylak.puzzle.nonogram.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.PuzzlePrinter;
 
@@ -58,5 +59,9 @@ public class Puzzle {
 
     public String compact() {
         return puzzlePrinter.printCompact(this);
+    }
+
+    public Iterable<? extends RowOrCol> getUnsolvedRowsOrCols() {
+        return this.rowsOrCols.stream().filter(roc -> !roc.solved).collect(Collectors.toUnmodifiableList());
     }
 }

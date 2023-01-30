@@ -27,7 +27,7 @@ public class MarkMinimalAndMaximalSubgaps implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var unassignedGaps = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
             if (unassignedGaps.isEmpty()) {
                 continue;

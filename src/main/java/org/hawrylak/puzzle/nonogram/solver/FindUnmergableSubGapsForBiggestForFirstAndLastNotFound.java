@@ -20,7 +20,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound implements S
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
             var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
             if (firstGap.isPresent() && firstNumber.isPresent()) {

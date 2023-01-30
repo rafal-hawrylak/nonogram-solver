@@ -17,7 +17,7 @@ public class CloseTooSmallToFitAnything implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             closeTooSmallToFitAnything(puzzle, changes, rowOrCol);
         }
     }

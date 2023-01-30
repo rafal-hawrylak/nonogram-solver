@@ -35,7 +35,7 @@ public class FillTheNumbersWithStartAndEndNotConnected implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var firstNotFound = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
             if (firstNotFound.isPresent()) {
                 var gap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol).get();

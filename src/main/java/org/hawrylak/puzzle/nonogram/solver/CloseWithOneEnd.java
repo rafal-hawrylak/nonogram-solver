@@ -44,6 +44,9 @@ public class CloseWithOneEnd implements Solver {
     }
 
     private void tryToCloseFromEmpty(RowOrCol rowOrCol, int c, int r, Puzzle puzzle, ChangedInIteration changes) {
+        if (rowOrCol.solved) {
+            return;
+        }
         if (rowOrCol.horizontal) {
             tryToCloseFromFullNextToEmpty(rowOrCol, c - 1, r, false, puzzle, changes);
             tryToCloseFromFullNextToEmpty(rowOrCol, c + 1, r, true, puzzle, changes);

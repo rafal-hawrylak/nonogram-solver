@@ -28,7 +28,7 @@ public class TryToFillGapsBetweenGapsWithKnownNumbers implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var gaps = gapFinder.find(puzzle, rowOrCol);
             var gapsWithoutNumbers = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
             for (Gap gap : gapsWithoutNumbers) {

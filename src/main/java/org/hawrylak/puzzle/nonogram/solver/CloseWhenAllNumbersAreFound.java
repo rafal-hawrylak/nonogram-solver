@@ -15,7 +15,7 @@ public class CloseWhenAllNumbersAreFound implements Solver {
     private GapFinder gapFinder;
     private GapCloser gapCloser;
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             if (rowOrCol.numbersToFind.stream().allMatch(n -> n.found)) {
                 List<Gap> gaps = gapFinder.find(puzzle, rowOrCol);
                 for (Gap gap : gaps) {

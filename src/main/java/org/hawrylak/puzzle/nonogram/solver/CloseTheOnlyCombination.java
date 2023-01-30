@@ -13,7 +13,7 @@ public class CloseTheOnlyCombination implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var sumOfNumbers = rowOrCol.numbersToFind.stream().map(n -> n.number).reduce(0, Integer::sum);
             var countOfNumbers = rowOrCol.numbersToFind.size();
             var targetSum = rowOrCol.horizontal ? puzzle.width : puzzle.height;

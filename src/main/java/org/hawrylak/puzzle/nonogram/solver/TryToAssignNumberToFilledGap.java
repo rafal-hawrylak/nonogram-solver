@@ -19,7 +19,7 @@ public class TryToAssignNumberToFilledGap implements Solver {
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var gaps = gapFinder.find(puzzle, rowOrCol);
             for (Gap gap : gaps) {
                 if (gap.assignedNumber.isEmpty() && gap.filledSubGaps.size() == 1) {

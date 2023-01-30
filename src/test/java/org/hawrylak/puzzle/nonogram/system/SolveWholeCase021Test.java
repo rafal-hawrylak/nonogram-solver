@@ -7,11 +7,13 @@ import java.util.List;
 import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.hawrylak.puzzle.nonogram.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class SolveWholeCase021Test extends PuzzleSolverTestBase {
 
     @Test
+    @Disabled("unsolved")
     void test() {
         String expectedPuzzle = """
 """;

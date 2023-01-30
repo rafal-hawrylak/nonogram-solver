@@ -32,7 +32,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber impl
 
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
-        for (RowOrCol rowOrCol : puzzle.rowsOrCols) {
+        for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var gapsWithoutAssignedNumber = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
             var biggestNumberNotFound = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
             var biggestSubGap = gapsWithoutAssignedNumber.stream().flatMap(g -> g.filledSubGaps.stream())
