@@ -109,6 +109,7 @@ public class GapFiller {
             var end = start + howManyFieldsMayBeSet - 1;
             var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+            return;
         }
         List<Integer> fullFieldsInGap = fieldFinder.findFieldsSetInGap(gap, puzzle, rowOrCol, FieldState.FULL);
         if (!fullFieldsInGap.isEmpty()) {

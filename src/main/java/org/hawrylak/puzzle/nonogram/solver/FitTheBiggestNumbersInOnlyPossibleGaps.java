@@ -53,6 +53,12 @@ public class FitTheBiggestNumbersInOnlyPossibleGaps implements Solver {
                         }
                     } else {
                         var notFound = numberSelector.getNotFound(rowOrCol.numbersToFind);
+                        if (biggestNumbers.size() == 1) {
+                            if (2 * numberToFind.number > gap.length) {
+                                gapFiller.fillTheGapPartiallyForSingleNumber(gap, numberToFind, rowOrCol, puzzle, changes);
+                                continue;
+                            }
+                        }
                         if (notFound.size() == 1) {
                             gapFiller.fillTheGapPartiallyForSingleNumber(gap, numberToFind, rowOrCol, puzzle, changes);
                         } else {

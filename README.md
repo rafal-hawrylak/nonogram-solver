@@ -3,7 +3,7 @@ Backlog:
 - [done] fix failing/disabled tests
 - [done] fix TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber
 - [done] skip solved rows and cols
-- implement filling the gap if the only matching
+- [done] implement filling the gap if the only matching
 - solve SolveWholeCase021Test
 - solve SolveWholeCase020Test
 - bug in FillTheNumbersWithStartAndEndNotConnectedSolver
