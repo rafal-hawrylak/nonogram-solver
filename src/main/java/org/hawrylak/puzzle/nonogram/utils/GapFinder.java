@@ -121,10 +121,14 @@ public class GapFinder {
     }
 
     public Gap getGapAtPosition(List<Gap> gaps, int start, int end) {
+        return getPossibleGapAtPosition(gaps, start, end).get();
+    }
+
+    public Optional<Gap> getPossibleGapAtPosition(List<Gap> gaps, int start, int end) {
         return gaps.stream()
             .filter(g -> g.start <= start)
             .filter(g -> g.end >= end)
-            .findAny().get();
+            .findAny();
     }
 
     public Optional<Gap> previous(List<Gap> gaps, Gap gap) {

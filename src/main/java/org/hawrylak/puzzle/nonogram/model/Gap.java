@@ -10,7 +10,7 @@ import org.hawrylak.puzzle.nonogram.utils.Utils;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"rowOrCol"})
 @EqualsAndHashCode
 public class Gap {
 
