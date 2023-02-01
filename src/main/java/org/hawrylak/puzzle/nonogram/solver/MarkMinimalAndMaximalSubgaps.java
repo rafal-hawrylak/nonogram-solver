@@ -53,7 +53,7 @@ public class MarkMinimalAndMaximalSubgaps implements Solver {
 
                 var previousSubGaps = Utils.allPrevious(subGaps, maxSubGap);
                 var previousNumbers = Utils.allPrevious(notFoundNumbers, theOnlyNumberMatching);
-                if (!previousSubGaps.isEmpty()) {
+                if (!previousSubGaps.isEmpty() && !previousNumbers.isEmpty()) {
                     var previousSubGap = Utils.previous(subGaps, maxSubGap).get();
                     var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, previousSubGap, maxSubGap);
                     if (mergeable) {
@@ -75,7 +75,7 @@ public class MarkMinimalAndMaximalSubgaps implements Solver {
 
                 var nextSubGaps = Utils.allNext(subGaps, maxSubGap);
                 var nextNumbers = Utils.allNext(notFoundNumbers, theOnlyNumberMatching);
-                if (!nextSubGaps.isEmpty()) {
+                if (!nextSubGaps.isEmpty() && !nextNumbers.isEmpty()) {
                     var nextSubGap = Utils.next(subGaps, maxSubGap).get();
                     var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, maxSubGap, nextSubGap);
                     if (mergeable) {
