@@ -28,7 +28,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapFiller;
     x  x  ■  x  .  ■  .  .  ■  . | 1 2 2
  */
 @AllArgsConstructor
-public class CloseWhenSingleGapWithNumbersNotFound implements Solver {
+public class CloseWhenSingleGapWithNumbersNotFound extends Solver {
 
     private GapFinder gapFinder;
     private GapFiller gapFiller;

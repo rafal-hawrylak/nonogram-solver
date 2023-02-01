@@ -11,7 +11,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapFiller;
 import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationGapMode;
 
 @AllArgsConstructor
-public class TryToAssignNumberToFilledGap implements Solver {
+public class TryToAssignNumberToFilledGap extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;

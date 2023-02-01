@@ -12,7 +12,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.utils.GapFiller;
 
 @AllArgsConstructor
-public class SecondSubGapMayBeClosed implements Solver {
+public class SecondSubGapMayBeClosed extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;

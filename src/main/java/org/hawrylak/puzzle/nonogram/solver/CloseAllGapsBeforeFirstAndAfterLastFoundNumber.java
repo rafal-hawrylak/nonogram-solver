@@ -21,7 +21,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapCloser;
     .  .  x  ■  ■  ■  x  x  x  x | 1 3
  */
 @AllArgsConstructor
-public class CloseAllGapsBeforeFirstAndAfterLastFoundNumber implements Solver {
+public class CloseAllGapsBeforeFirstAndAfterLastFoundNumber extends Solver {
 
     private GapFinder gapFinder;
     private GapCloser gapCloser;

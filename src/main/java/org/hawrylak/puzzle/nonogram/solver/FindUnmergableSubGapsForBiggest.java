@@ -11,7 +11,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.utils.GapCloser;
 
 @AllArgsConstructor
-public class FindUnmergableSubGapsForBiggest implements Solver {
+public class FindUnmergableSubGapsForBiggest extends Solver {
 
     private GapFinder gapFinder;
     private GapCloser gapCloser;

@@ -18,7 +18,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapFiller;
     16|  .  .  .  .  .  .  .  .  .  .  .  x  ■  ■  x  .  .  .  .  .| 2 2 2 2 1
  */
 @AllArgsConstructor
-public class MarkEndingsOfSubGapWhenThereIsNoBiggerNumber implements Solver {
+public class MarkEndingsOfSubGapWhenThereIsNoBiggerNumber extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;

@@ -24,7 +24,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapCloser;
     x  x  x  x  x  x  x  x  x  ■  ■  ■  ■  ■  x| 5
  */
 @AllArgsConstructor
-public class CloseAllTheGapsIfAllFullMarked implements Solver {
+public class CloseAllTheGapsIfAllFullMarked extends Solver {
 
     private GapFinder gapFinder;
     private RowSelector rowSelector;

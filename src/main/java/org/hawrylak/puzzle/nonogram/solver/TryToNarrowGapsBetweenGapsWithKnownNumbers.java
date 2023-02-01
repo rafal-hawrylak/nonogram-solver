@@ -20,7 +20,7 @@ import org.hawrylak.puzzle.nonogram.utils.Utils;
                                                                                            ^
  */
 @AllArgsConstructor
-public class TryToNarrowGapsBetweenGapsWithKnownNumbers implements Solver {
+public class TryToNarrowGapsBetweenGapsWithKnownNumbers extends Solver {
 
     private GapFinder gapFinder;
     private GapFiller gapFiller;

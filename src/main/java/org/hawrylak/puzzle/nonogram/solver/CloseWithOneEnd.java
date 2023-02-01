@@ -23,7 +23,7 @@ import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationGapMode;
     .  .  .  .  v  .  .  .  .|
  */
 @AllArgsConstructor
-public class CloseWithOneEnd implements Solver {
+public class CloseWithOneEnd extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;

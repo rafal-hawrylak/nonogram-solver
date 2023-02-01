@@ -22,7 +22,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapFiller;
     x  x  .  .  x  x  x  x  x  ■  ■  ■  ■  ■  x  x  ■  ■  ■  ■  ■  x| 2 5 5
  */
 @AllArgsConstructor
-public class FitTheBiggestNumbersInOnlyPossibleGaps implements Solver {
+public class FitTheBiggestNumbersInOnlyPossibleGaps extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;

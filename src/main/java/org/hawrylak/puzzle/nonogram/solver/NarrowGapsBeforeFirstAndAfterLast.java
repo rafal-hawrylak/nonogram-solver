@@ -23,7 +23,7 @@ to
 x  x  .  .  .  .  .  .  .  ■  ■  ■  .  x  x | 1 1 4
 */
 @AllArgsConstructor
-public class NarrowGapsBeforeFirstAndAfterLast implements Solver {
+public class NarrowGapsBeforeFirstAndAfterLast extends Solver {
 
     private GapFinder gapFinder;
     private GapCloser gapCloser;

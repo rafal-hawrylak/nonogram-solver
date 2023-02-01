@@ -17,7 +17,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapFiller;
     x  >  .  .  .  .  x  .  .|
  */
 @AllArgsConstructor
-public class CloseAtEdges implements Solver {
+public class CloseAtEdges extends Solver {
 
     private final RowSelector rowSelector;
     private GapFiller gapFiller;

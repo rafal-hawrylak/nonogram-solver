@@ -24,7 +24,7 @@ import org.hawrylak.puzzle.nonogram.utils.Utils;
 . . . . . . . . . . . . . . . . . . . . ■ ■ ■ . . . . . . . . x x x x | 3 1 11
  */
 @AllArgsConstructor
-public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber implements Solver {
+public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;

@@ -7,7 +7,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.utils.GapFiller;
 
 @AllArgsConstructor
-public class CloseTheOnlyCombination implements Solver {
+public class CloseTheOnlyCombination extends Solver {
 
     private GapFiller gapFiller;
 

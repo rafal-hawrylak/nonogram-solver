@@ -19,7 +19,7 @@ import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationSubGapMode;
 import org.hawrylak.puzzle.nonogram.utils.Utils;
 
 @AllArgsConstructor
-public class MarkMinimalAndMaximalSubgaps implements Solver {
+public class MarkMinimalAndMaximalSubgaps extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;

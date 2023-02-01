@@ -10,7 +10,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.utils.GapCloser;
 
 @AllArgsConstructor
-public class CloseWhenAllNumbersAreFound implements Solver {
+public class CloseWhenAllNumbersAreFound extends Solver {
 
     private GapFinder gapFinder;
     private GapCloser gapCloser;

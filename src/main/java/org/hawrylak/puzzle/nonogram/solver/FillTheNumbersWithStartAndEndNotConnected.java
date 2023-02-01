@@ -27,7 +27,7 @@ import org.hawrylak.puzzle.nonogram.utils.GapFiller;
      .  .  ■  ■  ■  ■  ■  .  ■  ■  ■  .  ■  ■  ■| 5 3 3[M]
  */
 @AllArgsConstructor
-public class FillTheNumbersWithStartAndEndNotConnected implements Solver {
+public class FillTheNumbersWithStartAndEndNotConnected extends Solver {
 
     private GapFinder gapFinder;
     private NumberSelector numberSelector;
