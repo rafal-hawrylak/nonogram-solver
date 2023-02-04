@@ -6,14 +6,14 @@ import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.model.Gap;
-import org.hawrylak.puzzle.nonogram.model.SubGap;
-import org.hawrylak.puzzle.nonogram.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.model.SubGap;
 import org.hawrylak.puzzle.nonogram.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
 import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationGapMode;
 import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationSubGapMode;
 import org.hawrylak.puzzle.nonogram.utils.Utils;
@@ -66,7 +66,8 @@ public class MarkMinimalAndMaximalSubgaps extends Solver {
                     }
                     var maxPreviousNumber = previousNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
                     for (SubGap subGap : previousSubGaps) {
-                        if (subGap.length == maxPreviousNumber.number) {
+                        if (subGap.length == maxPreviousNumber.number
+                            && firstPossibleSubGapToBeFilledWithNumber(gap, subGap, maxPreviousNumber.number)) {
                             var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
                             gapFiller.fillTheGapEntirelyWithNumberUnknown(fakeGap, rowOrCol, puzzle, changes);
                         }
@@ -88,7 +89,8 @@ public class MarkMinimalAndMaximalSubgaps extends Solver {
                     }
                     var maxNextNumber = nextNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
                     for (SubGap subGap : nextSubGaps) {
-                        if (subGap.length == maxNextNumber.number) {
+                        if (subGap.length == maxNextNumber.number
+                            && lastPossibleSubGapToBeFilledWithNumber(gap, subGap, maxNextNumber.number)) {
                             var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
                             gapFiller.fillTheGapEntirelyWithNumberUnknown(fakeGap, rowOrCol, puzzle, changes);
                         }
@@ -96,5 +98,13 @@ public class MarkMinimalAndMaximalSubgaps extends Solver {
                 }
             }
         }
+    }
+
+    private boolean firstPossibleSubGapToBeFilledWithNumber(Gap gap, SubGap subGap, int number) {
+        return subGap.start - number - 1 < gap.start;
+    }
+
+    private boolean lastPossibleSubGapToBeFilledWithNumber(Gap gap, SubGap subGap, int number) {
+        return subGap.end + number + 1 > gap.end;
     }
 }
