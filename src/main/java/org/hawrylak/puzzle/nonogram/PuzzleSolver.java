@@ -5,7 +5,8 @@ import java.util.Map;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
-import org.hawrylak.puzzle.nonogram.solver.provider.OriginalOrderSolversProvider;
+import org.hawrylak.puzzle.nonogram.solver.provider.RandomOrderSolverProvider;
+import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversProvider;
 
 public class PuzzleSolver {
 
@@ -15,9 +16,10 @@ public class PuzzleSolver {
         Map<String, Integer> stats = new HashMap<>();
         var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
-        var iterationsToStopAfter = debug ? 250 : 100;
+        var iterationsToStopAfter = debug ? 300 : 100;
 
-        Map<String, Solver> solvers = new OriginalOrderSolversProvider().provide();
+        Map<String, Solver> solvers = new SpecificOrderSolversProvider().provide();
+        System.out.println("solvers = " + solvers);
 
         while (changes.firstIteration() || changes.anyChange()) {
             if (hardStop && changes.getIteration() >= iterationsToStopAfter) {
