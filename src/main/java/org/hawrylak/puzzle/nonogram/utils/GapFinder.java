@@ -228,8 +228,12 @@ public class GapFinder {
     }
 
     public boolean areSubGapsMergeable(int number, SubGap subGap, SubGap nextSubGap) {
-        var sizeAfterMerging = nextSubGap.end - subGap.start + 1;
+        var sizeAfterMerging = getSizeAfterMerging(subGap, nextSubGap);
         return sizeAfterMerging <= number;
+    }
+
+    public int getSizeAfterMerging(SubGap subGap, SubGap nextSubGap) {
+        return nextSubGap.end - subGap.start + 1;
     }
 
     public boolean numberFitsBetweenSubGaps(int number, SubGap subGap, SubGap nextSubGap) {
@@ -240,5 +244,9 @@ public class GapFinder {
     public Optional<SubGap> getSubGapAtPosition(List<SubGap> filledSubGaps, boolean horizontal, int c, int r) {
         var position = horizontal ? c : r;
         return filledSubGaps.stream().filter(s -> s.start <= position).filter(s -> s.end >= position).findFirst();
+    }
+
+    public Gap getGapOfSubGap(List<Gap> gaps, SubGap subGap) {
+        return getGapAtPosition(gaps, subGap.start, subGap.end);
     }
 }

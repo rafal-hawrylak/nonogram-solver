@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 public class SolveWholeCase021Test extends PuzzleSolverTestBase {
 
     @Test
-    @Disabled("unsolved")
+//    @Disabled("unsolved")
     void test() {
         String expectedPuzzle = """
 """;

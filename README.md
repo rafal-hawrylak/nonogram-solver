@@ -4,6 +4,7 @@ Backlog:
 - [done] fix TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber
 - [done] skip solved rows and cols
 - [done] implement filling the gap if the only matching
+- areSubGapsMergeable may check if in the same gap
 - solve SolveWholeCase021Test
 - solve SolveWholeCase020Test
 - bug in FillTheNumbersWithStartAndEndNotConnectedSolver

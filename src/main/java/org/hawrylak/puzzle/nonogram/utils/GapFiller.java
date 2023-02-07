@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.model.SubGap;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
 
 @AllArgsConstructor
 public class GapFiller {
@@ -82,9 +81,10 @@ public class GapFiller {
     }
 
     private static void validateStateChange(ChangedInIteration changes, FieldState state, FieldState currentState, int c, int r) {
-        if ((FieldState.EMPTY.equals(state) && FieldState.FULL.equals(currentState)) ||
-            (FieldState.EMPTY.equals(currentState) && FieldState.FULL.equals(state))) {
-            throw new IllegalStateException("Changing state of the field from " + currentState + " to " + state + " at [" + c + "; " + r + "] is not allowed. iteration = " + changes.getIteration());
+        if ((FieldState.EMPTY.equals(state) && FieldState.FULL.equals(currentState)) || (FieldState.EMPTY.equals(currentState)
+            && FieldState.FULL.equals(state))) {
+            throw new IllegalStateException("Changing state of the field from " + currentState + " to " + state + " at [" + c + "; " + r
+                + "] is not allowed. iteration = " + changes.getIteration());
         }
     }
 
@@ -258,11 +258,10 @@ public class GapFiller {
             if (!doAllNumbersFitBefore || !doAllNumbersFitAfter) {
                 continue;
             }
-            var forSureDoNotComplyWithSubGapsBefore = //previousGaps.size() == 1 &&
-                numbersForSureDoNotComplyWithSubGaps(split.before(), previousGaps, gapMode, subGapMode);
-            var forSureDoNotComplyWithSubGapsAfter = //nextGaps.size() == 1 &&
-                numbersForSureDoNotComplyWithSubGaps(split.after(), nextGaps, gapMode, subGapMode);
-            if (!forSureDoNotComplyWithSubGapsBefore && !forSureDoNotComplyWithSubGapsAfter) {
+            var forSureDoNotComplyWithSubGapsBefore = numbersForSureDoNotComplyWithSubGaps(split.before(), previousGaps, gapMode);
+            var forSureDoNotComplyWithSubGapsAfter = numbersForSureDoNotComplyWithSubGaps(split.after(), nextGaps, gapMode);
+            var complyWithSubGaps = !forSureDoNotComplyWithSubGapsBefore && !forSureDoNotComplyWithSubGapsAfter;
+            if (complyWithSubGaps) {
                 splitsMatchingConditions.add(split);
                 splitsMatchingConditionsByNumberValue.put(split.current().number, split);
             }
@@ -344,8 +343,7 @@ public class GapFiller {
         return firstNumberIndex > lastNumberIndex;
     }
 
-    private boolean numbersForSureDoNotComplyWithSubGaps(List<NumberToFind> numbers, List<Gap> gaps, OnlyPossibleCombinationGapMode gapMode,
-        OnlyPossibleCombinationSubGapMode subGapMode) {
+    public boolean numbersForSureDoNotComplyWithSubGaps(List<NumberToFind> numbers, List<Gap> gaps, OnlyPossibleCombinationGapMode gapMode) {
         if (gapMode.isEnabled()) {
             var maxFilledSubGap = gaps.stream().flatMap(g -> g.filledSubGaps.stream()).map(s -> s.length).max(Integer::compareTo);
             var maxNumberToFit = numbers.stream().map(n -> n.number).max(Integer::compareTo);
@@ -365,38 +363,6 @@ public class GapFiller {
                 }
             }
             return maxNumberToFit.get() < maxFilledSubGap.get();
-        } else if (subGapMode.isEnabled()) {
-            // FIXME this implementation seems very fishy
-            /*
-     0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24
-11|  x  x  .  ■  .  ■  ■  x  x  x  x  .  .  x  .  ■  .  .  ■  ■  ■  .  .  .  x| 2 2 9  ¤
-
-2 9 - ok
-11|  x  x  .  ■  .  ■  ■  x  x  x  x  -  -  x  -  ■  -  -  ■  ■  ■  -  -  .  x| 2 2 9  ¤
-
-9 - ok
-11|  x  x  .  ■  .  ■  ■  x  x  x  x  .  .  x  -  ■  -  -  ■  ■  ■  -  -  .  x| 2 2 9  ¤
-
-3 2 1 - not ok
-11|  x  x  .  ■  .  ■  ■  x  x  x  x  .  .  x  -  ■  -  .  ■  ■  ■  .  .  .  x| 2 2 9  ¤
-                                               <  3  >     ^
-											               2 cant start here
-             */
-            var numberIndex = 0;
-            for (Gap gap : gaps) {
-                for (SubGap subGap : gap.filledSubGaps) {
-                    for (; numberIndex < numbers.size(); numberIndex++) {
-                        if (subGap.length <= numbers.get(numberIndex).number) {
-                            numberIndex++;
-                            break;
-                        }
-                    }
-                    if (numberIndex >= numbers.size()) {
-                        return !subGap.equals(gap.filledSubGaps.get(gap.filledSubGaps.size() - 1));
-                    }
-                }
-            }
-            return false; // return numberIndex >= numbers.size() ??
         } else {
             return false;
         }
