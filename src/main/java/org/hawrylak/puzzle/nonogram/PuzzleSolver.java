@@ -1,19 +1,20 @@
 package org.hawrylak.puzzle.nonogram;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.model.Solution;
+import org.hawrylak.puzzle.nonogram.model.solution.Solution;
+import org.hawrylak.puzzle.nonogram.model.solution.SolversStatistics;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
 import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversProvider;
+
+import java.util.Map;
 
 public class PuzzleSolver {
 
     public Solution solve(Puzzle puzzle) {
 
         boolean debug = true;
-        Map<String, Integer> stats = new HashMap<>();
+        var stats = new SolversStatistics();
         var changes = new ChangedInIteration(puzzle, debug);
         var hardStop = true;
         var iterationsToStopAfter = debug ? 300 : 100;
@@ -51,17 +52,17 @@ public class PuzzleSolver {
         markRowsAsSolved(puzzle);
 
         if (changes.isDebug()) {
-            System.out.println("stats = " + stats.toString().replaceAll(",", System.lineSeparator()) + System.lineSeparator());
+            System.out.println("stats = " + stats.getSolversUsage().getStats().toString().replaceAll(",", System.lineSeparator()) + System.lineSeparator());
         }
         boolean puzzleSolved = isPuzzleSolved(puzzle);
-        return new Solution(puzzleSolved, puzzle);
+        return new Solution(puzzleSolved, puzzle, stats);
     }
 
-    private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, Map<String, Integer> stats, String debugHeader) {
+    private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String debugHeader) {
         if (changes.isDebug()) {
             System.out.println(puzzle.toString(changes, debugHeader));
-            var counter = stats.getOrDefault(debugHeader, 0);
-            stats.put(debugHeader, counter + 1);
+            var counter = stats.getSolversUsage().getStats().getOrDefault(debugHeader, 0);
+            stats.getSolversUsage().getStats().put(debugHeader, counter + 1);
         }
     }
 
