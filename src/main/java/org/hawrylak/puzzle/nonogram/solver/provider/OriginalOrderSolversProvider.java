@@ -2,30 +2,8 @@ package org.hawrylak.puzzle.nonogram.solver.provider;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.hawrylak.puzzle.nonogram.solver.CloseAllGapsBeforeFirstAndAfterLastFoundNumber;
-import org.hawrylak.puzzle.nonogram.solver.CloseAllTheGapsIfAllFullMarked;
-import org.hawrylak.puzzle.nonogram.solver.CloseAtEdges;
-import org.hawrylak.puzzle.nonogram.solver.CloseTheOnlyCombination;
-import org.hawrylak.puzzle.nonogram.solver.CloseTooSmallToFitAnything;
-import org.hawrylak.puzzle.nonogram.solver.CloseTooSmallToFitFirstOrLastNumber;
-import org.hawrylak.puzzle.nonogram.solver.CloseWhenAllNumbersAreFound;
-import org.hawrylak.puzzle.nonogram.solver.CloseWhenSingleGapWithNumbersNotFound;
-import org.hawrylak.puzzle.nonogram.solver.CloseWithOneEnd;
-import org.hawrylak.puzzle.nonogram.solver.ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber;
-import org.hawrylak.puzzle.nonogram.solver.FillTheNumbersWithStartAndEndNotConnected;
-import org.hawrylak.puzzle.nonogram.solver.FindUnmergableSubGapsForBiggest;
-import org.hawrylak.puzzle.nonogram.solver.FindUnmergableSubGapsForBiggestForFirstAndLastNotFound;
-import org.hawrylak.puzzle.nonogram.solver.FitTheBiggestNumbersInOnlyPossibleGaps;
-import org.hawrylak.puzzle.nonogram.solver.IfAllNumbersWontFitIntoSingleGapTryToFitThemSeparately;
-import org.hawrylak.puzzle.nonogram.solver.MarkEndingsOfSubGapWhenThereIsNoBiggerNumber;
-import org.hawrylak.puzzle.nonogram.solver.MarkNearbySubgapsAroundMaximalNumber;
-import org.hawrylak.puzzle.nonogram.solver.NarrowGapsBeforeFirstAndAfterLast;
-import org.hawrylak.puzzle.nonogram.solver.SecondSubGapMayBeClosed;
-import org.hawrylak.puzzle.nonogram.solver.Solver;
-import org.hawrylak.puzzle.nonogram.solver.TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber;
-import org.hawrylak.puzzle.nonogram.solver.TryToAssignNumberToFilledGap;
-import org.hawrylak.puzzle.nonogram.solver.TryToFillGapsBetweenGapsWithKnownNumbers;
-import org.hawrylak.puzzle.nonogram.solver.TryToNarrowGapsBetweenGapsWithKnownNumbers;
+
+import org.hawrylak.puzzle.nonogram.solver.*;
 import org.hawrylak.puzzle.nonogram.utils.FieldFinder;
 import org.hawrylak.puzzle.nonogram.utils.GapCloser;
 import org.hawrylak.puzzle.nonogram.utils.GapFiller;
@@ -68,6 +46,7 @@ public class OriginalOrderSolversProvider implements SolversProvider {
         addSolver(solvers, new MarkNearbySubgapsAroundMaximalNumber(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new TryToNarrowGapsBetweenGapsWithKnownNumbers(gapFinder, gapFiller, numberSelector));
+        addSolver(solvers, new MergeSubGapForBiggestIfPreviousDoesNotMatch(gapFinder, gapFiller, numberSelector));
 
         return solvers;
     }
