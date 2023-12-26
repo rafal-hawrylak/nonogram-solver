@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram.utils;
+package org.hawrylak.puzzle.nonogram.solver.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,7 +10,6 @@ import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.utils.Utils;
 
 public class NumberSelector {
 

@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationGapMode;
-import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationSubGapMode;
+import org.hawrylak.puzzle.nonogram.solver.utils.OnlyPossibleCombinationGapMode;
+import org.hawrylak.puzzle.nonogram.solver.utils.OnlyPossibleCombinationSubGapMode;
 import org.junit.jupiter.api.Test;
 
 public class GapFillerNumbersForSureDoNotComplyWithSubGapsTest extends PuzzleSolverTestBase {

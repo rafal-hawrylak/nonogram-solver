@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram.utils;
+package org.hawrylak.puzzle.nonogram.solver.utils;
 
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;

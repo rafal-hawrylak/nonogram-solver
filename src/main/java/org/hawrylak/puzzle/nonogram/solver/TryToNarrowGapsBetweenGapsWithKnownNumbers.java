@@ -7,10 +7,10 @@ import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.utils.GapFiller;
-import org.hawrylak.puzzle.nonogram.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.utils.Utils;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.solver.utils.Utils;
 
 /*
   ex.

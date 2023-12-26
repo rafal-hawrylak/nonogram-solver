@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
 
 @AllArgsConstructor
 public class CloseTheOnlyCombination extends Solver {

@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram.utils;
+package org.hawrylak.puzzle.nonogram.solver.utils;
 
 import static org.hawrylak.puzzle.nonogram.model.Gap.NO_FULL;
 
@@ -11,7 +11,6 @@ import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.SubGap;
-import org.hawrylak.puzzle.nonogram.utils.Utils;
 
 public class GapFinder {
 

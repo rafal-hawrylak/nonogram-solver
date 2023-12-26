@@ -10,13 +10,13 @@ import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.SubGap;
-import org.hawrylak.puzzle.nonogram.utils.GapFiller;
-import org.hawrylak.puzzle.nonogram.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
-import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationGapMode;
-import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationSubGapMode;
-import org.hawrylak.puzzle.nonogram.utils.Utils;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
+import org.hawrylak.puzzle.nonogram.solver.utils.OnlyPossibleCombinationGapMode;
+import org.hawrylak.puzzle.nonogram.solver.utils.OnlyPossibleCombinationSubGapMode;
+import org.hawrylak.puzzle.nonogram.solver.utils.Utils;
 
 @AllArgsConstructor
 public class MarkNearbySubgapsAroundMaximalNumber extends Solver {

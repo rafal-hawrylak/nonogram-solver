@@ -59,11 +59,11 @@ public class PuzzleSolver {
         return new Solution(puzzleSolved, puzzle, stats);
     }
 
-    private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String debugHeader) {
+    private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String solverName) {
         if (DEBUG) {
-            System.out.println(puzzle.toString(changes, debugHeader));
-            var counter = stats.getSolversUsage().getStats().getOrDefault(debugHeader, 0);
-            stats.getSolversUsage().getStats().put(debugHeader, counter + 1);
+            System.out.println(puzzle.toString(changes, solverName));
+            var counter = stats.getSolversUsage().getStats().getOrDefault(solverName, 0);
+            stats.getSolversUsage().getStats().put(solverName, counter + 1);
         }
     }
 

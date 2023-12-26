@@ -3,13 +3,13 @@ package org.hawrylak.puzzle.nonogram.solver;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.utils.RowSelector;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.solver.utils.RowSelector;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.utils.GapCloser;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapCloser;
 
 /*
   ex

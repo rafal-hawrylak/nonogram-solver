@@ -1,20 +1,20 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
-import static org.hawrylak.puzzle.nonogram.utils.Utils.getStart;
+import static org.hawrylak.puzzle.nonogram.solver.utils.Utils.getStart;
 
 import java.util.ArrayList;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import org.hawrylak.puzzle.nonogram.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.utils.GapFiller;
-import org.hawrylak.puzzle.nonogram.utils.OnlyPossibleCombinationGapMode;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.solver.utils.OnlyPossibleCombinationGapMode;
 
 /*
   ex

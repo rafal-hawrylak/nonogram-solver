@@ -4,12 +4,12 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.hawrylak.puzzle.nonogram.solver.*;
-import org.hawrylak.puzzle.nonogram.utils.FieldFinder;
-import org.hawrylak.puzzle.nonogram.utils.GapCloser;
-import org.hawrylak.puzzle.nonogram.utils.GapFiller;
-import org.hawrylak.puzzle.nonogram.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.utils.RowSelector;
+import org.hawrylak.puzzle.nonogram.solver.utils.FieldFinder;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapCloser;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.solver.utils.RowSelector;
 
 public class OriginalOrderSolversProvider implements SolversProvider {
 

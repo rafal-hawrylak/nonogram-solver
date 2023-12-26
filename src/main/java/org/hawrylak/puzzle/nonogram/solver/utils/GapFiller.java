@@ -1,6 +1,4 @@
-package org.hawrylak.puzzle.nonogram.utils;
-
-import static org.hawrylak.puzzle.nonogram.utils.Utils.getStart;
+package org.hawrylak.puzzle.nonogram.solver.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +11,7 @@ import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.utils.NumberSelector.NumberBeforeCurrentAndAfter;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
 
 @AllArgsConstructor
 public class GapFiller {
@@ -50,7 +48,7 @@ public class GapFiller {
 
     public void fillTheNumberAtPosition(RowOrCol rowOrCol, NumberToFind numberToClose, int c, int r, boolean startingFrom, Puzzle puzzle,
         ChangedInIteration changes) {
-        int start = getStart(rowOrCol, numberToClose.number, c, r, startingFrom);
+        int start = Utils.getStart(rowOrCol, numberToClose.number, c, r, startingFrom);
         var fakeGap = new Gap(rowOrCol, start, start + numberToClose.number - 1, numberToClose.number, Optional.empty());
         fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changes);
     }
