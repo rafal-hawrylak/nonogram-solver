@@ -4,13 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.model.Solution;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
-import org.hawrylak.puzzle.nonogram.solver.provider.RandomOrderSolverProvider;
 import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversProvider;
 
 public class PuzzleSolver {
 
-    public boolean solve(Puzzle puzzle) {
+    public Solution solve(Puzzle puzzle) {
 
         boolean debug = true;
         Map<String, Integer> stats = new HashMap<>();
@@ -53,7 +53,8 @@ public class PuzzleSolver {
         if (changes.isDebug()) {
             System.out.println("stats = " + stats.toString().replaceAll(",", System.lineSeparator()) + System.lineSeparator());
         }
-        return isPuzzleSolved(puzzle);
+        boolean puzzleSolved = isPuzzleSolved(puzzle);
+        return new Solution(puzzleSolved, puzzle);
     }
 
     private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, Map<String, Integer> stats, String debugHeader) {

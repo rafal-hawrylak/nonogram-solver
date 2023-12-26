@@ -7,6 +7,7 @@ import java.util.List;
 import org.hawrylak.puzzle.nonogram.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.PuzzleSolver;
+import org.hawrylak.puzzle.nonogram.model.Solution;
 import org.junit.jupiter.api.Test;
 
 public class SolveWholeCase012Test extends PuzzleSolverTestBase {
@@ -29,16 +30,16 @@ x■■■■■■■■■■■■■x
 xx■■■■■■■■■■■xx
 xxx■■■■■■■■■xxx
 xxxxxxx■■■■xxxx""";
-        Puzzle puzzle = getTestPuzzle12();
-        print("before", puzzle);
+        Puzzle before = getTestPuzzle12();
+        print("before", before);
 
-        boolean solved = new PuzzleSolver().solve(puzzle);
+        Solution solution = new PuzzleSolver().solve(before);
 
-        print("after", puzzle);
-        assertTrue(solved);
-        assertPuzzle(puzzle, expectedPuzzle);
+        print("after", solution.getPuzzle());
+        assertTrue(solution.isSolved());
+        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
 
-        System.out.println(puzzle.compact());
+        System.out.println(solution.getPuzzle().compact());
     }
 
     private Puzzle getTestPuzzle12() {

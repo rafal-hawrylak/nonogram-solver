@@ -1,14 +1,16 @@
 package org.hawrylak.puzzle.nonogram.system;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.hawrylak.puzzle.nonogram.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.PuzzleSolver;
+import org.hawrylak.puzzle.nonogram.model.Solution;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SolveWholeCase001Test extends PuzzleSolverTestBase {
 
@@ -25,16 +27,16 @@ x■■■■■xxxx
 ■■■xx■■■■■
 x■■■■■■■■■
 xxxxx■■■■■""";
-        Puzzle puzzle = getTestPuzzle1();
-        print("before", puzzle);
+        Puzzle before = getTestPuzzle1();
+        print("before", before);
 
-        boolean solved = new PuzzleSolver().solve(puzzle);
+        Solution solution = new PuzzleSolver().solve(before);
 
-        print("after", puzzle);
-        assertTrue(solved);
-        assertPuzzle(puzzle, expectedPuzzle);
+        print("after", solution.getPuzzle());
+        assertTrue(solution.isSolved());
+        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
 
-        System.out.println(puzzle.compact());
+        System.out.println(solution.getPuzzle().compact());
     }
 
     private Puzzle getTestPuzzle1() {
@@ -79,14 +81,16 @@ x■■■■■xxxx
 ■■■xx■■■■■
 x■■■■■■■■■
 xxxxx■■■■■""";
-        Puzzle puzzle = getTestPuzzle1WithInitialMarks();
-        print("before", puzzle);
+        Puzzle before = getTestPuzzle1WithInitialMarks();
+        print("before", before);
 
-        boolean solved = new PuzzleSolver().solve(puzzle);
+        Solution solution = new PuzzleSolver().solve(before);
 
-        print("after", puzzle);
-        assertTrue(solved);
-        assertPuzzle(puzzle, expectedPuzzle);
+        print("after", solution.getPuzzle());
+        assertTrue(solution.isSolved());
+        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
+
+        System.out.println(solution.getPuzzle().compact());
     }
 
     private Puzzle getTestPuzzle1WithInitialMarks() {
