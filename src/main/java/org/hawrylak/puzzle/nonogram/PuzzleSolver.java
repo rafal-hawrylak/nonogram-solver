@@ -11,19 +11,20 @@ import java.util.Map;
 
 public class PuzzleSolver {
 
+    public static final boolean DEBUG = true;
+    public static final int ITERATIONS_TO_STOP_AFTER = DEBUG ? 300 : 100;
+    public static final boolean HARD_STOP = true;
+
     public Solution solve(Puzzle puzzle) {
 
-        boolean debug = true;
         var stats = new SolversStatistics();
-        var changes = new ChangedInIteration(puzzle, debug);
-        var hardStop = true;
-        var iterationsToStopAfter = debug ? 300 : 100;
+        var changes = new ChangedInIteration(puzzle);
 
         Map<String, Solver> solvers = new SpecificOrderSolversProvider().provide();
         System.out.println("solvers = " + solvers);
 
         while (changes.firstIteration() || changes.anyChange()) {
-            if (hardStop && changes.getIteration() >= iterationsToStopAfter) {
+            if (HARD_STOP && changes.getIteration() >= ITERATIONS_TO_STOP_AFTER) {
                 break;
             }
 
@@ -37,7 +38,7 @@ public class PuzzleSolver {
             for (String solverName : solvers.keySet()) {
                 var solver = solvers.get(solverName);
                 solver.apply(puzzle, changes);
-                if (changes.debugModeAndChangesDone()) {
+                if (DEBUG && changes.anyChange()) {
                     statsAndPrintDebug(puzzle, changes, stats, solverName);
                     breakAndContinue = true;
                     break;
@@ -51,7 +52,7 @@ public class PuzzleSolver {
         }
         markRowsAsSolved(puzzle);
 
-        if (changes.isDebug()) {
+        if (DEBUG) {
             System.out.println("stats = " + stats.getSolversUsage().getStats().toString().replaceAll(",", System.lineSeparator()) + System.lineSeparator());
         }
         boolean puzzleSolved = isPuzzleSolved(puzzle);
@@ -59,7 +60,7 @@ public class PuzzleSolver {
     }
 
     private void statsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String debugHeader) {
-        if (changes.isDebug()) {
+        if (DEBUG) {
             System.out.println(puzzle.toString(changes, debugHeader));
             var counter = stats.getSolversUsage().getStats().getOrDefault(debugHeader, 0);
             stats.getSolversUsage().getStats().put(debugHeader, counter + 1);

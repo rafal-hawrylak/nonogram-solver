@@ -1,30 +1,24 @@
 package org.hawrylak.puzzle.nonogram;
 
+import lombok.Getter;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Getter;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 public class ChangedInIteration {
 
     private final Puzzle puzzle;
     @Getter
     int iteration = 0;
-    @Getter
-    boolean debug;
     Set<RowOrCol> changedRowsOrCols = new HashSet<>();
     boolean[][] changedFields;
 
     public ChangedInIteration(Puzzle puzzle) {
-        this(puzzle, false);
-    }
-
-    public ChangedInIteration(Puzzle puzzle, boolean debug) {
         this.puzzle = puzzle;
-        this.debug = debug;
         changedFields = new boolean[puzzle.width][puzzle.height];
     }
 
@@ -72,7 +66,4 @@ public class ChangedInIteration {
         return rowsAndCols;
     }
 
-    public boolean debugModeAndChangesDone() {
-        return debug && anyChange();
-    }
 }
