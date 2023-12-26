@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.hawrylak.puzzle.nonogram.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.PuzzlePrinter;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.utils.PuzzlePrinter;
 
 public class Puzzle {
 

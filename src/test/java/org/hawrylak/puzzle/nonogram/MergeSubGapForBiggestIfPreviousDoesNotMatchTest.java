@@ -2,6 +2,7 @@ package org.hawrylak.puzzle.nonogram;
 
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.solver.MergeSubGapForBiggestIfPreviousDoesNotMatch;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

@@ -1,7 +1,7 @@
 package org.hawrylak.puzzle.nonogram.solver.utils;
 
 import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;

@@ -2,7 +2,7 @@ package org.hawrylak.puzzle.nonogram.solver;
 
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;

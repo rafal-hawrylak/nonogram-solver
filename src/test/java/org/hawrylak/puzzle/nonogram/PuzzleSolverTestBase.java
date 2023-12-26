@@ -9,6 +9,7 @@ import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.solver.utils.RowSelector;
+import org.hawrylak.puzzle.nonogram.utils.PuzzleStringConverter;
 
 public class PuzzleSolverTestBase {
 

@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.utils;
 
 import java.util.ArrayList;
 import java.util.Collections;

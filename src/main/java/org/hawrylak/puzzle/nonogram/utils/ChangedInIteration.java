@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.utils;
 
 import lombok.Getter;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;

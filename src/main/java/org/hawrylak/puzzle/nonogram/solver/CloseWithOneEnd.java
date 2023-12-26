@@ -5,7 +5,7 @@ import static org.hawrylak.puzzle.nonogram.solver.utils.Utils.getStart;
 import java.util.ArrayList;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
