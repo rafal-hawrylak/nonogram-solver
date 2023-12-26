@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class CloseWithOneEndTest extends PuzzleSolverTestBase {
 
     private CloseWithOneEnd solver = new CloseWithOneEnd(gapFinder, numberSelector, gapFiller);
-    
+
     @Test
     void closeWithAfterEmptyLastGapOfBiggerSize() {
         String puzzleCase = "...x■.";
