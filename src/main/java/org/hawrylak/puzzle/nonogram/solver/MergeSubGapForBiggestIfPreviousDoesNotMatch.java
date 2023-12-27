@@ -1,7 +1,6 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
 import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
@@ -9,6 +8,7 @@ import org.hawrylak.puzzle.nonogram.model.SubGap;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 
 import java.util.Comparator;
 import java.util.List;
@@ -34,16 +34,28 @@ public class MergeSubGapForBiggestIfPreviousDoesNotMatch extends Solver {
                 continue;
             }
             List<SubGap> subGaps = gaps.get(0).filledSubGaps;
-            if (subGaps.size() < 3) {
+            if (subGaps.size() < 2) {
                 continue;
             }
+            var maxSubGap = subGaps.stream().max(Comparator.comparingInt(s -> s.length)).get();
             var allBeforeBiggest = numberSelector.allPrevious(rowOrCol.numbersToFind, biggestNotFound.get(0));
             var allAfterBiggest = numberSelector.allNext(rowOrCol.numbersToFind, biggestNotFound.get(0));
+            if (allAfterBiggest.stream().filter(n -> !n.found).anyMatch(n -> n.number >= maxSubGap.length)) {
+                continue;
+            }
             if (allBeforeBiggest.isEmpty()) {
-
+                var maxSubGapIndex = subGaps.indexOf(maxSubGap);
+                if (maxSubGapIndex != 1) {
+                    continue;
+                }
+                var firstSubGap = subGaps.get(0);
+                boolean mergeable = gapFinder.areSubGapsMergeable(biggest, firstSubGap, maxSubGap);
+                if (mergeable) {
+                    var fakeGap = new Gap(rowOrCol, firstSubGap.end + 1, maxSubGap.start - 1, maxSubGap.start - firstSubGap.end + 1, Optional.empty());
+                    gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
+                }
             } else if (allBeforeBiggest.size() == 1) {
-                var maxSubGap = subGaps.stream().max(Comparator.comparingInt(s -> s.length)).get();
-                if (allAfterBiggest.stream().filter(n -> !n.found).anyMatch(n -> n.number >= maxSubGap.length)) {
+                if (subGaps.size() < 3) {
                     continue;
                 }
                 var previousNumber = allBeforeBiggest.get(0);
