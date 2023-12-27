@@ -7,6 +7,7 @@ import org.hawrylak.puzzle.nonogram.model.solution.SolversStatistics;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
 import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversProvider;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
 
 import java.util.Map;
 
@@ -16,8 +17,9 @@ public class PuzzleSolver {
     public static final int ITERATIONS_TO_STOP_AFTER = DEBUG ? 300 : 100;
     public static final boolean HARD_STOP = true;
 
-    public Solution solve(Puzzle puzzle) {
+    public Solution solve(Puzzle puzzleToSolve) {
 
+        var puzzle = new PuzzleCloner().clone(puzzleToSolve);
         var stats = new SolversStatistics();
         var changes = new ChangedInIteration(puzzle);
 

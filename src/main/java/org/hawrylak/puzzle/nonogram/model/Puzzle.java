@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import lombok.EqualsAndHashCode;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzlePrinter;
 
+@EqualsAndHashCode
 public class Puzzle {
 
     public final int width;
     public final int height;
 
+    @EqualsAndHashCode.Exclude
     public final List<RowOrCol> rowsOrCols = new ArrayList<>();
 
     public FieldState[][] fields;
