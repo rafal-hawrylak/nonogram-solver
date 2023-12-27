@@ -7,7 +7,7 @@ Backlog:
 - areSubGapsMergeable may check if in the same gap - do not remember why is this check needed?
 - solve SolveWholeCase021Test
 - solve SolveWholeCase020Test
-- bug in FillTheNumbersWithStartAndEndNotConnectedSolver
+- [done] bug in FillTheNumbersWithStartAndEndNotConnectedSolver
 - order of solvers impact the result
 - implement guessing
 - image as input
