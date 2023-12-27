@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.solver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

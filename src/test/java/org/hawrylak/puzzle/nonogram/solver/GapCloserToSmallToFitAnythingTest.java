@@ -1,8 +1,7 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.solver;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solver.CloseTooSmallToFitAnything;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.junit.jupiter.api.Test;
 

@@ -1,6 +1,5 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
-import org.hawrylak.puzzle.nonogram.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.junit.jupiter.api.Test;

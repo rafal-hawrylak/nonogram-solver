@@ -1,4 +1,4 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.solver;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -6,7 +6,6 @@ import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.solver.CloseAllTheGapsIfAllFullMarked;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.junit.jupiter.api.Test;
 

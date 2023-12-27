@@ -1,21 +1,19 @@
-package org.hawrylak.puzzle.nonogram;
+package org.hawrylak.puzzle.nonogram.solver;
 
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.solver.CloseTheOnlyCombination;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.junit.jupiter.api.Test;
 
-public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
+public class NumberCloserAtEdgesTest extends PuzzleSolverTestBase {
 
-    private CloseTheOnlyCombination solver = new CloseTheOnlyCombination(gapFiller);
-    
+    private CloseAtEdges solver = new CloseAtEdges(rowSelector, gapFiller);
+
     @Test
-    void closeWithSingleOne() {
-        String puzzleCase = ".";
-        String expectedPuzzle = "■";
-        List<Integer> numbersToFind = List.of(1);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
+    void closeAtEdgeWithOne() {
+        String puzzleCase = "....■";
+        String expectedPuzzle = "...x■";
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
         solver.apply(puzzle, changes);
@@ -24,9 +22,9 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
     }
 
     @Test
-    void closeWithSingleTwo() {
-        String puzzleCase = "..";
-        String expectedPuzzle = "■■";
+    void closeAtEdgeWithTwo() {
+        String puzzleCase = "....■";
+        String expectedPuzzle = "..x■■";
         List<Integer> numbersToFind = List.of(2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
@@ -37,35 +35,9 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
     }
 
     @Test
-    void closeWithSingleTwoOnes() {
-        String puzzleCase = "...";
-        String expectedPuzzle = "■x■";
-        List<Integer> numbersToFind = List.of(1, 1);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
-    }
-
-    @Test
-    void closeWithSingleThreeOnes() {
-        String puzzleCase = ".....";
-        String expectedPuzzle = "■x■x■";
-        List<Integer> numbersToFind = List.of(1, 1, 1);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
-    }
-
-    @Test
-    void closeWithSingleTwoTwos() {
-        String puzzleCase = ".....";
-        String expectedPuzzle = "■■x■■";
+    void closeAtEdgeWithTwoTwo() {
+        String puzzleCase = "....■";
+        String expectedPuzzle = "..x■■";
         List<Integer> numbersToFind = List.of(2, 2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
@@ -76,10 +48,10 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
     }
 
     @Test
-    void closeWithSingleMixture() {
-        String puzzleCase = ".............";
-        String expectedPuzzle = "■x■■x■■■x■■■■";
-        List<Integer> numbersToFind = List.of(1, 2, 3, 4);
+    void closeAtEdgeWithAllFive() {
+        String puzzleCase = "....■";
+        String expectedPuzzle = "■■■■■";
+        List<Integer> numbersToFind = List.of(5);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
@@ -89,10 +61,22 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
     }
 
     @Test
-    void closeWithSingleMixtureReversed() {
-        String puzzleCase = ".............";
-        String expectedPuzzle = "■■■■x■■■x■■x■";
-        List<Integer> numbersToFind = List.of(4, 3, 2, 1);
+    void closeAtEdgeWithOneFromFront() {
+        String puzzleCase = "■....";
+        String expectedPuzzle = "■x...";
+        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
+        print("before", puzzle);
+        var changes = new ChangedInIteration(puzzle);
+        solver.apply(puzzle, changes);
+        print("after", puzzle);
+        assertPuzzle(puzzle, expectedPuzzle);
+    }
+
+    @Test
+    void closeAtEdgeWithTwoFromFront() {
+        String puzzleCase = "■....";
+        String expectedPuzzle = "■■x..";
+        List<Integer> numbersToFind = List.of(2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
@@ -102,10 +86,10 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
     }
 
     @Test
-    void closeWithSingleBigAndSmall() {
-        String puzzleCase = ".............";
-        String expectedPuzzle = "■■■■■■■■■■■x■";
-        List<Integer> numbersToFind = List.of(11, 1);
+    void closeAtEdgeWithTwoTwoFromFront() {
+        String puzzleCase = "■....";
+        String expectedPuzzle = "■■x..";
+        List<Integer> numbersToFind = List.of(2, 2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
@@ -115,10 +99,10 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
     }
 
     @Test
-    void doNotCloseWithAlmostSingleAndBig() {
-        String puzzleCase = "..............";
-        String expectedPuzzle = "..............";
-        List<Integer> numbersToFind = List.of(11, 1);
+    void closeAtEdgeWithAllFiveFromFront() {
+        String puzzleCase = "■....";
+        String expectedPuzzle = "■■■■■";
+        List<Integer> numbersToFind = List.of(5);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
         print("before", puzzle);
         var changes = new ChangedInIteration(puzzle);
@@ -126,4 +110,5 @@ public class NumberCloserTheOnlyCombinationTest extends PuzzleSolverTestBase {
         print("after", puzzle);
         assertPuzzle(puzzle, expectedPuzzle);
     }
+
 }

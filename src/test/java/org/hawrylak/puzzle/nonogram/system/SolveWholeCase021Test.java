@@ -1,7 +1,7 @@
 package org.hawrylak.puzzle.nonogram.system;
 
 import org.hawrylak.puzzle.nonogram.PuzzleSolver;
-import org.hawrylak.puzzle.nonogram.PuzzleSolverTestBase;
+import org.hawrylak.puzzle.nonogram.solver.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.solution.Solution;
 import org.junit.jupiter.api.Test;

@@ -5,6 +5,7 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.solution.Solution;
 import org.hawrylak.puzzle.nonogram.model.solution.SolversStatistics;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
+import org.hawrylak.puzzle.nonogram.solver.provider.RandomOrderSolverProvider;
 import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversProvider;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
@@ -24,6 +25,7 @@ public class PuzzleSolver {
         var changes = new ChangedInIteration(puzzle);
 
         Map<String, Solver> solvers = new SpecificOrderSolversProvider().provide();
+//        Map<String, Solver> solvers = new RandomOrderSolverProvider().provide();
         System.out.println("solvers = " + solvers);
 
         while (changes.firstIteration() || changes.anyChange()) {
