@@ -47,6 +47,7 @@ public class OriginalOrderSolversProvider implements SolversProvider {
         addSolver(solvers, new TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber(gapFinder, numberSelector, gapFiller));
         addSolver(solvers, new TryToNarrowGapsBetweenGapsWithKnownNumbers(gapFinder, gapFiller, numberSelector));
         addSolver(solvers, new MergeSubGapForBiggestIfPreviousDoesNotMatch(gapFinder, gapFiller, numberSelector));
+        addSolver(solvers, new FitTheOnlyCombinationBeforeFirstOrAfterLastClosed(gapFinder, gapFiller, numberSelector));
 
         return solvers;
     }

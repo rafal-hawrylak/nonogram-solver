@@ -273,6 +273,32 @@ public class GapFiller {
         return result.build();
     }
 
+    public boolean doAllNumbersFitInGaps(List<NumberToFind> numbers, List<Gap> gaps) {
+        if (numbers.isEmpty()) {
+            return true;
+        }
+        if (gaps.isEmpty()) {
+            return false;
+        }
+        var firstNumberIndex = 0;
+        var lastNumberIndex = numbers.size() - 1;
+        for (Gap gap : gaps) {
+            var soFarInThisGap = 0;
+            if (firstNumberIndex > lastNumberIndex) {
+                return true;
+            }
+            for (NumberToFind number : numbers.subList(firstNumberIndex, lastNumberIndex + 1)) {
+                if (soFarInThisGap + number.number <= gap.length) {
+                    soFarInThisGap += number.number + 1;
+                    firstNumberIndex++;
+                } else {
+                    break;
+                }
+            }
+        }
+        return firstNumberIndex > lastNumberIndex;
+    }
+
     private boolean doAllNumbersFitBefore(RowOrCol rowOrCol, Gap gap, List<Gap> previousGaps, NumberBeforeCurrentAndAfter split,
         OnlyPossibleCombinationGapMode gapMode, OnlyPossibleCombinationSubGapMode subGapMode) {
         if (gapMode.isEnabled()) {
@@ -313,32 +339,6 @@ public class GapFiller {
             return doAllNumbersFitInGaps(afterAndCurrentNumber, nextAndCurrentGaps);
         }
         return false;
-    }
-
-    private boolean doAllNumbersFitInGaps(List<NumberToFind> numbers, List<Gap> gaps) {
-        if (numbers.isEmpty()) {
-            return true;
-        }
-        if (gaps.isEmpty()) {
-            return false;
-        }
-        var firstNumberIndex = 0;
-        var lastNumberIndex = numbers.size() - 1;
-        for (Gap gap : gaps) {
-            var soFarInThisGap = 0;
-            if (firstNumberIndex > lastNumberIndex) {
-                return true;
-            }
-            for (NumberToFind number : numbers.subList(firstNumberIndex, lastNumberIndex + 1)) {
-                if (soFarInThisGap + number.number <= gap.length) {
-                    soFarInThisGap += number.number + 1;
-                    firstNumberIndex++;
-                } else {
-                    break;
-                }
-            }
-        }
-        return firstNumberIndex > lastNumberIndex;
     }
 
     public boolean numbersForSureDoNotComplyWithSubGaps(List<NumberToFind> numbers, List<Gap> gaps, OnlyPossibleCombinationGapMode gapMode) {

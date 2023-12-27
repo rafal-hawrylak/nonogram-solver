@@ -64,8 +64,18 @@ public class NumberSelector {
         return Optional.empty();
     }
 
+    public Optional<NumberToFind> getFirstFound(List<NumberToFind> numbers) {
+        return numbers.stream().filter(n -> n.found).findFirst();
+    }
+
     public Optional<NumberToFind> getFirstNotFound(List<NumberToFind> numbers) {
         return numbers.stream().filter(n -> !n.found).findFirst();
+    }
+
+    public Optional<NumberToFind> getLastFound(List<NumberToFind> numbers) {
+        var copy = new ArrayList<>(numbers);
+        Collections.reverse(copy);
+        return copy.stream().filter(n -> n.found).findFirst();
     }
 
     public Optional<NumberToFind> getLastNotFound(List<NumberToFind> numbers) {
