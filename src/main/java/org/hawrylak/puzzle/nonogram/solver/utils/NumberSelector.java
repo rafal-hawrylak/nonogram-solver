@@ -5,11 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import org.hawrylak.puzzle.nonogram.model.FieldState;
-import org.hawrylak.puzzle.nonogram.model.Gap;
-import org.hawrylak.puzzle.nonogram.model.NumberToFind;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+
+import org.hawrylak.puzzle.nonogram.model.*;
 
 public class NumberSelector {
 
@@ -179,6 +176,10 @@ public class NumberSelector {
 
     public List<Integer> getAllBigger(List<NumberToFind> numbers, int number) {
         return numbers.stream().map(n -> n.number).filter(n -> n > number).distinct().toList();
+    }
+
+    public List<NumberToFind> findNumbersMatchingSubGap(SubGap subGap, List<NumberToFind> numbers) {
+        return numbers.stream().filter(n -> n.number >= subGap.length).toList();
     }
 
     public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {

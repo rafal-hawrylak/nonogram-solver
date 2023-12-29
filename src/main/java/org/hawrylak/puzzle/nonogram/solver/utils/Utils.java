@@ -90,4 +90,8 @@ public class Utils {
             return rowOrCol.horizontal ? c - number + 1 : r - number + 1;
         }
     }
+
+    public static <T> List<T> remove(List<T> elements, T element) {
+        return elements.stream().filter(e -> !e.equals(element)).toList();
+    }
 }
