@@ -1,16 +1,12 @@
 package org.hawrylak.puzzle.nonogram.solver.utils;
 
-import static org.hawrylak.puzzle.nonogram.model.Gap.NO_FULL;
+import org.hawrylak.puzzle.nonogram.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.hawrylak.puzzle.nonogram.model.FieldState;
-import org.hawrylak.puzzle.nonogram.model.Gap;
-import org.hawrylak.puzzle.nonogram.model.NumberToFind;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.model.SubGap;
+
+import static org.hawrylak.puzzle.nonogram.model.Gap.NO_FULL;
 
 public class GapFinder {
 

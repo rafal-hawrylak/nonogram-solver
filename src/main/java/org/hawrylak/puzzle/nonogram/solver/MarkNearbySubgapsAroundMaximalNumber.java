@@ -1,22 +1,13 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
+import lombok.AllArgsConstructor;
+import org.hawrylak.puzzle.nonogram.model.*;
+import org.hawrylak.puzzle.nonogram.solver.utils.*;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Optional;
-import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.model.Gap;
-import org.hawrylak.puzzle.nonogram.model.NumberToFind;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.model.SubGap;
-import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
-import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
-import org.hawrylak.puzzle.nonogram.solver.utils.OnlyPossibleCombinationGapMode;
-import org.hawrylak.puzzle.nonogram.solver.utils.OnlyPossibleCombinationSubGapMode;
-import org.hawrylak.puzzle.nonogram.solver.utils.Utils;
 
 @AllArgsConstructor
 public class MarkNearbySubgapsAroundMaximalNumber extends Solver {

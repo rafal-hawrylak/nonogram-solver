@@ -1,17 +1,14 @@
 package org.hawrylak.puzzle.nonogram.solver.utils;
 
+import lombok.AllArgsConstructor;
+import org.hawrylak.puzzle.nonogram.model.*;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.model.FieldState;
-import org.hawrylak.puzzle.nonogram.model.Gap;
-import org.hawrylak.puzzle.nonogram.model.NumberToFind;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.RowOrCol;
-import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector.NumberBeforeCurrentAndAfter;
 
 @AllArgsConstructor
 public class GapFiller {

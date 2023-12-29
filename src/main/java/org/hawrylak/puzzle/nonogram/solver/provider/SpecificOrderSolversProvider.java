@@ -1,10 +1,11 @@
 package org.hawrylak.puzzle.nonogram.solver.provider;
 
+import org.hawrylak.puzzle.nonogram.solver.Solver;
+
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import org.hawrylak.puzzle.nonogram.solver.Solver;
 
 public class SpecificOrderSolversProvider implements SolversProvider {
 

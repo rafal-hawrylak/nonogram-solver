@@ -1,11 +1,12 @@
 package org.hawrylak.puzzle.nonogram.solver.provider;
 
+import org.hawrylak.puzzle.nonogram.solver.Solver;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.hawrylak.puzzle.nonogram.solver.Solver;
 
 public class RandomOrderSolverProvider implements SolversProvider {
 

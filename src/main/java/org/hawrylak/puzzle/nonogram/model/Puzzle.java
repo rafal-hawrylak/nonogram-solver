@@ -1,13 +1,13 @@
 package org.hawrylak.puzzle.nonogram.model;
 
+import lombok.EqualsAndHashCode;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.hawrylak.puzzle.nonogram.utils.PuzzlePrinter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import lombok.EqualsAndHashCode;
-import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.utils.PuzzlePrinter;
 
 @EqualsAndHashCode
 public class Puzzle {

@@ -1,7 +1,7 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
-import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 
 public abstract class Solver {
 

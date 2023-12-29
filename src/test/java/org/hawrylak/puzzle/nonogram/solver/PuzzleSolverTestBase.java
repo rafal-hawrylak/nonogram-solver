@@ -1,19 +1,14 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.solution.Solution;
-import org.hawrylak.puzzle.nonogram.solver.utils.FieldFinder;
-import org.hawrylak.puzzle.nonogram.solver.utils.GapCloser;
-import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
-import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.solver.utils.RowSelector;
+import org.hawrylak.puzzle.nonogram.solver.utils.*;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleStringConverter;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PuzzleSolverTestBase {
 

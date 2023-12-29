@@ -1,7 +1,8 @@
 package org.hawrylak.puzzle.nonogram.solver.provider;
 
-import java.util.Map;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
+
+import java.util.Map;
 
 public interface SolversProvider {
 

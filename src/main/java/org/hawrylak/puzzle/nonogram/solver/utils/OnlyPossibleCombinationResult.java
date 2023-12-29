@@ -1,10 +1,11 @@
 package org.hawrylak.puzzle.nonogram.solver.utils;
 
-import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
+
+import java.util.Objects;
 
 @Getter
 @Builder

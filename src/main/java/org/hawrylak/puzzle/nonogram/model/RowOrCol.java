@@ -1,10 +1,11 @@
 package org.hawrylak.puzzle.nonogram.model;
 
-import java.util.List;
-import java.util.UUID;
 import lombok.EqualsAndHashCode;
 import lombok.EqualsAndHashCode.Include;
 import lombok.ToString;
+
+import java.util.List;
+import java.util.UUID;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(exclude = {"id"})

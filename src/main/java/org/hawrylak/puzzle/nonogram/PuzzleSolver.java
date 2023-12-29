@@ -5,7 +5,6 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.solution.Solution;
 import org.hawrylak.puzzle.nonogram.model.solution.SolversStatistics;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
-import org.hawrylak.puzzle.nonogram.solver.provider.RandomOrderSolverProvider;
 import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversProvider;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;

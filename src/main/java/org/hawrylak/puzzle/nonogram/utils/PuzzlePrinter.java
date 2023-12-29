@@ -1,12 +1,12 @@
 package org.hawrylak.puzzle.nonogram.utils;
 
-import java.util.Optional;
-
 import org.hawrylak.puzzle.nonogram.Colors;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+
+import java.util.Optional;
 
 public class PuzzlePrinter {
 

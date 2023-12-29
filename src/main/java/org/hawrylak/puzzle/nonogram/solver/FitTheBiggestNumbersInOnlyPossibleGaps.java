@@ -1,15 +1,16 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
-import java.util.Optional;
 import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
-import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
-import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Gap;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
+import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
+import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+
+import java.util.Optional;
 
 /*
   ex

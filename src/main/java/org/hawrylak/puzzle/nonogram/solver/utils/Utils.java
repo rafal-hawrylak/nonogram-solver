@@ -1,10 +1,11 @@
 package org.hawrylak.puzzle.nonogram.solver.utils;
 
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
 public class Utils {
 

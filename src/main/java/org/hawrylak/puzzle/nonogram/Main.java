@@ -1,12 +1,13 @@
 package org.hawrylak.puzzle.nonogram;
 
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
 
 public class Main {
 

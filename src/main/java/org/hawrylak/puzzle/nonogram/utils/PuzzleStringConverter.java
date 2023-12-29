@@ -1,10 +1,11 @@
 package org.hawrylak.puzzle.nonogram.utils;
 
+import org.hawrylak.puzzle.nonogram.model.FieldState;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.hawrylak.puzzle.nonogram.model.FieldState;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
 
 public class PuzzleStringConverter {
 

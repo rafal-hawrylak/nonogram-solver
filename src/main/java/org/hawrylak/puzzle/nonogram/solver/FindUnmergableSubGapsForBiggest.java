@@ -9,8 +9,6 @@ import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 
-import java.util.Optional;
-
 @AllArgsConstructor
 public class FindUnmergableSubGapsForBiggest extends Solver {
 

@@ -1,14 +1,12 @@
 package org.hawrylak.puzzle.nonogram.system;
 
-import org.hawrylak.puzzle.nonogram.solver.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.solver.PuzzleSolverTestBase;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SolveWholeCase001Test extends PuzzleSolverTestBase {
 

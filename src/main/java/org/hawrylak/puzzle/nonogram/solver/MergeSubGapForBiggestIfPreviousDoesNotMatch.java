@@ -12,7 +12,6 @@ import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 public class MergeSubGapForBiggestIfPreviousDoesNotMatch extends Solver {

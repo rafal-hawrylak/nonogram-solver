@@ -1,12 +1,8 @@
 package org.hawrylak.puzzle.nonogram.solver.utils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-
 import org.hawrylak.puzzle.nonogram.model.*;
+
+import java.util.*;
 
 public class NumberSelector {
 
