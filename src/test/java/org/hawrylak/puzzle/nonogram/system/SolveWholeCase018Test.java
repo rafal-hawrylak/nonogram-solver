@@ -8,51 +8,55 @@ import org.hawrylak.puzzle.nonogram.solver.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.hawrylak.puzzle.nonogram.model.solution.Solution;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public class SolveWholeCase018NeedsShootingTest extends PuzzleSolverTestBase {
+public class SolveWholeCase018Test extends PuzzleSolverTestBase {
 
     @Test
-    @Disabled("needs shooting")
     void test() {
         String expectedPuzzle = """
-xxxxx■■■■■xxxxxxxxxx
-xxxx■■■■■■■■xxxxxxxx
-xxxx■■■■■■■■■xxxxxxx
-xxx■■■■■■■■■■xxxxxxx
-xxx■■■■x■■■■■xxxxxxx
-xxx■■■x■■xx■■■xxxxxx
-x■x■■■xxxxxx■■xxxxxx
-x■■■■xxxxxxx■■xxxxxx
-x■■■■■x■■x■■■■xxxxxx
-xx■■■■xxxxxx■x■■■xxx
-xxxx■xxxx■x■■■■■■■xx
-x■■■■■xxxx■■■■■x■■■x
-■■x■■■xx■■■■■■x■■■■x
-■x■■■■x■■■■■x■x■■■■■
-■x■■■x■■■■■x■■■■■x■■
-■■■■x■■■■■■x■■■■■■x■
-■■■■x■■■■■■■■■■■■■x■
-■■■x■■■■x■■■■■x■■■■x
-■x■x■■■x■■■■■xxx■x■x
-■■x■■■■x■■■xxxxx■■xx
-x■x■x■■■■■xxx■xxx■xx
-xxx■x■■■■■xxx■xxx■xx
-xxx■xx■■x■■xx■xxx■xx
-xx■■x■x■■x■■x■■xx■■x
-xx■xx■x■xxxx■■■xxx■x
-xx■xx■x■x■xx■x■■xx■x
-x■■x■■x■xxxx■xx■xx■■
-x■xx■xx■x■x■■xx■xxx■
-■■x■■xx■xxx■xx■■xxx■
-■xx■xxx■x■x■x■■xxx■■""";
+xxxxxxxxxxxxxxx■■■xxxxxxx
+xxxxxxxxxxxxx■■■■■■xxxxxx
+xxxxxxxxxxx■■■■■■■■■xxxxx
+xxxxxxxxxx■■■■■xxxx■■xxxx
+xxxxxxxxxx■■■xxxxxxx■■xxx
+xxxxxxxxxx■■xxxxx■xx■■xxx
+xxxxxxxxxx■■■xxx■■xx■■xxx
+xxxxxxxxx■■■■■■x■■xx■xxxx
+xxxxxxxx■■■■■xxx■xx■■xxxx
+xxxxxxx■■■■xxxxx■xx■xxxxx
+xxxxxx■■■xxxxxxxxx■■■xxxx
+xxxxxx■■xxxxx■xxxxxx■■xxx
+xxxxxx■■xx■xx■■x■xxxx■xxx
+xxxxxx■■■■■■x■■x■xxxx■xxx
+xxxxx■■■xxxxxx■x■xx■■■■xx
+xxxx■■■xxxx■xx■xxxxxxx■■x
+xxx■■■■xxxx■xx■xx■xxxxx■■
+xxx■■■xxxx■■xxxxx■xxxxxx■
+xxx■■■■xxx■■xxxxx■■xxx■x■
+xx■■■■■■xx■xxxx■xx■xx■■x■
+x■■■xxx■■x■x■xx■x■■x■■x■■
+x■■xxxxx■xxx■■x■■■■■■■■■x
+■■xxxxxxxxxxx■x■■x■x■■xxx
+■■xxxxxxxxxxx■■■xx■■■xxxx
+■■■xxxxx■xxx■■x■■x■■xxxxx
+■■■■xxxx■■x■■■xx■x■■xxxxx
+■■■■■■xxx■■■x■■x■■■xxxxxx
+x■■■■■■■■■■■xx■x■■■xxxxxx
+xxx■■■■■■■x■■■■■■■xxxxxxx
+■xxxxxxxxxxx■■■■■■xxxxxxx
+■■■■xxxxxxxxx■■■■■xxxxxxx
+■■■■■■■xxxxxx■■■■■xxxxxxx
+■■■■■■■■■■■■x■■■■■xxxxxxx
+xxxxx■■■■■■■x■■■■■■xxxxxx
+xxxxxxxx■■■x■■■■■■■■xxxxx""";
         Puzzle before = getTestPuzzle17ProfessionalLevel2();
         print("before", before);
 
         Solution solution = new PuzzleSolver().solve(before);
 
         print("after", solution.getPuzzle());
+
         assertTrue(solution.isSolved());
         assertPuzzle(solution.getPuzzle(), expectedPuzzle);
 
