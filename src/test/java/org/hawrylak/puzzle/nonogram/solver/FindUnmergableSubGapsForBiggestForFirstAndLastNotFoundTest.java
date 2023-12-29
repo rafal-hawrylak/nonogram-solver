@@ -3,12 +3,15 @@ package org.hawrylak.puzzle.nonogram.solver;
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundTest extends PuzzleSolverTestBase {
 
-    private FindUnmergableSubGapsForBiggestForFirstAndLastNotFound solver =
-        new FindUnmergableSubGapsForBiggestForFirstAndLastNotFound(gapFinder, gapCloser, numberSelector);
+    @BeforeEach
+    void before() {
+        solver = new FindUnmergableSubGapsForBiggestForFirstAndLastNotFound(gapFinder, gapCloser, numberSelector);
+    }
 
     @Test
     void shouldNotCloseFieldWhenTooFarFromEndEdge2() {
@@ -16,11 +19,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundTest extends 
         String expectedPuzzle = ".............................■.■...";
         List<Integer> numbersToFind = List.of(2,6,3,2,4,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -29,11 +28,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundTest extends 
         String expectedPuzzle = "..............................■x■..";
         List<Integer> numbersToFind = List.of(2,6,3,2,4,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -42,11 +37,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundTest extends 
         String expectedPuzzle = "...............................■x■.";
         List<Integer> numbersToFind = List.of(2,6,3,2,4,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -55,11 +46,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundTest extends 
         String expectedPuzzle = "...■.■.............................";
         List<Integer> numbersToFind = List.of(2,6,3,2,4,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -68,11 +55,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundTest extends 
         String expectedPuzzle = "..■x■..............................";
         List<Integer> numbersToFind = List.of(2,6,3,2,4,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -81,10 +64,6 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFoundTest extends 
         String expectedPuzzle = ".■x■...............................";
         List<Integer> numbersToFind = List.of(2,6,3,2,4,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 }

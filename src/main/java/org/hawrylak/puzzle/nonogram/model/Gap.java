@@ -1,12 +1,14 @@
 package org.hawrylak.puzzle.nonogram.model;
 
-import java.util.List;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.hawrylak.puzzle.nonogram.solver.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -19,9 +21,13 @@ public class Gap {
     public final int start;
     public final int end;
     public final int length;
-    //TODO remove final - all the object creations must be fixed
-    public final Optional<NumberToFind> assignedNumber;
-    public List<SubGap> filledSubGaps;
+    public Optional<NumberToFind> assignedNumber = Optional.empty();
+    public List<SubGap> filledSubGaps = new ArrayList<>();
+
+    public Gap(RowOrCol rowOrCol, int start, int end, int length, Optional<NumberToFind> assignedNumber) {
+        this(rowOrCol, start, end, length);
+        this.assignedNumber = assignedNumber;
+    }
 
     public Optional<SubGap> getFirstSubGap() {
         return Utils.getFirst(filledSubGaps);

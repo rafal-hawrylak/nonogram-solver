@@ -34,7 +34,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound extends Solv
                             boolean mergeable = gapFinder.areSubGapsMergeable(firstNumber.get().number, firstSubGap, nextSubGap);
                             var onlySingleFieldBetweenSubGaps = firstSubGap.end + 2 == nextSubGap.start;
                             if (!mergeable && onlySingleFieldBetweenSubGaps) {
-                                var fakeGap = new Gap(rowOrCol, firstSubGap.end + 1, firstSubGap.end + 1, 1, Optional.empty());
+                                var fakeGap = new Gap(rowOrCol, firstSubGap.end + 1, firstSubGap.end + 1, 1);
                                 gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                             }
                         }
@@ -55,7 +55,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound extends Solv
                             boolean mergeable = gapFinder.areSubGapsMergeable(lastNumber.get().number, prevSubGap, lastSubGap);
                             var onlySingleFieldBetweenSubGaps = prevSubGap.end + 2 == lastSubGap.start;
                             if (!mergeable && onlySingleFieldBetweenSubGaps) {
-                                var fakeGap = new Gap(rowOrCol, prevSubGap.end + 1, prevSubGap.end + 1, 1, Optional.empty());
+                                var fakeGap = new Gap(rowOrCol, prevSubGap.end + 1, prevSubGap.end + 1, 1);
                                 gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                             }
                         }

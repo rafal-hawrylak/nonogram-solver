@@ -19,8 +19,7 @@ public class GapFillerNumbersForSureDoNotComplyWithSubGapsTest extends PuzzleSol
         var rowOrCol = puzzle.rowsOrCols.get(0);
         var gaps = gapFinder.find(puzzle, rowOrCol);
         OnlyPossibleCombinationSubGapMode subGapMode = OnlyPossibleCombinationSubGapMode.builder().enabled(true).build();
-        boolean answer = gapFiller.numbersForSureDoNotComplyWithSubGaps(rowOrCol.numbersToFind, gaps, OnlyPossibleCombinationGapMode.NO
-            );
+        boolean answer = gapFiller.numbersForSureDoNotComplyWithSubGaps(rowOrCol.numbersToFind, gaps, OnlyPossibleCombinationGapMode.NO);
         assertFalse(answer);
     }
 }

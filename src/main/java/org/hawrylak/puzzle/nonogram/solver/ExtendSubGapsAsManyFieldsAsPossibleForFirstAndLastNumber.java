@@ -37,7 +37,7 @@ public class ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber extends So
                 if (missingNumberPart >= 0) {
                     if (firstSubGap.start - gap.start < missingNumberPart) {
                         var end = gap.start + number.number - 1;
-                        var fakeGap = new Gap(rowOrCol, firstSubGap.start, end, end - firstSubGap.start + 1, Optional.empty());
+                        var fakeGap = new Gap(rowOrCol, firstSubGap.start, end, end - firstSubGap.start + 1);
                         gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
                     }
                 }
@@ -59,7 +59,7 @@ public class ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber extends So
                 if (missingNumberPart >= 0) {
                     if (gap.end - lastSubGap.end < missingNumberPart) {
                         var start = gap.end - number.number + 1;
-                        var fakeGap = new Gap(rowOrCol, start, lastSubGap.end, lastSubGap.end - start + 1, Optional.empty());
+                        var fakeGap = new Gap(rowOrCol, start, lastSubGap.end, lastSubGap.end - start + 1);
                         gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
                     }
                 }

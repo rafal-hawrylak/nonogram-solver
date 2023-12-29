@@ -1,10 +1,8 @@
 package org.hawrylak.puzzle.nonogram.system;
 
-import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.hawrylak.puzzle.nonogram.solver.PuzzleSolverTestBase;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.solution.Solution;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -28,15 +26,7 @@ x■■■■■xxxx
 x■■■■■■■■■
 xxxxx■■■■■""";
         Puzzle before = getTestPuzzle1();
-        print("before", before);
-
-        Solution solution = new PuzzleSolver().solve(before);
-
-        print("after", solution.getPuzzle());
-        assertTrue(solution.isSolved());
-        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
-
-        System.out.println(solution.getPuzzle().compact());
+        solveAndAssertSystem(before, expectedPuzzle);
     }
 
     private Puzzle getTestPuzzle1() {
@@ -82,15 +72,7 @@ x■■■■■xxxx
 x■■■■■■■■■
 xxxxx■■■■■""";
         Puzzle before = getTestPuzzle1WithInitialMarks();
-        print("before", before);
-
-        Solution solution = new PuzzleSolver().solve(before);
-
-        print("after", solution.getPuzzle());
-        assertTrue(solution.isSolved());
-        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
-
-        System.out.println(solution.getPuzzle().compact());
+        solveAndAssertSystem(before, expectedPuzzle);
     }
 
     private Puzzle getTestPuzzle1WithInitialMarks() {

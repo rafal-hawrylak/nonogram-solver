@@ -26,15 +26,7 @@ xxx■x■■x■■
 ■■x■■■■■■■
 ■■■■■■■■■■""";
         Puzzle before = getTestPuzzle2();
-        print("before", before);
-
-        Solution solution = new PuzzleSolver().solve(before);
-
-        print("after", solution.getPuzzle());
-        assertTrue(solution.isSolved());
-        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
-
-        System.out.println(solution.getPuzzle().compact());
+        solveAndAssertSystem(before, expectedPuzzle);
     }
     private Puzzle getTestPuzzle2() {
         var width = 10;

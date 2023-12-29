@@ -5,11 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBase {
 
-    private MarkNearbySubgapsAroundMaximalNumber solver = new MarkNearbySubgapsAroundMaximalNumber(gapFinder, numberSelector, gapFiller);
+    @BeforeEach
+    void before() {
+        solver = new MarkNearbySubgapsAroundMaximalNumber(gapFinder, numberSelector, gapFiller);
+    }
 
     @Test
     void tryToCloseSubGapBeforeMaximalSubgap() {
@@ -23,11 +27,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundStart = 3;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundEnd = 4;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -42,11 +42,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundStart = 33;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundEnd = 34;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -61,11 +57,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundStart = 3;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundEnd = 4;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -80,11 +72,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundStart = 33;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundEnd = 34;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -99,11 +87,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundStart = 3;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundEnd = 4;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -118,11 +102,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundStart = 33;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundEnd = 34;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -137,11 +117,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundStart = 3;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundEnd = 4;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -156,11 +132,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundStart = 33;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundEnd = 34;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -175,11 +147,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundStart = 3;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundEnd = 4;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
         assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(6).found);
     }
 
@@ -195,11 +163,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundStart = 33;
         puzzle.rowsOrCols.get(0).numbersToFind.get(10).foundEnd = 34;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
         assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(4).found);
     }
 
@@ -212,11 +176,7 @@ public class MarkNearbySubgapsAroundMaximalNumberTest extends PuzzleSolverTestBa
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundStart = 1;
         puzzle.rowsOrCols.get(0).numbersToFind.get(0).foundEnd = 5;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
 }

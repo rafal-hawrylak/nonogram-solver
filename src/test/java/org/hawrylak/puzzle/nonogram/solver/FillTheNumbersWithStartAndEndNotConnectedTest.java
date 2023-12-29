@@ -2,13 +2,17 @@ package org.hawrylak.puzzle.nonogram.solver;
 
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class FillTheNumbersWithStartAndEndNotConnectedTest extends PuzzleSolverTestBase {
 
-    private FillTheNumbersWithStartAndEndNotConnected solver = new FillTheNumbersWithStartAndEndNotConnected(gapFinder, numberSelector, gapFiller);
+    @BeforeEach
+    void before() {
+        solver = new FillTheNumbersWithStartAndEndNotConnected(gapFinder, numberSelector, gapFiller);
+    }
 
     @Test
     void fillTheGapForTheFirstNumber() {
@@ -16,11 +20,7 @@ class FillTheNumbersWithStartAndEndNotConnectedTest extends PuzzleSolverTestBase
         String expectedPuzzle = "..■■■■■..■■■■■.";
         List<Integer> numbersToFind = List.of(5, 5);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -29,11 +29,7 @@ class FillTheNumbersWithStartAndEndNotConnectedTest extends PuzzleSolverTestBase
         String expectedPuzzle = ".■■■■■..■■■■■..";
         List<Integer> numbersToFind = List.of(5, 5);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -42,11 +38,7 @@ class FillTheNumbersWithStartAndEndNotConnectedTest extends PuzzleSolverTestBase
         String expectedPuzzle = "....■.■.■■■■■..";
         List<Integer> numbersToFind = List.of(3, 3, 5);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -55,11 +47,7 @@ class FillTheNumbersWithStartAndEndNotConnectedTest extends PuzzleSolverTestBase
         String expectedPuzzle = "..■■■■■.■.■....";
         List<Integer> numbersToFind = List.of(5, 3, 3);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
 }

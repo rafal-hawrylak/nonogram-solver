@@ -47,7 +47,7 @@ public class MarkNearbySubgapsAroundMaximalNumber extends Solver {
             if (result.isNumber()) {
                 var theOnlyNumberMatching = result.getNumber();
                 if (maxSubGap.length == theOnlyNumberMatching.number) {
-                    var fakeGap = new Gap(rowOrCol, maxSubGap.start, maxSubGap.end, maxSubGap.length, Optional.empty());
+                    var fakeGap = new Gap(rowOrCol, maxSubGap.start, maxSubGap.end, maxSubGap.length);
                     gapFiller.fillTheGapEntirely(fakeGap, theOnlyNumberMatching, rowOrCol, puzzle, changes);
                     continue;
                 }
@@ -61,7 +61,7 @@ public class MarkNearbySubgapsAroundMaximalNumber extends Solver {
                         var maxPreviousNumber = previousNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
                         for (SubGap subGap : Utils.reverse(previousSubGaps)) {
                             if (subGap.length == maxPreviousNumber.number) {
-                                var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
+                                var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length);
                                 gapFiller.fillTheGapEntirelyWithNumberUnknown(fakeGap, rowOrCol, puzzle, changes);
                             }
                         }
@@ -77,7 +77,7 @@ public class MarkNearbySubgapsAroundMaximalNumber extends Solver {
                         var maxNextNumber = nextNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
                         for (SubGap subGap : nextSubGaps) {
                             if (subGap.length == maxNextNumber.number) {
-                                var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length, Optional.empty());
+                                var fakeGap = new Gap(rowOrCol, subGap.start, subGap.end, subGap.length);
                                 gapFiller.fillTheGapEntirelyWithNumberUnknown(fakeGap, rowOrCol, puzzle, changes);
                             }
                         }

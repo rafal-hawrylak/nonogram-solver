@@ -36,15 +36,7 @@ x■x■■■■x■■■■x■■■■■xxx■■■■
 ■■■■xxxxxxxxxxxxx■xxxx■xx
 xxxx■■■■■■■■■■■■■■■xx■■■■""";
         Puzzle before = getTestPuzzle15ProfessionalLevel2();
-        print("before", before);
-
-        Solution solution = new PuzzleSolver().solve(before);
-
-        print("after", solution.getPuzzle());
-        assertTrue(solution.isSolved());
-        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
-
-        System.out.println(solution.getPuzzle().compact());
+        solveAndAssertSystem(before, expectedPuzzle);
     }
 
     private Puzzle getTestPuzzle15ProfessionalLevel2() {

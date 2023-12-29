@@ -34,7 +34,7 @@ public class FindUnmergableSubGapsForBiggest extends Solver {
                     boolean mergeable = gapFinder.areSubGapsMergeable(biggest, subGap, nextSubGap);
                     var onlySingleFieldBetweenSubGaps = subGap.end + 2 == nextSubGap.start;
                     if (!mergeable && onlySingleFieldBetweenSubGaps) {
-                        var fakeGap = new Gap(rowOrCol, subGap.end + 1, subGap.end + 1, 1, Optional.empty());
+                        var fakeGap = new Gap(rowOrCol, subGap.end + 1, subGap.end + 1, 1);
                         gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                     }
                 }

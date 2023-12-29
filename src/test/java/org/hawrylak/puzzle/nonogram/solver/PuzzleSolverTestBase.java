@@ -1,18 +1,23 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.solution.Solution;
 import org.hawrylak.puzzle.nonogram.solver.utils.FieldFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapCloser;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.solver.utils.RowSelector;
+import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleStringConverter;
 
 public class PuzzleSolverTestBase {
 
+    protected Solver solver;
     protected final FieldFinder fieldFinder = new FieldFinder();
     protected final RowSelector rowSelector = new RowSelector();
     protected final NumberSelector numberSelector = new NumberSelector();
@@ -30,5 +35,22 @@ public class PuzzleSolverTestBase {
     protected void print(String header, Puzzle puzzle) {
         System.out.println(header);
         System.out.println(puzzle);
+    }
+
+    protected void solveAndAssert(Puzzle puzzleToSolve, String expectedPuzzle) {
+        print("before", puzzleToSolve);
+        var changes = new ChangedInIteration(puzzleToSolve);
+        solver.apply(puzzleToSolve, changes);
+        print("after", puzzleToSolve);
+        assertPuzzle(puzzleToSolve, expectedPuzzle);
+    }
+
+    protected void solveAndAssertSystem(Puzzle before, String expectedPuzzle) {
+        print("before", before);
+        Solution solution = new PuzzleSolver().solve(before);
+        print("after", solution.getPuzzle());
+        assertTrue(solution.isSolved());
+        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
+        System.out.println(solution.getPuzzle().compact());
     }
 }

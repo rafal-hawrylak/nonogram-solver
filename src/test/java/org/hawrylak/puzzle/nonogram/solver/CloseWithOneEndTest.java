@@ -5,58 +5,42 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CloseWithOneEndTest extends PuzzleSolverTestBase {
 
-    private CloseWithOneEnd solver = new CloseWithOneEnd(gapFinder, numberSelector, gapFiller);
+    @BeforeEach
+    void before() {
+        solver = new CloseWithOneEnd(gapFinder, numberSelector, gapFiller);
+    }
 
     @Test
     void closeWithAfterEmptyLastGapOfBiggerSize() {
         String puzzleCase = "...x■.";
         String expectedPuzzle = "...x■x";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
     void closeWithAfterEmptyLastGapOfExactSizeOne() {
         String puzzleCase = "...x■";
         String expectedPuzzle = "...x■";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
     void closeWithAfterEmptyLastGapOfMuchBiggerSize() {
         String puzzleCase = "...x■..........";
         String expectedPuzzle = "...x■x.........";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
     void closeWithAfterEmptyLastGapOfMuchBiggerSize2() {
         String puzzleCase = "...x■........xx";
         String expectedPuzzle = "...x■x.......xx";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
@@ -64,12 +48,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = "...x■.";
         String expectedPuzzle = "...x■■";
         List<Integer> numbersToFind = List.of(2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -77,12 +56,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = "...x■.";
         String expectedPuzzle = "...x■■";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -90,12 +64,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = "...x■....";
         String expectedPuzzle = "...x■■...";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -103,60 +72,35 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = ".x■....";
         String expectedPuzzle = ".x■■...";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
     void closeWithBeforeEmptyFirstGapOfBiggerSize() {
         String puzzleCase = "..■x..x.";
         String expectedPuzzle = ".x■x..x.";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
     void closeWithBeforeEmptyFirstGapOfExactSizeOne() {
         String puzzleCase = "■x...";
         String expectedPuzzle = "■x...";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
     void closeWithBeforeEmptyFirstGapOfMuchBiggerSize() {
         String puzzleCase = "..........■x...";
         String expectedPuzzle = ".........x■x...";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
     void closeWithBeforeEmptyFirstGapOfMuchBiggerSize2() {
         String puzzleCase = "xx.........■x...";
         String expectedPuzzle = "xx........x■x...";
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase), expectedPuzzle);
     }
 
     @Test
@@ -164,12 +108,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = ".■x...";
         String expectedPuzzle = "■■x...";
         List<Integer> numbersToFind = List.of(2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -177,12 +116,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = ".■x...";
         String expectedPuzzle = "■■x...";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -190,12 +124,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = "..■x...";
         String expectedPuzzle = "..■x...";
         List<Integer> numbersToFind = List.of(1, 1);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -203,12 +132,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = "....■x...";
         String expectedPuzzle = "...■■x...";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -216,12 +140,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = "....■x.";
         String expectedPuzzle = "...■■x.";
         List<Integer> numbersToFind = List.of(2, 2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -229,12 +148,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase = "..x..x...■x...x..x..x";
         String expectedPuzzle = "..x..x.x■■x...x..x..x";
         List<Integer> numbersToFind = List.of(2);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, true), expectedPuzzle);
     }
 
     @Test
@@ -249,11 +163,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 19;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 19;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -282,11 +192,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(4).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(4).foundStart = 9;
         puzzle.rowsOrCols.get(0).numbersToFind.get(4).foundEnd = 9;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -294,12 +200,7 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         String puzzleCase =     "xx.■.■■xxxx..x.■..■■■...x";
         String expectedPuzzle = "xx.■x■■xxxx..x.■..■■■...x";
         List<Integer> numbersToFind = List.of(2, 2, 9);
-        Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
     }
 
     @Test
@@ -311,11 +212,8 @@ class CloseWithOneEndTest extends PuzzleSolverTestBase {
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundStart = 6;
         puzzle.rowsOrCols.get(0).numbersToFind.get(1).foundEnd = 7;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
         assertTrue(puzzle.rowsOrCols.get(0).numbersToFind.get(1).found);
     }
+
 }

@@ -19,15 +19,7 @@ public class SolveWholeCase021Test extends PuzzleSolverTestBase {
         String expectedPuzzle = """
 """;
         Puzzle before = getTestPuzzle19ProfessionalLevel2();
-        print("before", before);
-
-        Solution solution = new PuzzleSolver().solve(before);
-
-        print("after", solution.getPuzzle());
-        assertTrue(solution.isSolved());
-        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
-
-        System.out.println(solution.getPuzzle().compact());
+        solveAndAssertSystem(before, expectedPuzzle);
     }
 
     private Puzzle getTestPuzzle19ProfessionalLevel2() {

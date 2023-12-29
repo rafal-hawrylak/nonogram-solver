@@ -3,11 +3,15 @@ package org.hawrylak.puzzle.nonogram.solver;
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest extends PuzzleSolverTestBase {
 
-    private TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber solver = new TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber(gapFinder, numberSelector, gapFiller);
+    @BeforeEach
+    void before() {
+        solver = new TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber(gapFinder, numberSelector, gapFiller);
+    }
 
     @Test
     void caseWithTheOnlyMatchingSubGap() {
@@ -15,11 +19,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "xxxx........■■■....................";
         List<Integer> numbersToFind = List.of(11,1,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -28,11 +28,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "xxx........■■■.....................";
         List<Integer> numbersToFind = List.of(11,1,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -41,11 +37,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "xx........■■■......................";
         List<Integer> numbersToFind = List.of(11,1,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -54,13 +46,8 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "xx........■■■......................";
         List<Integer> numbersToFind = List.of(11,1,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
-
 
     @Test
     void caseWithTheOnlyMatchingSubGap05() {
@@ -68,11 +55,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "x........■■■.......................";
         List<Integer> numbersToFind = List.of(11,1,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -81,11 +64,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "........■■■........................";
         List<Integer> numbersToFind = List.of(11,1,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -94,11 +73,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "............■■■....................";
         List<Integer> numbersToFind = List.of(1,11,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -107,11 +82,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "xxxx........■■■....................";
         List<Integer> numbersToFind = List.of(11,1,3);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -120,11 +91,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "xxxx........■■■.............x......";
         List<Integer> numbersToFind = List.of(11,1,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -133,11 +100,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "xxxx........■■■.............x......";
         List<Integer> numbersToFind = List.of(11,1,3);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -146,11 +109,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "....................■■■........xxxx";
         List<Integer> numbersToFind = List.of(2,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -159,11 +118,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = ".....................■■■........xxx";
         List<Integer> numbersToFind = List.of(2,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -172,11 +127,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "......................■■■........xx";
         List<Integer> numbersToFind = List.of(2,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -185,11 +136,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = ".......................■■■........x";
         List<Integer> numbersToFind = List.of(2,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -198,11 +145,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "........................■■■........";
         List<Integer> numbersToFind = List.of(2,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -211,11 +154,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "....................■■■............";
         List<Integer> numbersToFind = List.of(1,11,2);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -224,11 +163,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "....................■■■........xxxx";
         List<Integer> numbersToFind = List.of(3,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
 
@@ -238,11 +173,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "......x.............■■■........xxxx";
         List<Integer> numbersToFind = List.of(2,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -251,11 +182,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "......x.............■■■........xxxx";
         List<Integer> numbersToFind = List.of(3,1,11);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -264,11 +191,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "..................■...........";
         List<Integer> numbersToFind = List.of(5,6);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -277,11 +200,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "...................■..........";
         List<Integer> numbersToFind = List.of(5,6);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -290,11 +209,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = "....................■.........";
         List<Integer> numbersToFind = List.of(5,6);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -303,10 +218,6 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumberTest 
         String expectedPuzzle = ".....................■........";
         List<Integer> numbersToFind = List.of(5,6);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, false);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 }

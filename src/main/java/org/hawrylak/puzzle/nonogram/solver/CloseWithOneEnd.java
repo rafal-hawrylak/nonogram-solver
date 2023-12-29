@@ -165,7 +165,7 @@ public class CloseWithOneEnd extends Solver {
             var biggestNumber = biggestNumbers.get(0);
             var secondBiggestNumbers = numberSelector.getSecondBiggestNotFound(rowOrCol.numbersToFind);
             var start = getStart(rowOrCol, biggestNumber.number, c, r, startingFrom);
-            var fakeGapBiggestUnknown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number, Optional.empty());
+            var fakeGapBiggestUnknown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number);
             var fakeGapBiggestKnown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number,
                 Optional.of(biggestNumber));
             var subGapAtPosition = gapFinder.getSubGapAtPosition(gapAtPosition.filledSubGaps, rowOrCol.horizontal, c, r);
@@ -229,7 +229,7 @@ public class CloseWithOneEnd extends Solver {
                     var allNotSatisfiedNumbers = allNotFoundNumbers.subList(numberIndex, allNotFoundNumbers.size());
                     var minimalNotSatisfied = allNotSatisfiedNumbers.stream().map(n -> n.number).min(Integer::compareTo).get();
                     var start = getStart(rowOrCol, minimalNotSatisfied, c, r, startingFrom);
-                    var fakeGap = new Gap(rowOrCol, start, start + minimalNotSatisfied - 1, minimalNotSatisfied, Optional.empty());
+                    var fakeGap = new Gap(rowOrCol, start, start + minimalNotSatisfied - 1, minimalNotSatisfied);
                     gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
                     fillingSuccessful = true;
                 }
@@ -265,9 +265,9 @@ public class CloseWithOneEnd extends Solver {
             var allBigger = numberSelector.getAllBigger(numberCandidates, smallest);
             Gap fakeGap;
             if (startingFrom) {
-                fakeGap = new Gap(rowOrCol, gapAtPosition.start, gapAtPosition.start + smallest - 1, smallest, Optional.empty());
+                fakeGap = new Gap(rowOrCol, gapAtPosition.start, gapAtPosition.start + smallest - 1, smallest);
             } else {
-                fakeGap = new Gap(rowOrCol, gapAtPosition.end - smallest + 1, gapAtPosition.end, smallest, Optional.empty());
+                fakeGap = new Gap(rowOrCol, gapAtPosition.end - smallest + 1, gapAtPosition.end, smallest);
             }
             if (allBigger.isEmpty()) {
                 gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);

@@ -53,7 +53,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber exte
                         allNumbersNotFound, firstNumberNotFound)) {
                         var end = biggestSubGap.get().end - biggestValue;
                         if (firstGap.start <= end && areInTheSameGap(firstGap.start, end, allGaps)) {
-                            var fakeGap = new Gap(rowOrCol, firstGap.start, end, end - firstGap.start + 1, Optional.empty());
+                            var fakeGap = new Gap(rowOrCol, firstGap.start, end, end - firstGap.start + 1);
                             gapFiller.fillTheGap(fakeGap, FieldState.EMPTY, rowOrCol, puzzle, changes);
                         }
                     }
@@ -61,7 +61,7 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber exte
                         allNumbersNotFound, lastNumberNotFound)) {
                         var start = biggestSubGap.get().start + biggestValue;
                         if (start <= lastGap.end && areInTheSameGap(start, lastGap.end, allGaps)) {
-                            var fakeGap = new Gap(rowOrCol, start, lastGap.end, lastGap.end - start + 1, Optional.empty());
+                            var fakeGap = new Gap(rowOrCol, start, lastGap.end, lastGap.end - start + 1);
                             gapFiller.fillTheGap(fakeGap, FieldState.EMPTY, rowOrCol, puzzle, changes);
                         }
                     }

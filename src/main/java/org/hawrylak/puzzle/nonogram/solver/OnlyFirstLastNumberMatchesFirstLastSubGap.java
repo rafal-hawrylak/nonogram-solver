@@ -12,7 +12,6 @@ import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.hawrylak.puzzle.nonogram.solver.utils.Utils.remove;
 
@@ -42,7 +41,7 @@ public class OnlyFirstLastNumberMatchesFirstLastSubGap extends Solver {
                     boolean possibleToFitForAnyNumber = false;
                     for (NumberToFind number : numbersMatching) {
                         var numberToFit = numberSelector.allPrevious(numbers, number);
-                        var fakeGap = new Gap(rowOrCol, firstGap.get().start,subGap.start - 2, subGap.start - firstGap.get().start - 1, Optional.empty());
+                        var fakeGap = new Gap(rowOrCol, firstGap.get().start,subGap.start - 2, subGap.start - firstGap.get().start - 1);
                         boolean fit = gapFiller.doAllNumbersFitInGaps(numberToFit, List.of(fakeGap));
                         if (fit) {
                             possibleToFitForAnyNumber = true;
@@ -53,8 +52,7 @@ public class OnlyFirstLastNumberMatchesFirstLastSubGap extends Solver {
                         var missingNumberPart = firstNumber.get().number - subGap.length;
                         int length = subGap.start - firstGap.get().start - missingNumberPart;
                         if (length > 0) {
-                            var fakeGap = new Gap(rowOrCol, firstGap.get().start, subGap.start - missingNumberPart - 1,
-                                    length, Optional.empty());
+                            var fakeGap = new Gap(rowOrCol, firstGap.get().start, subGap.start - missingNumberPart - 1, length);
                             gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                         }
                     }
@@ -75,7 +73,7 @@ public class OnlyFirstLastNumberMatchesFirstLastSubGap extends Solver {
                     boolean possibleToFitForAnyNumber = false;
                     for (NumberToFind number : numbersMatching) {
                         var numberToFit = numberSelector.allNext(numbers, number);
-                        var fakeGap = new Gap(rowOrCol, subGap.end + 2, lastGap.get().end, lastGap.get().end - subGap.end - 1, Optional.empty());
+                        var fakeGap = new Gap(rowOrCol, subGap.end + 2, lastGap.get().end, lastGap.get().end - subGap.end - 1);
                         boolean fit = gapFiller.doAllNumbersFitInGaps(numberToFit, List.of(fakeGap));
                         if (fit) {
                             possibleToFitForAnyNumber = true;
@@ -86,8 +84,7 @@ public class OnlyFirstLastNumberMatchesFirstLastSubGap extends Solver {
                         var missingNumberPart = lastNumber.get().number - subGap.length;
                         int length = lastGap.get().end - subGap.end - missingNumberPart;
                         if (length > 0) {
-                            var fakeGap = new Gap(rowOrCol, subGap.end + missingNumberPart + 1, lastGap.get().end,
-                                    length, Optional.empty());
+                            var fakeGap = new Gap(rowOrCol, subGap.end + missingNumberPart + 1, lastGap.get().end, length);
                             gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                         }
                     }

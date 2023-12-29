@@ -31,15 +31,7 @@ xx■■■■■■■■■■■xx
 xxx■■■■■■■■■xxx
 xxxxxxx■■■■xxxx""";
         Puzzle before = getTestPuzzle12();
-        print("before", before);
-
-        Solution solution = new PuzzleSolver().solve(before);
-
-        print("after", solution.getPuzzle());
-        assertTrue(solution.isSolved());
-        assertPuzzle(solution.getPuzzle(), expectedPuzzle);
-
-        System.out.println(solution.getPuzzle().compact());
+        solveAndAssertSystem(before, expectedPuzzle);
     }
 
     private Puzzle getTestPuzzle12() {

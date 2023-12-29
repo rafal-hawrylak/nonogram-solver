@@ -49,7 +49,7 @@ public class GapFiller {
     public void fillTheNumberAtPosition(RowOrCol rowOrCol, NumberToFind numberToClose, int c, int r, boolean startingFrom, Puzzle puzzle,
         ChangedInIteration changes) {
         int start = Utils.getStart(rowOrCol, numberToClose.number, c, r, startingFrom);
-        var fakeGap = new Gap(rowOrCol, start, start + numberToClose.number - 1, numberToClose.number, Optional.empty());
+        var fakeGap = new Gap(rowOrCol, start, start + numberToClose.number - 1, numberToClose.number);
         fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changes);
     }
 
@@ -105,7 +105,7 @@ public class GapFiller {
             var howManyFieldsMayBeSet = 2 * number.number - gap.length;
             var start = gap.start + (gap.length - number.number);
             var end = start + howManyFieldsMayBeSet - 1;
-            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+            var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet);
             fillTheGap(fakeGap, rowOrCol, puzzle, changes);
             return;
         }
@@ -123,7 +123,7 @@ public class GapFiller {
                 // with holes, partially filled, patch the holes
                 // from  .  .  .  .  ■  .  ■  .  .  .| 5
                 //   to  .  .  .  .  ■  ■  ■  .  .  .| 5
-                var fakeGap = new Gap(rowOrCol, min, max, toFillSize, Optional.empty());
+                var fakeGap = new Gap(rowOrCol, min, max, toFillSize);
                 fillTheGap(fakeGap, rowOrCol, puzzle, changes);
             }
             // mark as empty:
@@ -152,7 +152,7 @@ public class GapFiller {
             var end = gap.start + sumSoFar + number.number + i - 1;
             var howManyFieldsMayBeSet = number.number - gapDiff;
             if (howManyFieldsMayBeSet > 0 && end <= gap.end) {
-                var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet, Optional.empty());
+                var fakeGap = new Gap(rowOrCol, start, end, howManyFieldsMayBeSet);
                 fillTheGap(fakeGap, rowOrCol, puzzle, changes);
             }
             sumSoFar += number.number;
@@ -170,14 +170,14 @@ public class GapFiller {
             var fromGapStartToSubGapEnd = subGap.end - gap.start + 1;
             if (fromGapStartToSubGapStart > firstNumber.number && fromGapStartToSubGapStart < firstNumber.number + 2) {
                 var howManyToMark = fromGapStartToSubGapEnd - firstNumber.number;
-                var fakeGap = new Gap(rowOrCol, gap.start, gap.start + howManyToMark - 1, howManyToMark, Optional.empty());
+                var fakeGap = new Gap(rowOrCol, gap.start, gap.start + howManyToMark - 1, howManyToMark);
                 fillTheGap(fakeGap, FieldState.EMPTY, rowOrCol, puzzle, changes);
             }
             var fromSubGapEndToGapEnd = gap.end - subGap.end + 1;
             var fromSubGapStartToGapEnd = gap.end - subGap.start + 1;
             if (fromSubGapEndToGapEnd > secondNumber.number && fromSubGapEndToGapEnd < secondNumber.number + 2) {
                 var howManyToMark = fromSubGapStartToGapEnd - secondNumber.number;
-                var fakeGap = new Gap(rowOrCol, gap.end - howManyToMark + 1, gap.end, howManyToMark, Optional.empty());
+                var fakeGap = new Gap(rowOrCol, gap.end - howManyToMark + 1, gap.end, howManyToMark);
                 fillTheGap(fakeGap, FieldState.EMPTY, rowOrCol, puzzle, changes);
             }
         }
@@ -191,7 +191,7 @@ public class GapFiller {
             if (!mergeableForFirstNumber && !mergeableForSecondNumber) {
                 var minLength = secondSubGap.start - gap.start - 1;
                 if (minLength == firstNumber.number) {
-                    var fakeGap = new Gap(rowOrCol, gap.start, gap.start + minLength - 1, minLength, Optional.empty());
+                    var fakeGap = new Gap(rowOrCol, gap.start, gap.start + minLength - 1, minLength);
                     fillTheGapEntirely(fakeGap, firstNumber, rowOrCol, puzzle, changes);
                 }
             }
@@ -227,7 +227,7 @@ public class GapFiller {
             var number = result.getValue();
             var start = gapMode.isStartingFrom() ? gap.start : gap.end - number + 1;
             var end = gapMode.isEndingAt() ? gap.end : gap.start + number - 1;
-            var fakeGap = new Gap(rowOrCol, start, end, number, Optional.empty());
+            var fakeGap = new Gap(rowOrCol, start, end, number);
             var anyFilled = fillTheGap(fakeGap, rowOrCol, puzzle, changes);
             if (gapMode.isStartingFrom() && !gapMode.isEndingAt()) {
                 return fillSingleField(rowOrCol, puzzle, changes, end + 1, FieldState.EMPTY) || anyFilled;
@@ -311,8 +311,7 @@ public class GapFiller {
             if (gap.start == subGapMode.subGap.start) {
                 previousAndCurrentGaps = previousGaps;
             } else {
-                var partialGapBeforeSubGap = new Gap(rowOrCol, gap.start, subGapMode.subGap.start - 1, subGapMode.subGap.start - gap.start,
-                    Optional.empty());
+                var partialGapBeforeSubGap = new Gap(rowOrCol, gap.start, subGapMode.subGap.start - 1, subGapMode.subGap.start - gap.start);
                 previousAndCurrentGaps = Utils.mergeLists(previousGaps, partialGapBeforeSubGap);
             }
             return doAllNumbersFitInGaps(beforeAndCurrentNumber, previousAndCurrentGaps);
@@ -332,8 +331,7 @@ public class GapFiller {
             if (gap.end == subGapMode.subGap.end) {
                 nextAndCurrentGaps = nextGaps;
             } else {
-                var partialGapAfterSubGap = new Gap(rowOrCol, subGapMode.subGap.end + 1, gap.end, gap.end - subGapMode.subGap.end,
-                    Optional.empty());
+                var partialGapAfterSubGap = new Gap(rowOrCol, subGapMode.subGap.end + 1, gap.end, gap.end - subGapMode.subGap.end);
                 nextAndCurrentGaps = Utils.mergeLists(partialGapAfterSubGap, nextGaps);
             }
             return doAllNumbersFitInGaps(afterAndCurrentNumber, nextAndCurrentGaps);

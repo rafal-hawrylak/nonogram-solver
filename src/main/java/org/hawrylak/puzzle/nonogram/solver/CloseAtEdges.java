@@ -50,7 +50,7 @@ public class CloseAtEdges extends Solver {
             var field = fromStart ? fieldFirst : fieldLast;
             var fieldStart = fromStart ? 0 : fieldLastCoord - numberToClose.number + 1;
             if (FieldState.FULL.equals(field)) {
-                var fakeGap = new Gap(rowOrCol, fieldStart, fieldStart + numberToClose.number - 1, numberToClose.number, Optional.empty());
+                var fakeGap = new Gap(rowOrCol, fieldStart, fieldStart + numberToClose.number - 1, numberToClose.number);
                 gapFiller.fillTheGapEntirely(fakeGap, numberToClose, rowOrCol, puzzle, changes);
             }
         }

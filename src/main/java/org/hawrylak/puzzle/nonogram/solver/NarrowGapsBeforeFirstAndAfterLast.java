@@ -45,7 +45,7 @@ public class NarrowGapsBeforeFirstAndAfterLast extends Solver {
                             if (nextNumber.isEmpty() || nextNumber.get().found || (firstSubGap.start - gap.start <= number.number
                                 && firstSubGap.end - gap.start >= number.number)) {
                                 var fakeGap = new Gap(rowOrCol, gap.start, firstSubGap.start - missingNumberPart - 1,
-                                    firstSubGap.start - missingNumberPart - gap.start, Optional.empty());
+                                    firstSubGap.start - missingNumberPart - gap.start);
                                 gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                             }
                         }
@@ -95,7 +95,7 @@ public class NarrowGapsBeforeFirstAndAfterLast extends Solver {
                             if (prevNumber.isEmpty() || prevNumber.get().found || (gap.end - lastSubGap.end <= number.number
                                 && gap.end - lastSubGap.start >= number.number)) {
                                 var fakeGap = new Gap(rowOrCol, lastSubGap.end + missingNumberPart + 1, gap.end,
-                                    gap.end - lastSubGap.end - missingNumberPart, Optional.empty());
+                                    gap.end - lastSubGap.end - missingNumberPart);
                                 gapCloser.closeAsEmpty(fakeGap, puzzle, changes);
                             }
                         }

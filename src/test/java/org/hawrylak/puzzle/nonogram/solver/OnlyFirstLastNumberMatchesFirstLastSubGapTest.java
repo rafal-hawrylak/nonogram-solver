@@ -2,13 +2,17 @@ package org.hawrylak.puzzle.nonogram.solver;
 
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase {
 
-    private OnlyFirstLastNumberMatchesFirstLastSubGap solver = new OnlyFirstLastNumberMatchesFirstLastSubGap(gapFinder, numberSelector, gapFiller, gapCloser);
+    @BeforeEach
+    void before() {
+        solver = new OnlyFirstLastNumberMatchesFirstLastSubGap(gapFinder, numberSelector, gapFiller, gapCloser);
+    }
 
     @Test
     void solveCase1() {
@@ -16,11 +20,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = ".....................■■■■...xxxxxxxx";
         List<Integer> numbersToFind = List.of(4, 1, 1, 7);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -29,11 +29,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = ".....................■■■■............";
         List<Integer> numbersToFind = List.of(4, 1, 1, 7);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -42,11 +38,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = ".....................■■■■...xxxxxxxx";
         List<Integer> numbersToFind = List.of(4, 1, 1, 7);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -55,11 +47,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = "...x.................■■■■...xxxxxxxx";
         List<Integer> numbersToFind = List.of(4, 1, 1, 7);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -68,11 +56,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = ".....................■■■■...........";
         List<Integer> numbersToFind = List.of(4, 1, 1, 6);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -81,11 +65,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = "xxxxxxxx...■■■■.....................";
         List<Integer> numbersToFind = List.of(7 ,1 ,1 ,4);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -94,11 +74,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = "............■■■■.....................";
         List<Integer> numbersToFind = List.of(7 ,1 ,1 ,4);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -107,11 +83,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = "xxxxxxxx...■■■■.....................";
         List<Integer> numbersToFind = List.of(7 ,1 ,1 ,4);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -120,11 +92,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = "xxxxxxxx...■■■■.................x...";
         List<Integer> numbersToFind = List.of(7 ,1 ,1 ,4);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -133,11 +101,7 @@ class OnlyFirstLastNumberMatchesFirstLastSubGapTest extends PuzzleSolverTestBase
         String expectedPuzzle = "...........■■■■.....................";
         List<Integer> numbersToFind = List.of(6 ,1 ,1 ,4);
         Puzzle puzzle = puzzleStringConverter.fromString(puzzleCase, numbersToFind, true);
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
 }

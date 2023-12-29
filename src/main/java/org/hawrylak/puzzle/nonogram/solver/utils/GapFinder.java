@@ -44,8 +44,8 @@ public class GapFinder {
                             if (firstFull != NO_FULL) {
                                 subGaps.add(new SubGap(firstFull, lastFull, lastFull - firstFull + 1));
                             }
-                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
-                                findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1), new ArrayList<>(subGaps)));
+                            var assignedNumber = findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1);
+                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length, assignedNumber, new ArrayList<>(subGaps)));
                             firstFull = NO_FULL;
                             lastFull = NO_FULL;
                             subGaps.clear();
@@ -77,8 +77,8 @@ public class GapFinder {
                             if (firstFull != NO_FULL) {
                                 subGaps.add(new SubGap(firstFull, lastFull, lastFull - firstFull + 1));
                             }
-                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length,
-                                findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1), new ArrayList<>(subGaps)));
+                            var assignedNumber = findAssignedNumber(rowOrCol.numbersToFind, start, start + length - 1);
+                            gaps.add(new Gap(rowOrCol, start, start + length - 1, length, assignedNumber, new ArrayList<>(subGaps)));
                             firstFull = NO_FULL;
                             lastFull = NO_FULL;
                             subGaps.clear();
@@ -175,7 +175,7 @@ public class GapFinder {
                 }
             }
         }
-        return new Gap(rowOrCol, start, start + maxCount - 1, maxCount, Optional.empty());
+        return new Gap(rowOrCol, start, start + maxCount - 1, maxCount);
     }
 
     public List<Gap> gapsBeforeNumber(List<Gap> gaps, NumberToFind numberToFind) {

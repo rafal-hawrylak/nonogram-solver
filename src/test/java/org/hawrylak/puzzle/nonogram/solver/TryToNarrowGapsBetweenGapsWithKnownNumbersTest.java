@@ -3,11 +3,15 @@ package org.hawrylak.puzzle.nonogram.solver;
 import java.util.List;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolverTestBase {
 
-    private TryToNarrowGapsBetweenGapsWithKnownNumbers solver = new TryToNarrowGapsBetweenGapsWithKnownNumbers(gapFinder, gapFiller, numberSelector);
+    @BeforeEach
+    void before() {
+        solver = new TryToNarrowGapsBetweenGapsWithKnownNumbers(gapFinder, gapFiller, numberSelector);
+    }
 
     @Test
     void markSomeFieldsWithOneNumber() {
@@ -21,11 +25,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -40,11 +40,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -59,11 +55,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -78,11 +70,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -97,11 +85,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -116,11 +100,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -135,11 +115,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -154,11 +130,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -193,11 +165,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -212,11 +180,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -231,11 +195,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -250,11 +210,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -269,11 +225,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -288,11 +240,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
@@ -307,11 +255,7 @@ public class TryToNarrowGapsBetweenGapsWithKnownNumbersTest extends PuzzleSolver
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).found = true;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundStart = 20;
         puzzle.rowsOrCols.get(0).numbersToFind.get(2).foundEnd = 26;
-        print("before", puzzle);
-        var changes = new ChangedInIteration(puzzle);
-        solver.apply(puzzle, changes);
-        print("after", puzzle);
-        assertPuzzle(puzzle, expectedPuzzle);
+        solveAndAssert(puzzle, expectedPuzzle);
     }
 
     @Test
