@@ -4,7 +4,7 @@ import org.hawrylak.puzzle.nonogram.solver.Solver;
 
 import java.util.Map;
 
-public interface SolversProvider {
+public interface SolversCollectionProvider {
 
     Map<String, Solver> provide();
 

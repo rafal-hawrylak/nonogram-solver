@@ -8,9 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-public class RandomOrderSolverProvider implements SolversProvider {
+public class RandomOrderSolverCollectionProvider implements SolversCollectionProvider {
 
-    private Map<String, Solver> originalOrderSolvers = randomize(new OriginalOrderSolversProvider().provide());
+    private Map<String, Solver> originalOrderSolvers = randomize(new OriginalOrderSolversCollectionProvider().provide());
 
     @Override
     public Map<String, Solver> provide() {

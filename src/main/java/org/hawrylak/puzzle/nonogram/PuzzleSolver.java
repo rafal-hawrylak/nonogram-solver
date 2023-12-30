@@ -5,9 +5,11 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.solution.Solution;
 import org.hawrylak.puzzle.nonogram.model.solution.SolversStatistics;
 import org.hawrylak.puzzle.nonogram.solver.Solver;
-import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversProvider;
+import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversCollectionProvider;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
+import org.hawrylak.puzzle.nonogram.validation.PuzzleValidator;
+import org.hawrylak.puzzle.nonogram.validation.ValidationException;
 
 import java.util.Map;
 
@@ -22,8 +24,9 @@ public class PuzzleSolver {
         var puzzle = new PuzzleCloner().clone(puzzleToSolve);
         var stats = new SolversStatistics();
         var changes = new ChangedInIteration(puzzle);
+        var puzzleValidator = new PuzzleValidator();
 
-        Map<String, Solver> solvers = new SpecificOrderSolversProvider().provide();
+        Map<String, Solver> solvers = new SpecificOrderSolversCollectionProvider().provide();
 //        Map<String, Solver> solvers = new RandomOrderSolverProvider().provide();
         System.out.println("solvers = " + solvers);
 
@@ -47,6 +50,10 @@ public class PuzzleSolver {
                     breakAndContinue = true;
                     break;
                 }
+            }
+            var validationResult = puzzleValidator.validate(puzzle);
+            if (!validationResult.isValid()) {
+                throw new ValidationException(validationResult.getMessage());
             }
             if (breakAndContinue) {
                 continue;

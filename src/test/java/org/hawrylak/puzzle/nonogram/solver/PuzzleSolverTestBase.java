@@ -6,6 +6,7 @@ import org.hawrylak.puzzle.nonogram.model.solution.Solution;
 import org.hawrylak.puzzle.nonogram.solver.utils.*;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleStringConverter;
+import org.hawrylak.puzzle.nonogram.validation.PuzzleValidator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -21,6 +22,7 @@ public class PuzzleSolverTestBase {
     protected final GapCloser gapCloser = new GapCloser(fieldFinder, gapFiller, numberSelector);
 
     protected final PuzzleStringConverter puzzleStringConverter = new PuzzleStringConverter();
+    protected final PuzzleValidator puzzleValidator = new PuzzleValidator();
 
     protected void assertPuzzle(Puzzle puzzle, String expectedPuzzle) {
         var actual = puzzleStringConverter.fromPuzzle(puzzle);

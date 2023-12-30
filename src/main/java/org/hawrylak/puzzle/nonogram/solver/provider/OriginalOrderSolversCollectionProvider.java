@@ -6,14 +6,16 @@ import org.hawrylak.puzzle.nonogram.solver.utils.*;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class OriginalOrderSolversProvider implements SolversProvider {
+public class OriginalOrderSolversCollectionProvider implements SolversCollectionProvider {
+
+    private UtilsProvider utilsProvider = UtilsProvider.instance();
 
     @Override
     public Map<String, Solver> provide() {
         FieldFinder fieldFinder = new FieldFinder();
         RowSelector rowSelector = new RowSelector();
         NumberSelector numberSelector = new NumberSelector();
-        GapFinder gapFinder = new GapFinder();
+        GapFinder gapFinder = utilsProvider.getGapFinder();
         GapFiller gapFiller = new GapFiller(fieldFinder, numberSelector, gapFinder);
         GapCloser gapCloser = new GapCloser(fieldFinder, gapFiller, numberSelector);
 
@@ -47,4 +49,5 @@ public class OriginalOrderSolversProvider implements SolversProvider {
 
         return solvers;
     }
+
 }
