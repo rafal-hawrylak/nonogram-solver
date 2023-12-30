@@ -127,11 +127,35 @@ public class GapFiller {
             // from  .  .  .  .  ■  ■  ■  .  .  .| 5
             //   to  x  x  .  .  ■  ■  ■  .  .  x| 5
             var howManyMoreToFill = number.number - toFillSize;
-            for (int i = gap.start; i <= min - howManyMoreToFill - 1; i++) {
-                fillSingleField(rowOrCol, puzzle, changes, i, FieldState.EMPTY);
+            fillMultipleFields(gap.start, min - howManyMoreToFill - 1, rowOrCol, puzzle, changes, FieldState.EMPTY);
+            fillMultipleFields(max + howManyMoreToFill + 1, gap.end, rowOrCol, puzzle, changes, FieldState.EMPTY);
+        }
+    }
+
+    public void fillMultipleFields(int start, int end, RowOrCol rowOrCol, Puzzle puzzle,
+                                   ChangedInIteration changes, FieldState fieldState) {
+        for (int i = start; i <= end; i++) {
+            fillSingleField(rowOrCol, puzzle, changes, i, fieldState);
+        }
+    }
+
+    public void fillTheGapPartiallyForSingleNumberWithEdges(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle,
+                                                   ChangedInIteration changes) {
+        fillTheGapPartiallyForSingleNumber(gap, number, rowOrCol, puzzle, changes);
+        var refreshedGap = gapFinder.refreshSubGaps(gap, puzzle, rowOrCol);
+        if (refreshedGap.isEmpty()) {
+            return;
+        }
+        gap = refreshedGap.get();
+        if (gap.filledSubGaps.size() == 1) {
+            var subGap = gap.filledSubGaps.get(0);
+            var howManyEmptyFromFront = subGap.end - number.number;
+            if (howManyEmptyFromFront >= gap.start) {
+                fillMultipleFields(gap.start, howManyEmptyFromFront, rowOrCol, puzzle, changes, FieldState.EMPTY);
             }
-            for (int i = max + howManyMoreToFill + 1; i <= gap.end; i++) {
-                fillSingleField(rowOrCol, puzzle, changes, i, FieldState.EMPTY);
+            var howManyEmptyFromEnd = subGap.start + number.number;
+            if (howManyEmptyFromEnd <= gap.end) {
+                fillMultipleFields(howManyEmptyFromEnd, gap.end, rowOrCol, puzzle, changes, FieldState.EMPTY);
             }
         }
     }
