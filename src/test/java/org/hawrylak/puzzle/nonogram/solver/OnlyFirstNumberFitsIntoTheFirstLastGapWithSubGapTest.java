@@ -59,4 +59,52 @@ class OnlyFirstNumberFitsIntoTheFirstLastGapWithSubGapTest extends PuzzleSolverT
         List<Integer> numbersToFind = List.of(8);
         solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
     }
+
+    @Test
+    void solveCase1Reversed() {
+        String puzzleCase = "......................■..x.■..";
+        String expectedPuzzle = "......................■..xx■xx";
+        List<Integer> numbersToFind = List.of(1 ,1 ,6 ,4 ,1);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
+    }
+
+    @Test
+    void solveCase2Reversed() {
+        String puzzleCase = "......................■..x...■..";
+        String expectedPuzzle = "......................■..x...■..";
+        List<Integer> numbersToFind = List.of(1 ,1 ,6 ,4 ,1);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
+    }
+
+    @Test
+    void solveCase3Reversed() {
+        String puzzleCase = "......................■..x....■.";
+        String expectedPuzzle = "......................■..x....■.";
+        List<Integer> numbersToFind = List.of(1 ,1 ,6 ,4 ,1);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
+    }
+
+    @Test
+    void solveCase4Reversed() {
+        String puzzleCase = "......................x..x.■..";
+        String expectedPuzzle = "......................x..xx■xx";
+        List<Integer> numbersToFind = List.of(1);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
+    }
+
+    @Test
+    void solveCase5Reversed() {
+        String puzzleCase = "......................■..x.■..";
+        String expectedPuzzle = "......................■..x.■.x";
+        List<Integer> numbersToFind = List.of(1 ,1 ,6 ,4 ,2);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
+    }
+
+    @Test
+    void solveCase6Reversed() {
+        String puzzleCase = ".x.....■■■.....";
+        String expectedPuzzle = ".x.....■■■.....";
+        List<Integer> numbersToFind = List.of(8);
+        solveAndAssert(puzzleStringConverter.fromString(puzzleCase, numbersToFind, false), expectedPuzzle);
+    }
 }
