@@ -48,6 +48,7 @@ public class OriginalOrderSolversCollectionProvider implements SolversCollection
         addSolver(solvers, new OnlyFirstLastNumberMatchesFirstLastSubGap(gapFinder, numberSelector, gapFiller, gapCloser));
         addSolver(solvers, new ThreeGapsMatchOnlyThreeNumbersEach(gapFinder, gapFiller));
         addSolver(solvers, new TwoOutOfMoreGapsMatchOnlyTwoFirstNumbersEach(gapFinder, gapFiller, gapCloser));
+        addSolver(solvers, new OnlyFirstNumberFitsIntoTheFirstLastGapWithSubGap(gapFinder, numberSelector, gapFiller));
 
         return solvers;
     }

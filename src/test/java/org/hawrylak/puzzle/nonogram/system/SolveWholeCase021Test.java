@@ -13,7 +13,41 @@ public class SolveWholeCase021Test extends PuzzleSolverTestBase {
 //    @Disabled("unsolved")
     void test() {
         String expectedPuzzle = """
-""";
+xxxxxxxxxxxxx■■■■xxxxxxxxxxxxx
+xxxxxxxxxxxx■■■■■■xxxxxxxxxxxx
+xxxxxxxxxxx■■■x■■■■xxxxxxxxxxx
+xxxxxxxxxxx■■xxx■■■xxxxxxxxxxx
+xxxxxxxxxx■■■xxxx■■■xxxxxxxxxx
+xxxxxxxxxx■■■■xx■■■■■xxxxxxxxx
+xxxxxxxxx■■■xxxxxx■■■xxxxxxxxx
+xxxxxxxxx■■■xxxxxx■■■■xxxxxxxx
+xxxxxxxx■■■■x■■■■x■■■■xxxxxxxx
+xxxxxxxx■■■■xx■■xx■■■■■xxxxxxx
+xxxxxxxx■■■■■xxxx■■■■■■xxxxxxx
+xxxxxxxx■■■■■■xxx■■■■■■xxxxxxx
+xxxxxxxxx■■■■■■■x■■■■■xxxxxxxx
+xxxxx■■■■■xxx■xxx■xxx■■■■xxxxx
+xxxx■■xxx■■xx■xxx■xx■■xx■■■■■x
+x■■■■xxxxx■xx■xxx■xx■xxxx■xx■■
+x■xx■x■■■■■■x■xxx■x■■xx■■■■■■■
+x■xx■x■xx■x■x■■x■■x■xxx■xxxxx■
+x■x■■■■■x■x■xx■■■x■■xx■■■x■■■■
+■■x■xxx■x■x■■x■■■x■xxx■x■x■xx■
+■■■■■■■■■■xx■x■■■x■xxx■■■■■■■■
+■■■■■■■■■■xx■■■■■■■xx■■■■■■■■■
+■■■■■■■■■■xxx■■■■■xxx■■■■■■■■x
+■■■■■■■■■xxxxx■■■■xxx■■■■■■■xx
+x■■■■■■■■xxxxx■■■■xxxx■■xx■xxx
+xx■■xx■■■xxxxx■■■■xxxx■■■xx■xx
+xx■xx■■■■xxxx■■■■■■xxx■xxxxx■x
+xx■xxxx■xxxxx■■xx■■xxx■xxxxx■x
+xx■xxxx■xxxx■xx■■xx■xx■xxxx■■■
+■x■■xxx■xxxx■xx■■xx■xxx■■■■■■■
+■■■■■■■■xxxx■■■xx■■■xxx■■■■■■■
+■■■■■■■xxxx■■■■■■■■■xxxx■■■■■x
+x■■■■■xxxxx■■■■■■■■■xxx■xxxxxx
+xxxxxx■xxxx■■■■■■■■■■xx■xxxxxx
+xxxxxx■xxxx■■■■■■■■■■xx■xxxxxx""";
         Puzzle before = getTestPuzzle19ProfessionalLevel2();
         solveAndAssertSystem(before, expectedPuzzle);
     }
