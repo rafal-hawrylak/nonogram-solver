@@ -73,7 +73,7 @@ public class PuzzlePrinter {
 
     private boolean appendChangedRowOrCol(StringBuilder sb, Optional<ChangedInIteration> changes, RowOrCol rowOrCol) {
         if (changes.isPresent()) {
-            if (changes.get().changedRowsOrCols.contains(rowOrCol)) {
+            if (changes.get().getChangedRowsOrCols().contains(rowOrCol)) {
                 sb.append(Colors.ANSI_CYAN);
                 sb.append(StringUtils.pad("¤", ' ', COL_WIDTH));
                 sb.append(Colors.ANSI_RESET);
@@ -94,7 +94,7 @@ public class PuzzlePrinter {
             color = true;
             sb.append(Colors.ANSI_BLACK);
         } else if (changes.isPresent()) {
-            if (changes.get().changedFields[c][r]) {
+            if (changes.get().getChangedFields()[c][r]) {
                 color = true;
                 sb.append(puzzle.fields[c][r].equals(FieldState.EMPTY) ? Colors.ANSI_RED
                     : Colors.ANSI_GREEN);

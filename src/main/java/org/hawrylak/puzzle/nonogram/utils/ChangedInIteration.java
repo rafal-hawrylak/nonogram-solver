@@ -1,5 +1,6 @@
 package org.hawrylak.puzzle.nonogram.utils;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
@@ -9,17 +10,21 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public class ChangedInIteration {
 
-    private final Puzzle puzzle;
-    @Getter
+    private final Puzzle currentPuzzle;
+    private Puzzle previousPuzzle;
     int iteration = 0;
-    Set<RowOrCol> changedRowsOrCols = new HashSet<>();
-    boolean[][] changedFields;
+    private Set<RowOrCol> changedRowsOrCols = new HashSet<>();
+    private boolean[][] changedFields;
+    @Getter(AccessLevel.PRIVATE)
+    private PuzzleCloner puzzleCloner = new PuzzleCloner();
 
-    public ChangedInIteration(Puzzle puzzle) {
-        this.puzzle = puzzle;
-        changedFields = new boolean[puzzle.width][puzzle.height];
+    public ChangedInIteration(Puzzle currentPuzzle) {
+        this.currentPuzzle = currentPuzzle;
+        this.previousPuzzle = puzzleCloner.clone(this.currentPuzzle);
+        changedFields = new boolean[currentPuzzle.width][currentPuzzle.height];
     }
 
     public boolean anyChange() {
@@ -55,15 +60,19 @@ public class ChangedInIteration {
 
     public Collection<RowOrCol> findPerpendicularRowOrCol(int c, int r) {
         Collection<RowOrCol> rowsAndCols = new ArrayList<>();
-        rowsAndCols.addAll(puzzle.rowsOrCols.stream()
+        rowsAndCols.addAll(currentPuzzle.rowsOrCols.stream()
             .filter(rc -> rc.number == r)
             .filter(rc -> rc.horizontal)
             .toList());
-        rowsAndCols.addAll(puzzle.rowsOrCols.stream()
+        rowsAndCols.addAll(currentPuzzle.rowsOrCols.stream()
             .filter(rc -> rc.number == c)
             .filter(rc -> !rc.horizontal)
             .toList());
         return rowsAndCols;
+    }
+
+    public void rememberPreviousPuzzle() {
+        this.previousPuzzle = puzzleCloner.clone(this.currentPuzzle);
     }
 
 }

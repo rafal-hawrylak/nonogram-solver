@@ -2,7 +2,7 @@ package org.hawrylak.puzzle.nonogram.solver;
 
 import org.hawrylak.puzzle.nonogram.PuzzleSolver;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.solution.Solution;
+import org.hawrylak.puzzle.nonogram.model.Solution;
 import org.hawrylak.puzzle.nonogram.solver.utils.*;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleStringConverter;

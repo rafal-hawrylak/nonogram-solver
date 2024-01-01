@@ -1,8 +1,8 @@
-package org.hawrylak.puzzle.nonogram.model.solution;
+package org.hawrylak.puzzle.nonogram.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.statistics.SolversStatistics;
 
 @AllArgsConstructor
 @Getter
