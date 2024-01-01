@@ -3,6 +3,7 @@ package org.hawrylak.puzzle.nonogram.model;
 import lombok.EqualsAndHashCode;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzlePrinter;
+import org.hawrylak.puzzle.nonogram.utils.PuzzleStatisticsCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Puzzle {
     public FieldState[][] fields;
 
     private final PuzzlePrinter puzzlePrinter = new PuzzlePrinter();
+    private final PuzzleStatisticsCalculator puzzleStatisticsCalculator = new PuzzleStatisticsCalculator();
 
     public Puzzle(int width, int height, List<List<Integer>> rows, List<List<Integer>> cols) {
         this.width = width;
@@ -57,8 +59,17 @@ public class Puzzle {
         if (!debugHeader.isEmpty()) {
             sb.append("DEBUG: " + debugHeader + "\n");
         }
+        sb.append(completion());
         sb.append(puzzlePrinter.print(this, Optional.of(changes)));
         return sb.toString();
+    }
+
+    private String completion() {
+        var statistics = puzzleStatisticsCalculator.calculate(this);
+        int completed = statistics.numberOfEmptyFields() + statistics.numberOfFullFields();
+        int total = statistics.numberOfFields();
+        int completion = (100 * completed) / total;
+        return String.format("completion %s%% (%s / %s)\n", completion, completed, total);
     }
 
     public String compact() {
