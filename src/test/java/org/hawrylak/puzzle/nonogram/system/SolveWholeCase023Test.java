@@ -10,10 +10,43 @@ import java.util.List;
 public class SolveWholeCase023Test extends PuzzleSolverTestBase {
 
     @Test
-//    @Disabled("unsolved")
     void test() {
         String expectedPuzzle = """
-""";
+xxxxxxxxxxxxxxxxx■xxxxxxx
+xxxxxxxxxxxxxxxx■■■xxxxxx
+xxxxxxx■xxxxxxx■■■■xxxxxx
+xxxxxx■■■xxxxx■■■■■xxxxxx
+xxxxxx■■■■■■■x■■■■■xxxxxx
+xxxxxx■x■xxx■xx■■■xxxxxxx
+xxxxxx■x■xx■■xx■x■xxxxxxx
+xxxxxx■x■xxx■x■■x■xxxxxxx
+■xxxxx■x■xx■■x■xx■xxxxxxx
+■■xxxx■x■xxx■x■x■■xxxxxxx
+■■xxxx■■■xx■■■■x■■■■xxxxx
+■■■xxx■■■xxx■■■x■■x■■xxxx
+■■■xxx■■■xx■■■■x■x■x■■■■x
+x■■■xx■■■xxx■■xx■xxx■■x■■
+x■■■xx■■■xx■■■x■■■x■■x■x■
+xx■■■x■■■xxx■■x■■■xxxxx■■
+xx■■■x■■■xx■■■x■■■xx■■■■x
+xxx■■■■■■xxx■■x■■xx■■xxxx
+xxx■■■■■■xx■■xx■xxx■xxxxx
+xxxx■■■■■xxx■x■■xx■■xxxxx
+xxx■■■■■■xx■■x■xx■■xxxxxx
+xxx■■■■■■■■■■■■■■■■xxxxxx
+xxx■xxxxxxxxxxxxxx■xxxxxx
+xxx■xxxxxxxxxxxxxx■xxxxxx
+xxx■■■■■■■■■■■■■■■■xxxxxx
+xxxx■■■■■■■■■■■■■■xxxxxxx
+xxxx■xxxxxxxx■■■■■xxxxxxx
+xxxx■■■■■■■■■■■■■■xxxxxxx
+■■■■■xxxxxxxx■■■■■■■■■■■■
+xxxx■■■■■■■■■■■■■■xxxxxxx
+xxxxx■xxxxxxx■■■■xxxxxxxx
+xxxxx■■■■■■■■■■■■xxxxxxxx
+xxxxx■xxxxxx■■■■■xxxxxxxx
+xxxxx■■■■■■■■■■■■xxxxxxxx
+xxxxxx■■■■■■■■■■xxxxxxxxx""";
         Puzzle before = getTestPuzzle19ProfessionalLevel2();
         solveAndAssertSystem(before, expectedPuzzle);
     }

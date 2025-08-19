@@ -11,6 +11,10 @@ public class SolveWholeCase022Test extends PuzzleSolverTestBase {
 
     @Test
 //    @Disabled("unsolved")
+    /*
+      iteration = 38
+      completion 29% (218 / 750)
+     */
     void test() {
         String expectedPuzzle = """
 """;

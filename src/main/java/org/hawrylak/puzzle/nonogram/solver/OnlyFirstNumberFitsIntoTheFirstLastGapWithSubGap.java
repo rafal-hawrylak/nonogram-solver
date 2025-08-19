@@ -26,10 +26,10 @@ public class OnlyFirstNumberFitsIntoTheFirstLastGapWithSubGap extends Solver {
                 if (!firstGap.filledSubGaps.isEmpty()) {
                     var numbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
                     if (!numbers.isEmpty()) {
-                        var firstNumber = numbers.get(0);
+                        var firstNumber = numberSelector.getFirst(numbers).get();
                         if (numbers.size() == 1) {
                             if (firstGap.filledSubGaps.size() == 2) {
-                                gapFiller.mergeSubGaps(puzzle, changes, rowOrCol, firstGap, numbers.get(0), true);
+                                gapFiller.mergeSubGaps(puzzle, changes, rowOrCol, firstGap, firstNumber, true);
                             } else if (firstGap.filledSubGaps.size() == 1) {
                                 gapFiller.fillTheGapPartiallyForSingleNumberWithEdges(firstGap, firstNumber, rowOrCol, puzzle, changes);
                             }
@@ -37,6 +37,26 @@ public class OnlyFirstNumberFitsIntoTheFirstLastGapWithSubGap extends Solver {
                             var secondNumber = numbers.get(1);
                             if (!gapFiller.doAllNumbersFitInGaps(List.of(firstNumber, secondNumber), List.of(firstGap))) {
                                 gapFiller.fillTheGapPartiallyForSingleNumberWithEdges(firstGap, firstNumber, rowOrCol, puzzle, changes);
+                            }
+                        }
+                    }
+                }
+
+                var lastGap = gaps.get(gaps.size() - 1);
+                if (!lastGap.filledSubGaps.isEmpty()) {
+                    var numbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
+                    if (!numbers.isEmpty()) {
+                        var lastNumber = numberSelector.getLast(numbers).get();
+                        if (numbers.size() == 1) {
+                            if (lastGap.filledSubGaps.size() == 2) {
+                                gapFiller.mergeSubGaps(puzzle, changes, rowOrCol, lastGap, lastNumber, true);
+                            } else if (lastGap.filledSubGaps.size() == 1) {
+                                gapFiller.fillTheGapPartiallyForSingleNumberWithEdges(lastGap, lastNumber, rowOrCol, puzzle, changes);
+                            }
+                        } else {
+                            var secondNumber = numbers.get(numbers.size() - 2);
+                            if (!gapFiller.doAllNumbersFitInGaps(List.of(secondNumber, lastNumber), List.of(lastGap))) {
+                                gapFiller.fillTheGapPartiallyForSingleNumberWithEdges(lastGap, lastNumber, rowOrCol, puzzle, changes);
                             }
                         }
                     }
