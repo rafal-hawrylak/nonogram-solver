@@ -34,7 +34,7 @@ public class SecondSubGapMayBeClosed extends Solver {
             var number = firstNumber.get();
             var nextNumber = numberSelector.getNext(rowOrCol.numbersToFind, number);
             if (gap.filledSubGaps.size() >= 2 && nextNumber.isPresent()) {
-                var firstSubGap = Utils.getFirst(gap.filledSubGaps).get();
+                var firstSubGap = gap.filledSubGaps.getFirst();
                 var secondSubGap = Utils.next(gap.filledSubGaps, firstSubGap).get();
                 var missingNumberPart = number.number - firstSubGap.length;
                 if (missingNumberPart >= 0 && firstSubGap.start - gap.start <= missingNumberPart) {
@@ -61,14 +61,14 @@ public class SecondSubGapMayBeClosed extends Solver {
             number = lastNumber.get();
             var previousNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, number);
             if (gap.filledSubGaps.size() >= 2 && previousNumber.isPresent()) {
-                var lastSubGap = Utils.getLast(gap.filledSubGaps).get();
+                var lastSubGap = gap.filledSubGaps.getLast();
                 var lastButOneSubGap = Utils.previous(gap.filledSubGaps, lastSubGap).get();
                 var missingNumberPart = number.number - lastSubGap.length;
                 if (missingNumberPart >= 0 && gap.end - lastSubGap.end <= missingNumberPart) {
                     if (!gapFinder.areSubGapsMergeable(number.number, lastButOneSubGap, lastSubGap)) {
                         if (!gapFinder.numberFitsBetweenSubGaps(previousNumber.get().number, lastButOneSubGap, lastSubGap)) {
                             if (previousNumber.get().number == lastButOneSubGap.length) {
-                                var fakeGap = new Gap(rowOrCol, lastButOneSubGap.start, lastButOneSubGap.end, lastButOneSubGap.length, Optional.of(previousNumber.get()));
+                                var fakeGap = new Gap(rowOrCol, lastButOneSubGap.start, lastButOneSubGap.end, lastButOneSubGap.length, previousNumber);
                                 gapFiller.fillTheGapEntirely(fakeGap, previousNumber.get(), rowOrCol, puzzle, changes);
                             }
                         }

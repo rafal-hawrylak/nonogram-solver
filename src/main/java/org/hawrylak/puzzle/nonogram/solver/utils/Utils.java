@@ -50,6 +50,17 @@ public class Utils {
         return found;
     }
 
+    public static <T> List<T> allPreviousAndThis(List<T> elements, T element) {
+        var found = new ArrayList<T>();
+        for (T current : elements) {
+            found.add(current);
+            if (current.equals(element)) {
+                break;
+            }
+        }
+        return found;
+    }
+
     public static <T> List<T> allNext(List<T> elements, T element) {
         var found = new ArrayList<T>();
         var startAdding = false;
@@ -63,12 +74,26 @@ public class Utils {
         return found;
     }
 
+    public static <T> List<T> allNextAndThis(List<T> elements, T element) {
+        var found = new ArrayList<T>();
+        var startAdding = false;
+        for (T current : elements) {
+            if (current.equals(element)) {
+                startAdding = true;
+                found.add(current);
+            } else if (startAdding) {
+                found.add(current);
+            }
+        }
+        return found;
+    }
+
     public static <T> Optional<T> getLast(List<T> elements) {
-        return elements.isEmpty() ? Optional.empty() : Optional.of(elements.get(elements.size() - 1));
+        return elements.isEmpty() ? Optional.empty() : Optional.of(elements.getLast());
     }
 
     public static <T> Optional<T> getFirst(List<T> elements) {
-        return elements.isEmpty() ? Optional.empty() : Optional.of(elements.get(0));
+        return elements.isEmpty() ? Optional.empty() : Optional.of(elements.getFirst());
     }
 
     public static <T> List<T> mergeLists(List<T> elements, T element) {

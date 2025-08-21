@@ -42,9 +42,9 @@ public class PuzzleSolverTestBase {
         assertPuzzle(puzzleToSolve, expectedPuzzle);
     }
 
-    protected void solveAndAssertSystem(Puzzle before, String expectedPuzzle) {
-        print("before", before);
-        Solution solution = new PuzzleSolver().solve(before);
+    protected void solveAndAssertSystem(Puzzle puzzleToSolve, String expectedPuzzle) {
+        print("before", puzzleToSolve);
+        Solution solution = new PuzzleSolver().solve(puzzleToSolve);
         print("after", solution.getPuzzle());
         assertTrue(solution.isSolved());
         assertPuzzle(solution.getPuzzle(), expectedPuzzle);

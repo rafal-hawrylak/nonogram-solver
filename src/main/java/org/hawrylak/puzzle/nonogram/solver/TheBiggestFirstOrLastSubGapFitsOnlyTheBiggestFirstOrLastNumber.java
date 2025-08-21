@@ -34,17 +34,17 @@ public class TheBiggestFirstOrLastSubGapFitsOnlyTheBiggestFirstOrLastNumber exte
             var biggestSubGap = gapsWithoutAssignedNumber.stream().flatMap(g -> g.filledSubGaps.stream())
                 .max(Comparator.comparingInt(s -> s.length));
             if (biggestSubGap.isPresent()) {
-                var firstGap = gapsWithoutAssignedNumber.get(0);
-                var lastGap = Utils.getLast(gapsWithoutAssignedNumber).get();
+                var firstGap = gapsWithoutAssignedNumber.getFirst();
+                var lastGap = gapsWithoutAssignedNumber.getLast();
                 var firstSubGapOptional = Utils.getFirst(firstGap.filledSubGaps);
                 var lastSubGapOptional = Utils.getLast(lastGap.filledSubGaps);
                 if (firstSubGapOptional.isPresent() && biggestSubGap.get().equals(firstSubGapOptional.get())
                 || lastSubGapOptional.isPresent() && biggestSubGap.get().equals(lastSubGapOptional.get())) {
                     var allGaps = gapFinder.find(puzzle, rowOrCol);
                     var allNumbersNotFound = numberSelector.getNotFound(rowOrCol.numbersToFind);
-                    var firstNumberNotFound = Utils.getFirst(allNumbersNotFound).get();
-                    var lastNumberNotFound = Utils.getLast(allNumbersNotFound).get();
-                    int biggestValue = biggestNumberNotFound.get(0).number;
+                    var firstNumberNotFound = allNumbersNotFound.getFirst();
+                    var lastNumberNotFound = allNumbersNotFound.getLast();
+                    int biggestValue = biggestNumberNotFound.getFirst().number;
                     if (firstNumberNotFound.number == biggestValue && isTheFirstNumberTheOnlyMatch(firstGap, biggestSubGap.get(),
                         allNumbersNotFound, firstNumberNotFound)) {
                         var end = biggestSubGap.get().end - biggestValue;

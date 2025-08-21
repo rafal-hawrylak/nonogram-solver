@@ -61,7 +61,7 @@ public class FitTheOnlyCombinationBeforeFirstOrAfterLastClosed extends Solver {
                         boolean allNumbersFitInTheFirstGap = gapFiller.doAllNumbersFitInGaps(toFind, List.of(firstGap));
                         boolean allNumbersFitInTheSecondGap = gapFiller.doAllNumbersFitInGaps(toFind, List.of(secondGap));
                         if (!allNumbersFitInTheFirstGap && !allNumbersFitInTheSecondGap) {
-                            var lastNumber = numberSelector.getLast(toFind).get();
+                            var lastNumber = toFind.getLast();
                             var allButLast = numberSelector.allPrevious(toFind, lastNumber);
                             boolean allButLastNumbersFitInTheFirstGap = gapFiller.doAllNumbersFitInGaps(allButLast, List.of(firstGap));
                             boolean lastNumberFitInTheSecondGap = gapFiller.doAllNumbersFitInGaps(List.of(lastNumber), List.of(secondGap));

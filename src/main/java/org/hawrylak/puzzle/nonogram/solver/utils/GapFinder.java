@@ -2,9 +2,7 @@ package org.hawrylak.puzzle.nonogram.solver.utils;
 
 import org.hawrylak.puzzle.nonogram.model.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hawrylak.puzzle.nonogram.model.Gap.NO_FULL;
 
@@ -130,7 +128,15 @@ public class GapFinder {
         return Utils.previous(gaps, gap);
     }
 
+    public Optional<SubGap> previous(List<SubGap> gaps, SubGap gap) {
+        return Utils.previous(gaps, gap);
+    }
+
     public Optional<Gap> next(List<Gap> gaps, Gap gap) {
+        return Utils.next(gaps, gap);
+    }
+
+    public Optional<SubGap> next(List<SubGap> gaps, SubGap gap) {
         return Utils.next(gaps, gap);
     }
 
@@ -206,7 +212,7 @@ public class GapFinder {
     public Optional<Gap> findLastWithoutNumberAssigned(Puzzle puzzle, RowOrCol rowOrCol) {
         var withoutAssignedNumber = findWithoutAssignedNumber(puzzle, rowOrCol);
         return withoutAssignedNumber.isEmpty() ? Optional.empty()
-            : Optional.of(withoutAssignedNumber.get(withoutAssignedNumber.size() - 1));
+            : Optional.of(withoutAssignedNumber.getLast());
     }
 
     public List<SubGap> allSubGaps(List<Gap> gaps) {
@@ -243,5 +249,30 @@ public class GapFinder {
 
     public Gap getGapOfSubGap(List<Gap> gaps, SubGap subGap) {
         return getGapAtPosition(gaps, subGap.start, subGap.end);
+    }
+
+    public List<SubGap> getBiggerFirst(List<SubGap> subGaps) {
+        return subGaps.stream()
+                .sorted(Comparator.comparingInt(s -> ((SubGap)s).length).reversed())
+                .toList();
+    }
+
+    public List<SubGap> biggestSubGap(List<SubGap> subGaps) {
+        var biggerFirst = getBiggerFirst(subGaps);
+        if (biggerFirst.isEmpty()) {
+            return Collections.emptyList();
+        }
+        var biggest = biggerFirst.get(0).length;
+        return biggerFirst.stream().filter(n -> n.length == biggest).toList();
+    }
+
+    public List<Gap> gapsEndingAfterSubGap(SubGap subGap, List<Gap> gaps) {
+        var lastGap = getGapAtPosition(gaps, subGap.end, subGap.end);
+        var previousGaps = allPrevious(gaps, lastGap);
+        var artificialGap = new Gap(lastGap.rowOrCol, lastGap.start, subGap.end, subGap.end - lastGap.start + 1);
+        var result = new ArrayList<Gap>();
+        result.addAll(previousGaps);
+        result.add(artificialGap);
+        return result;
     }
 }

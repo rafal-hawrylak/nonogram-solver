@@ -1,9 +1,6 @@
 package org.hawrylak.puzzle.nonogram.solver.utils;
 
-import org.hawrylak.puzzle.nonogram.model.FieldState;
-import org.hawrylak.puzzle.nonogram.model.Gap;
-import org.hawrylak.puzzle.nonogram.model.Puzzle;
-import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ public class FieldFinder {
         return false;
     }
 
-    public List<Integer> findFieldsSetInGap(Gap gap, Puzzle puzzle, RowOrCol rowOrCol, FieldState fieldState) {
+    public List<Integer> findFieldsSetInGap(SubGap gap, Puzzle puzzle, RowOrCol rowOrCol, FieldState fieldState) {
         var fieldPositions = new ArrayList<Integer>();
         var k = rowOrCol.number;
         for (int i = gap.start; i <= gap.end; i++) {
@@ -34,4 +31,5 @@ public class FieldFinder {
         }
         return fieldPositions;
     }
+
 }

@@ -45,7 +45,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound extends Solv
             var lastNumber = numberSelector.getLastNotFound(rowOrCol.numbersToFind);
             if (lastGap.isPresent() && lastNumber.isPresent()) {
                 if (lastGap.get().filledSubGaps.size() >= 2) {
-                    var lastSubGap = Utils.getLast(lastGap.get().filledSubGaps).get();
+                    var lastSubGap = lastGap.get().filledSubGaps.getLast();
                     var prevSubGap = Utils.previous(lastGap.get().filledSubGaps, lastSubGap).get();
                     var missingNumberPart = lastNumber.get().number - lastSubGap.length;
                     if (missingNumberPart >= 0) {

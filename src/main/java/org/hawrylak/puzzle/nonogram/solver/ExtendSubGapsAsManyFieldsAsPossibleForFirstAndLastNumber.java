@@ -53,7 +53,7 @@ public class ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber extends So
             gap = lastGap.get();
             number = lastNumber.get();
             if (!gap.filledSubGaps.isEmpty()) {
-                var lastSubGap = Utils.getLast(gap.filledSubGaps).get();
+                var lastSubGap = gap.filledSubGaps.getLast();
                 var missingNumberPart = number.number - lastSubGap.length;
                 if (missingNumberPart >= 0) {
                     if (gap.end - lastSubGap.end < missingNumberPart) {

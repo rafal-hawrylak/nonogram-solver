@@ -98,7 +98,7 @@ public class CloseWithOneEnd extends Solver {
              3|  .  .  .  x  ?  .  x  x  x  x  x  x| 1 1
          */
         else if (startingFrom && (nextGap.isEmpty() || nextGap.get().assignedNumber.isPresent())) {
-            var lastNumber = nextGap.isEmpty() ? numberSelector.getLast(rowOrCol.numbersToFind).get()
+            var lastNumber = nextGap.isEmpty() ? rowOrCol.numbersToFind.getLast()
                 : numberSelector.getPrevious(rowOrCol.numbersToFind, nextGap.get().assignedNumber.get()).get();
             var lastButOneNumber = numberSelector.getPrevious(rowOrCol.numbersToFind, lastNumber);
             if (lastButOneNumber.isEmpty() || lastButOneNumber.get().found
@@ -132,7 +132,7 @@ public class CloseWithOneEnd extends Solver {
          3|  ■  x  .  .  .  .  ?  x  ■  ■| 1 1 1 2
          */
         else if (!startingFrom && (previousGap.isEmpty() || previousGap.get().assignedNumber.isPresent())) {
-            var firstNumber = previousGap.isEmpty() ? rowOrCol.numbersToFind.get(0)
+            var firstNumber = previousGap.isEmpty() ? rowOrCol.numbersToFind.getFirst()
                 : numberSelector.getNext(rowOrCol.numbersToFind, previousGap.get().assignedNumber.get()).get();
             var secondNumber = numberSelector.getNext(rowOrCol.numbersToFind, firstNumber);
             if (secondNumber.isEmpty() || secondNumber.get().found
@@ -142,7 +142,7 @@ public class CloseWithOneEnd extends Solver {
             }
         }
 
-        var subGap = startingFrom ? gapAtPosition.getFirstSubGap().get() : gapAtPosition.getLastSubGap().get();
+        var subGap = startingFrom ? gapAtPosition.filledSubGaps.getFirst() : gapAtPosition.filledSubGaps.getLast();
         var allNotFoundNumbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
         var numberCandidates = numberSelector.between(allNotFoundNumbers, subGap.length, gapAtPosition.length);
         if (!fillingSuccessful) {
@@ -152,7 +152,7 @@ public class CloseWithOneEnd extends Solver {
                  3|  ■  x  ■  x  ?  .  x  x  x  x  x  x| 1 1 1
              */
             if (numberCandidates.size() == 1) {
-                var numberToClose = numberCandidates.get(0);
+                var numberToClose = numberCandidates.getFirst();
                 gapFiller.fillTheNumberAtPosition(rowOrCol, numberToClose, c, r, startingFrom, puzzle, changes);
                 fillingSuccessful = true;
             }
@@ -163,15 +163,14 @@ public class CloseWithOneEnd extends Solver {
                  3|  .  .  .  x  ?  ■  ■  ■  .  .  .  .  .  x| 3 7 1
              */
             var biggestNumbers = numberSelector.getBiggestNotFound(rowOrCol.numbersToFind);
-            var biggestNumber = biggestNumbers.get(0);
+            var biggestNumber = biggestNumbers.getFirst();
             var secondBiggestNumbers = numberSelector.getSecondBiggestNotFound(rowOrCol.numbersToFind);
             var start = getStart(rowOrCol, biggestNumber.number, c, r, startingFrom);
             var fakeGapBiggestUnknown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number);
             var fakeGapBiggestKnown = new Gap(rowOrCol, start, start + biggestNumber.number - 1, biggestNumber.number,
                 Optional.of(biggestNumber));
             var subGapAtPosition = gapFinder.getSubGapAtPosition(gapAtPosition.filledSubGaps, rowOrCol.horizontal, c, r);
-            if (secondBiggestNumbers.isEmpty() || (subGapAtPosition.isPresent() && subGapAtPosition.get().length > secondBiggestNumbers.get(
-                0).number)) {
+            if (secondBiggestNumbers.isEmpty() || (subGapAtPosition.isPresent() && subGapAtPosition.get().length > secondBiggestNumbers.getFirst().number)) {
                 if (biggestNumbers.size() == 1) {
                     gapFiller.fillTheGapEntirely(fakeGapBiggestKnown, biggestNumber, rowOrCol, puzzle, changes);
                     fillingSuccessful = true;
@@ -228,7 +227,7 @@ public class CloseWithOneEnd extends Solver {
                         }
                     }
                     var allNotSatisfiedNumbers = allNotFoundNumbers.subList(numberIndex, allNotFoundNumbers.size());
-                    var minimalNotSatisfied = allNotSatisfiedNumbers.stream().map(n -> n.number).min(Integer::compareTo).get();
+                    int minimalNotSatisfied = allNotSatisfiedNumbers.stream().map(n -> n.number).min(Integer::compareTo).get();
                     var start = getStart(rowOrCol, minimalNotSatisfied, c, r, startingFrom);
                     var fakeGap = new Gap(rowOrCol, start, start + minimalNotSatisfied - 1, minimalNotSatisfied);
                     gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);

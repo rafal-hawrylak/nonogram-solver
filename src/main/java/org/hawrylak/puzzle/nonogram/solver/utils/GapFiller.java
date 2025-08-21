@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hawrylak.puzzle.nonogram.model.Gap.toSubGaps;
+
 @AllArgsConstructor
 public class GapFiller {
 
@@ -17,7 +19,7 @@ public class GapFiller {
     private final NumberSelector numberSelector;
     private final GapFinder gapFinder;
 
-    public void fillTheGapEntirely(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public void fillTheGapEntirely(SubGap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         fillTheGap(gap, rowOrCol, puzzle, changes);
         number.found = true;
         number.foundStart = gap.start;
@@ -26,7 +28,7 @@ public class GapFiller {
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
     }
 
-    public void fillTheGapEntirelyWithNumberUnknown(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public void fillTheGapEntirelyWithNumberUnknown(SubGap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         fillTheGap(gap, rowOrCol, puzzle, changes);
         fillSingleField(rowOrCol, puzzle, changes, gap.start - 1, FieldState.EMPTY);
         fillSingleField(rowOrCol, puzzle, changes, gap.end + 1, FieldState.EMPTY);
@@ -83,11 +85,11 @@ public class GapFiller {
         }
     }
 
-    public boolean fillTheGap(Gap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public boolean fillTheGap(SubGap gap, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         return fillTheGap(gap, FieldState.FULL, rowOrCol, puzzle, changes);
     }
 
-    public boolean fillTheGap(Gap gap, FieldState state, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
+    public boolean fillTheGap(SubGap gap, FieldState state, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         var anyFilled = false;
         for (int i = gap.start; i <= gap.end; i++) {
             var filled = fillSingleField(rowOrCol, puzzle, changes, i, state);
@@ -96,7 +98,7 @@ public class GapFiller {
         return anyFilled;
     }
 
-    public void fillTheGapPartiallyForSingleNumber(Gap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle,
+    public void fillTheGapPartiallyForSingleNumber(SubGap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle,
         ChangedInIteration changes) {
         if (2 * number.number > gap.length) {
             var howManyFieldsMayBeSet = 2 * number.number - gap.length;
@@ -108,8 +110,8 @@ public class GapFiller {
         }
         List<Integer> fullFieldsInGap = fieldFinder.findFieldsSetInGap(gap, puzzle, rowOrCol, FieldState.FULL);
         if (!fullFieldsInGap.isEmpty()) {
-            var min = fullFieldsInGap.stream().min(Integer::compareTo).get();
-            var max = fullFieldsInGap.stream().max(Integer::compareTo).get();
+            int min = fullFieldsInGap.stream().min(Integer::compareTo).get();
+            int max = fullFieldsInGap.stream().max(Integer::compareTo).get();
             var toFillSize = max - min + 1;
             if (toFillSize == number.number) {
                 // already .  .  ■  ■  ■  ■  ■  .  .  .| 5
@@ -148,7 +150,7 @@ public class GapFiller {
         }
         gap = refreshedGap.get();
         if (gap.filledSubGaps.size() == 1) {
-            var subGap = gap.filledSubGaps.get(0);
+            var subGap = gap.filledSubGaps.getFirst();
             var howManyEmptyFromFront = subGap.end - number.number;
             if (howManyEmptyFromFront >= gap.start) {
                 fillMultipleFields(gap.start, howManyEmptyFromFront, rowOrCol, puzzle, changes, FieldState.EMPTY);
@@ -181,12 +183,12 @@ public class GapFiller {
 
         gap = gapFinder.refreshSubGaps(gap, puzzle, rowOrCol).get();
         if (numbers.size() == 1 && gap.filledSubGaps.size() == 2) {
-            mergeSubGaps(puzzle, changes, rowOrCol, gap, numbers.get(0), true);
+            mergeSubGaps(puzzle, changes, rowOrCol, gap, numbers.getFirst(), true);
         }
         if (numbers.size() == 2 && gap.filledSubGaps.size() == 1) {
             var firstNumber = numbers.get(0);
             var secondNumber = numbers.get(1);
-            var subGap = gap.filledSubGaps.get(0);
+            var subGap = gap.filledSubGaps.getFirst();
             var fromGapStartToSubGapStart = subGap.start - gap.start + 1;
             var fromGapStartToSubGapEnd = subGap.end - gap.start + 1;
             if (fromGapStartToSubGapStart > firstNumber.number && fromGapStartToSubGapStart < firstNumber.number + 2) {
@@ -222,7 +224,7 @@ public class GapFiller {
     public void mergeSubGaps(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol, Gap gap, NumberToFind number, boolean first) {
         if (gap.filledSubGaps.size() >= 2) {
             var firstSubGap = first ? gap.filledSubGaps.get(0) : gap.filledSubGaps.get(gap.filledSubGaps.size() - 2);
-            var secondSubGap = first ? gap.filledSubGaps.get(1) : gap.filledSubGaps.get(gap.filledSubGaps.size() - 1);
+            var secondSubGap = first ? gap.filledSubGaps.get(1) : gap.filledSubGaps.getLast();
             var distanceFromEdge = first ? secondSubGap.start - gap.start : gap.end - firstSubGap.end;
             if (number.number >= distanceFromEdge) {
                 for (int i = firstSubGap.end + 1; i < secondSubGap.start; i++) {
@@ -287,14 +289,14 @@ public class GapFiller {
         }
         var result = OnlyPossibleCombinationResult.builder();
         if (splitsMatchingConditions.size() == 1) {
-            result.number(splitsMatchingConditions.get(0).current());
+            result.number(splitsMatchingConditions.getFirst().current());
         } else if (splitsMatchingConditionsByNumberValue.size() == 1) {
             result.value(splitsMatchingConditionsByNumberValue.keySet().stream().findFirst().get());
         }
         return result.build();
     }
 
-    public boolean doAllNumbersFitInGaps(List<NumberToFind> numbers, List<Gap> gaps) {
+    public boolean doAllNumbersFitInGaps(List<NumberToFind> numbers, List<SubGap> gaps) {
         if (numbers.isEmpty()) {
             return true;
         }
@@ -303,7 +305,7 @@ public class GapFiller {
         }
         var firstNumberIndex = 0;
         var lastNumberIndex = numbers.size() - 1;
-        for (Gap gap : gaps) {
+        for (SubGap gap : gaps) {
             var soFarInThisGap = 0;
             if (firstNumberIndex > lastNumberIndex) {
                 return true;
@@ -324,16 +326,16 @@ public class GapFiller {
         OnlyPossibleCombinationGapMode gapMode, OnlyPossibleCombinationSubGapMode subGapMode) {
         if (gapMode.isEnabled()) {
             var beforeAndCurrentNumber = gapMode.isStartingFrom() ? split.before() : Utils.mergeLists(split.before(), split.current());
-            var previousAndCurrentGaps = gapMode.isStartingFrom() ? previousGaps : Utils.mergeLists(previousGaps, gap);
+            var previousAndCurrentGaps = toSubGaps(gapMode.isStartingFrom() ? previousGaps : Utils.mergeLists(previousGaps, gap));
             return doAllNumbersFitInGaps(beforeAndCurrentNumber, previousAndCurrentGaps);
         } else if (subGapMode.isEnabled()) {
             var beforeAndCurrentNumber = split.before();
-            List<Gap> previousAndCurrentGaps;
+            List<SubGap> previousAndCurrentGaps;
             if (gap.start == subGapMode.subGap.start) {
-                previousAndCurrentGaps = previousGaps;
+                previousAndCurrentGaps = toSubGaps(previousGaps);
             } else {
                 var partialGapBeforeSubGap = new Gap(rowOrCol, gap.start, subGapMode.subGap.start - 1, subGapMode.subGap.start - gap.start);
-                previousAndCurrentGaps = Utils.mergeLists(previousGaps, partialGapBeforeSubGap);
+                previousAndCurrentGaps = toSubGaps(Utils.mergeLists(previousGaps, partialGapBeforeSubGap));
             }
             return doAllNumbersFitInGaps(beforeAndCurrentNumber, previousAndCurrentGaps);
         }
@@ -344,16 +346,16 @@ public class GapFiller {
         OnlyPossibleCombinationGapMode gapMode, OnlyPossibleCombinationSubGapMode subGapMode) {
         if (gapMode.isEnabled()) {
             var afterAndCurrentNumber = gapMode.isEndingAt() ? split.after() : Utils.mergeLists(split.current(), split.after());
-            var nextAndCurrentGaps = gapMode.isEndingAt() ? nextGaps : Utils.mergeLists(gap, nextGaps);
+            var nextAndCurrentGaps = toSubGaps(gapMode.isEndingAt() ? nextGaps : Utils.mergeLists(gap, nextGaps));
             return doAllNumbersFitInGaps(afterAndCurrentNumber, nextAndCurrentGaps);
         } else if (subGapMode.isEnabled()) {
             var afterAndCurrentNumber = split.after();
-            List<Gap> nextAndCurrentGaps;
+            List<SubGap> nextAndCurrentGaps;
             if (gap.end == subGapMode.subGap.end) {
-                nextAndCurrentGaps = nextGaps;
+                nextAndCurrentGaps = toSubGaps(nextGaps);
             } else {
                 var partialGapAfterSubGap = new Gap(rowOrCol, subGapMode.subGap.end + 1, gap.end, gap.end - subGapMode.subGap.end);
-                nextAndCurrentGaps = Utils.mergeLists(partialGapAfterSubGap, nextGaps);
+                nextAndCurrentGaps = toSubGaps(Utils.mergeLists(partialGapAfterSubGap, nextGaps));
             }
             return doAllNumbersFitInGaps(afterAndCurrentNumber, nextAndCurrentGaps);
         }
@@ -371,10 +373,10 @@ public class GapFiller {
                 return false;
             }
             if (numbers.size() == 1 && gaps.size() == 1) {
-                var number = numbers.get(0);
-                var gap = gaps.get(0);
-                var startOfFirstSubGap = gap.getFirstSubGap().get().start;
-                var endOfLastSubGap = gap.getLastSubGap().get().end;
+                var number = numbers.getFirst();
+                var gap = gaps.getFirst();
+                var startOfFirstSubGap = gap.filledSubGaps.getFirst().start;
+                var endOfLastSubGap = gap.filledSubGaps.getLast().end;
                 if (endOfLastSubGap - startOfFirstSubGap + 1 > number.number) {
                     return true;
                 }

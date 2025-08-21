@@ -22,11 +22,11 @@ public class OnlyFirstNumberFitsIntoTheFirstLastGapWithSubGap extends Solver {
         for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
             var gaps = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
             if (gaps.size() >= 2) {
-                var firstGap = gaps.get(0);
+                var firstGap = gaps.getFirst();
                 if (!firstGap.filledSubGaps.isEmpty()) {
                     var numbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
                     if (!numbers.isEmpty()) {
-                        var firstNumber = numberSelector.getFirst(numbers).get();
+                        var firstNumber = numbers.getFirst();
                         if (numbers.size() == 1) {
                             if (firstGap.filledSubGaps.size() == 2) {
                                 gapFiller.mergeSubGaps(puzzle, changes, rowOrCol, firstGap, firstNumber, true);
@@ -42,11 +42,11 @@ public class OnlyFirstNumberFitsIntoTheFirstLastGapWithSubGap extends Solver {
                     }
                 }
 
-                var lastGap = gaps.get(gaps.size() - 1);
+                var lastGap = gaps.getLast();
                 if (!lastGap.filledSubGaps.isEmpty()) {
                     var numbers = numberSelector.getNotFound(rowOrCol.numbersToFind);
                     if (!numbers.isEmpty()) {
-                        var lastNumber = numberSelector.getLast(numbers).get();
+                        var lastNumber = numbers.getLast();
                         if (numbers.size() == 1) {
                             if (lastGap.filledSubGaps.size() == 2) {
                                 gapFiller.mergeSubGaps(puzzle, changes, rowOrCol, lastGap, lastNumber, true);

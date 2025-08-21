@@ -18,6 +18,10 @@ public class NumberSelector {
         return Utils.allPrevious(numbersToFind, numberToFind);
     }
 
+    public List<NumberToFind> allPreviousAndThis(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
+        return Utils.allPreviousAndThis(numbersToFind, numberToFind);
+    }
+
     public List<NumberToFind> allNext(List<NumberToFind> numbersToFind, NumberToFind numberToFind) {
         return Utils.allNext(numbersToFind, numberToFind);
     }
@@ -77,6 +81,12 @@ public class NumberSelector {
         return copy.stream().filter(n -> !n.found).findFirst();
     }
 
+    public List<NumberToFind> getBiggerFirst(List<NumberToFind> numbers) {
+        return numbers.stream()
+                .sorted(Comparator.comparingInt(NumberToFind::getNumber).reversed())
+                .toList();
+    }
+
     public List<NumberToFind> getBiggerFirstOnlyNotFound(List<NumberToFind> numbers) {
         return numbers.stream()
             .filter(n -> !n.found)
@@ -84,12 +94,21 @@ public class NumberSelector {
             .toList();
     }
 
+    public List<NumberToFind> getBiggest(List<NumberToFind> numbers) {
+        var biggerFirst = getBiggerFirst(numbers);
+        if (biggerFirst.isEmpty()) {
+            return Collections.emptyList();
+        }
+        var biggest = biggerFirst.getFirst().number;
+        return biggerFirst.stream().filter(n -> n.number == biggest).toList();
+    }
+
     public List<NumberToFind> getBiggestNotFound(List<NumberToFind> numbers) {
         var biggerFirstOnlyNotFound = getBiggerFirstOnlyNotFound(numbers);
         if (biggerFirstOnlyNotFound.isEmpty()) {
             return Collections.emptyList();
         }
-        var biggest = biggerFirstOnlyNotFound.get(0).number;
+        var biggest = biggerFirstOnlyNotFound.getFirst().number;
         return biggerFirstOnlyNotFound.stream().filter(n -> n.number == biggest).toList();
     }
 
@@ -112,8 +131,8 @@ public class NumberSelector {
 
     public List<NumberToFind> getNumbersBetween(List<NumberToFind> numbers, Optional<NumberToFind> numberPrevious,
         Optional<NumberToFind> numberNext) {
-        var start = numberPrevious.isPresent() ? numbers.indexOf(numberPrevious.get()) + 1 : 0;
-        var end = numberNext.isPresent() ? numbers.indexOf(numberNext.get()) : numbers.size();
+        var start = numberPrevious.map(numberToFind -> numbers.indexOf(numberToFind) + 1).orElse(0);
+        var end = numberNext.map(numbers::indexOf).orElseGet(numbers::size);
         return start <= end ? numbers.subList(start, end) : Collections.emptyList();
     }
 
@@ -132,9 +151,8 @@ public class NumberSelector {
     }
 
     public int calculateGapDiff(Gap gap, List<NumberToFind> numbersSubList) {
-        var numbersSum = numbersSubList.stream().map(n -> n.number).reduce(0, Integer::sum);
-        var gapDiff = gap.length - numbersSum - numbersSubList.size() + 1;
-        return gapDiff;
+        int numbersSum = numbersSubList.stream().map(n -> n.number).reduce(0, Integer::sum);
+        return gap.length - numbersSum - numbersSubList.size() + 1;
     }
 
     public List<NumberBeforeCurrentAndAfter> getAllPossibleSplitsAtNumber(List<NumberToFind> numbers, int number) {
@@ -176,6 +194,10 @@ public class NumberSelector {
 
     public List<NumberToFind> findNumbersMatchingSubGap(SubGap subGap, List<NumberToFind> numbers) {
         return numbers.stream().filter(n -> n.number >= subGap.length).toList();
+    }
+
+    public List<NumberToFind> onlyNotFound(List<NumberToFind> numbers) {
+        return numbers.stream().filter(n -> !n.found).toList();
     }
 
     public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {
