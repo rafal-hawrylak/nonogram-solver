@@ -49,7 +49,7 @@ public class OriginalOrderSolversCollectionProvider implements SolversCollection
         addSolver(solvers, new ThreeGapsMatchOnlyThreeNumbersEach(gapFinder, gapFiller));
         addSolver(solvers, new TwoOutOfMoreGapsMatchOnlyTwoFirstNumbersEach(gapFinder, gapFiller, gapCloser));
         addSolver(solvers, new OnlyFirstNumberFitsIntoTheFirstLastGapWithSubGap(gapFinder, numberSelector, gapFiller));
-//        addSolver(solvers, new MarkBeforeAfterTheBiggestNumber(gapFinder, numberSelector, gapFiller));
+        addSolver(solvers, new MarkBeforeAfterTheBiggestNumber(gapFinder, numberSelector, gapFiller));
 
         return solvers;
     }
