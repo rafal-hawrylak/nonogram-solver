@@ -2,6 +2,7 @@ package org.hawrylak.puzzle.nonogram.utils;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
@@ -16,8 +17,9 @@ public class ChangedInIteration {
     private final Puzzle currentPuzzle;
     private Puzzle previousPuzzle;
     int iteration = 0;
-    private Set<RowOrCol> changedRowsOrCols = new HashSet<>();
+    private final Set<RowOrCol> changedRowsOrCols = new HashSet<>();
     private boolean[][] changedFields;
+    private final Set<NumberToFind> changedNumbers = new HashSet<>();
     @Getter(AccessLevel.PRIVATE)
     private PuzzleCloner puzzleCloner = new PuzzleCloner();
 
@@ -53,9 +55,14 @@ public class ChangedInIteration {
         changedRowsOrCols.add(rowOrCol);
     }
 
-    public void markChangeSingle(int c, int r) {
+    public void markChangeField(int c, int r) {
         changedRowsOrCols.addAll(findPerpendicularRowOrCol(c, r));
         changedFields[c][r] = true;
+    }
+
+    public void markChangeNumber(RowOrCol rowOrCol, NumberToFind number) {
+        changedRowsOrCols.add(rowOrCol);
+        changedNumbers.add(number);
     }
 
     public Collection<RowOrCol> findPerpendicularRowOrCol(int c, int r) {

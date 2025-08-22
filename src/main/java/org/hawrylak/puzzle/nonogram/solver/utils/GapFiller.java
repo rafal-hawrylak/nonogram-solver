@@ -21,6 +21,9 @@ public class GapFiller {
 
     public void fillTheGapEntirely(SubGap gap, NumberToFind number, RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes) {
         fillTheGap(gap, rowOrCol, puzzle, changes);
+        if (!number.found) {
+            changes.markChangeNumber(rowOrCol, number);
+        }
         number.found = true;
         number.foundStart = gap.start;
         number.foundEnd = gap.end;
@@ -59,7 +62,7 @@ public class GapFiller {
                 validateStateChange(changes, state, currentState, i, rowOrCol.number);
                 if (!state.equals(currentState)) {
                     puzzle.fields[i][rowOrCol.number] = state;
-                    changes.markChangeSingle(i, rowOrCol.number);
+                    changes.markChangeField(i, rowOrCol.number);
                     return true;
                 }
             }
@@ -69,7 +72,7 @@ public class GapFiller {
                 validateStateChange(changes, state, currentState, rowOrCol.number, i);
                 if (!state.equals(currentState)) {
                     puzzle.fields[rowOrCol.number][i] = state;
-                    changes.markChangeSingle(rowOrCol.number, i);
+                    changes.markChangeField(rowOrCol.number, i);
                     return true;
                 }
             }
