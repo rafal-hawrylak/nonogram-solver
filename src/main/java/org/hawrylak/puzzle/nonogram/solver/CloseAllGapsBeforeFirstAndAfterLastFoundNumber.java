@@ -33,14 +33,14 @@ public class CloseAllGapsBeforeFirstAndAfterLastFoundNumber extends Solver {
                 continue;
             }
             var gaps = gapFinder.find(puzzle, rowOrCol);
-            var firstNumber = rowOrCol.numbersToFind.get(0);
+             var firstNumber = rowOrCol.numbersToFind.getFirst();
             if (firstNumber.found) {
                 var gapsBeforeNumber = gapFinder.gapsBeforeNumber(gaps, firstNumber);
                 for (Gap gap : gapsBeforeNumber) {
                     gapCloser.closeAsEmpty(gap, puzzle, changes);
                 }
             }
-            var lastNumber = rowOrCol.numbersToFind.get(rowOrCol.numbersToFind.size() - 1);
+            var lastNumber = rowOrCol.numbersToFind.getLast();
             if (lastNumber.found) {
                 var gapsAfterNumber = gapFinder.gapsAfterNumber(gaps, lastNumber);
                 for (Gap gap : gapsAfterNumber) {

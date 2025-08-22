@@ -200,6 +200,10 @@ public class NumberSelector {
         return numbers.stream().filter(n -> !n.found).toList();
     }
 
+    public NumberToFind artificial(int value) {
+        return new NumberToFind(value);
+    }
+
     public record NumberBeforeCurrentAndAfter(List<NumberToFind> before, NumberToFind current, List<NumberToFind> after) {
 
     }

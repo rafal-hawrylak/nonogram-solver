@@ -23,13 +23,13 @@ public class TryToAssignNumberToFilledGap extends Solver {
             var gaps = gapFinder.find(puzzle, rowOrCol);
             for (Gap gap : gaps) {
                 if (gap.assignedNumber.isEmpty() && gap.filledSubGaps.size() == 1) {
-                    var subGap = gap.filledSubGaps.get(0);
+                    var subGap = gap.filledSubGaps.getFirst();
                     if (subGap.start == gap.start && subGap.end == gap.end) {
                         var number = gap.length;
                         var numbersMatchingNumber = numberSelector.getNotFound(rowOrCol.numbersToFind).stream()
                             .filter(n -> n.number == number).toList();
                         if (numbersMatchingNumber.size() == 1) {
-                            gapFiller.fillTheGapEntirely(gap, numbersMatchingNumber.get(0), rowOrCol, puzzle, changes);
+                            gapFiller.fillTheGapEntirely(gap, numbersMatchingNumber.getFirst(), rowOrCol, puzzle, changes);
                             continue;
                         }
                         var allPossibleSplitsAtNumber = numberSelector.getAllPossibleSplitsAtNumber(rowOrCol.numbersToFind, number);

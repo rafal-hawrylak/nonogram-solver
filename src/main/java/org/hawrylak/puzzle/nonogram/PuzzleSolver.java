@@ -18,7 +18,7 @@ import java.util.Map;
 public class PuzzleSolver {
 
     public static final boolean DEBUG = true;
-    public static final int ITERATIONS_TO_STOP_AFTER = DEBUG ? 300 : 100;
+    public static final int ITERATIONS_TO_HARD_STOP_AFTER = DEBUG ? 400 : 300;
     public static final boolean HARD_STOP = true;
 
     private final PuzzleStatisticsCalculator puzzleStatisticsCalculator = new PuzzleStatisticsCalculator();
@@ -36,7 +36,7 @@ public class PuzzleSolver {
         System.out.println("solvers = " + solvers);
 
         while (changes.firstIteration() || changes.anyChange()) {
-            if (HARD_STOP && changes.getIteration() >= ITERATIONS_TO_STOP_AFTER) {
+            if (HARD_STOP && changes.getIteration() >= ITERATIONS_TO_HARD_STOP_AFTER) {
                 break;
             }
 
