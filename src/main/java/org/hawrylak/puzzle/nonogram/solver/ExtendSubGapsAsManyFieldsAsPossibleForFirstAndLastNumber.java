@@ -7,7 +7,6 @@ import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
-import org.hawrylak.puzzle.nonogram.solver.utils.Utils;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 
 @AllArgsConstructor
@@ -34,7 +33,9 @@ public class ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber extends So
                 var firstSubGap = gap.filledSubGaps.get(0);
                 var missingNumberPart = number.number - firstSubGap.length;
                 if (missingNumberPart >= 0) {
-                    if (firstSubGap.start - gap.start < missingNumberPart) {
+                    if (gap.start == firstSubGap.start && missingNumberPart == 0) {
+                        gapFiller.fillTheGapEntirely(firstSubGap, number, rowOrCol, puzzle, changes);
+                    } else if (firstSubGap.start - gap.start < missingNumberPart) {
                         var end = gap.start + number.number - 1;
                         var fakeGap = new Gap(rowOrCol, firstSubGap.start, end, end - firstSubGap.start + 1);
                         gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
@@ -56,7 +57,9 @@ public class ExtendSubGapsAsManyFieldsAsPossibleForFirstAndLastNumber extends So
                 var lastSubGap = gap.filledSubGaps.getLast();
                 var missingNumberPart = number.number - lastSubGap.length;
                 if (missingNumberPart >= 0) {
-                    if (gap.end - lastSubGap.end < missingNumberPart) {
+                    if (gap.end == lastSubGap.end && missingNumberPart == 0) {
+                        gapFiller.fillTheGapEntirely(lastSubGap, number, rowOrCol, puzzle, changes);
+                    } else if (gap.end - lastSubGap.end < missingNumberPart) {
                         var start = gap.end - number.number + 1;
                         var fakeGap = new Gap(rowOrCol, start, lastSubGap.end, lastSubGap.end - start + 1);
                         gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
