@@ -144,6 +144,10 @@ public class GapFinder {
         return Utils.allPrevious(gaps, gap);
     }
 
+    public List<Gap> allPreviousAndThis(List<Gap> gaps, Gap gap) {
+        return Utils.allPreviousAndThis(gaps, gap);
+    }
+
     public List<Gap> allNext(List<Gap> gaps, Gap gap) {
         return Utils.allNext(gaps, gap);
     }
@@ -266,40 +270,33 @@ public class GapFinder {
         return biggerFirst.stream().filter(n -> n.length == biggest).toList();
     }
 
-    public List<SubGap> gapsEndingAfterSubGap(SubGap subGap, List<Gap> gaps) {
+    public List<Gap> gapsEndingAfterSubGap(SubGap subGap, List<Gap> gaps) {
+        var lastGap = getGapAtPosition(gaps, subGap.end, subGap.end);
+        var previousGaps = allPrevious(gaps, lastGap);
+        var result = new ArrayList<Gap>();
+        result.addAll(previousGaps);
+        result.add(lastGap);
+        return result;
+    }
+
+    public List<Gap> gapsEndingAfterSubGapCut(SubGap subGap, List<Gap> gaps) {
         var lastGap = getGapAtPosition(gaps, subGap.end, subGap.end);
         var previousGaps = allPrevious(gaps, lastGap);
         var artificialGap = new Gap(lastGap.rowOrCol, lastGap.start, subGap.end, subGap.end - lastGap.start + 1);
-        var result = new ArrayList<SubGap>();
+        var result = new ArrayList<Gap>();
         result.addAll(previousGaps);
         result.add(artificialGap);
         return result;
     }
 
-    public List<SubGap> gapsStartingBeforeSubGap(SubGap subGap, List<Gap> gaps) {
+    public List<Gap> gapsStartingBeforeSubGapCut(SubGap subGap, List<Gap> gaps) {
         var firstGap = getGapAtPosition(gaps, subGap.start, subGap.start);
         var nextGaps = allNext(gaps, firstGap);
-        var artificialGap = new Gap(firstGap.rowOrCol, subGap.start, firstGap.end, firstGap.end - subGap.start + 1);
-        var result = new ArrayList<SubGap>();
+        var artificialGap = new Gap(firstGap.rowOrCol, subGap.start, firstGap.end, firstGap.end - subGap.start + 1, Optional.empty(), List.of(subGap));
+        var result = new ArrayList<Gap>();
         result.add(artificialGap);
         result.addAll(nextGaps);
         return result;
     }
 
-    public List<SubGap> sumGaps(List<SubGap> subGaps1, List<SubGap> subGaps2) {
-        var distinctMiddleSubGaps = new HashSet<SubGap>();
-        if (subGaps1.size() >= 3) {
-            distinctMiddleSubGaps.addAll(subGaps1.subList(1, subGaps1.size() - 1));
-        }
-        if (subGaps2.size() >= 3) {
-            distinctMiddleSubGaps.addAll(subGaps2.subList(1, subGaps2.size() - 1));
-        }
-        if (!distinctMiddleSubGaps.stream().anyMatch(s -> s.start == subGaps1.getFirst().start && s.end == subGaps1.getFirst().end)) {
-            distinctMiddleSubGaps.add(subGaps1.getFirst());
-        }
-        if (!distinctMiddleSubGaps.stream().anyMatch(s -> s.start == subGaps2.getLast().start && s.end == subGaps2.getLast().end)) {
-            distinctMiddleSubGaps.add(subGaps2.getLast());
-        }
-        return distinctMiddleSubGaps.stream().sorted(Comparator.comparingInt(s -> s.start)).toList();
-    }
 }

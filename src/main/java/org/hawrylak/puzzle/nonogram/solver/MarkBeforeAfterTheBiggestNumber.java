@@ -9,6 +9,8 @@ import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 
 import java.util.List;
 
+import static org.hawrylak.puzzle.nonogram.model.Gap.toSubGaps;
+
 @AllArgsConstructor
 public class MarkBeforeAfterTheBiggestNumber extends Solver {
 
@@ -37,12 +39,14 @@ public class MarkBeforeAfterTheBiggestNumber extends Solver {
                             var biggestSubGap = biggestSubGaps.getFirst();
                             var numbersMatchingBiggestSubGap = numberSelector.findNumbersMatchingSubGap(biggestSubGap, numbersToFind);
                             if (numbersMatchingBiggestSubGap.size() == 1 || onlyFirstBiggestNumberIsMatchingIntoGaps(numbersMatchingBiggestSubGap, biggestSubGap, numbersToFind, gaps)) {
-                                var subGapBeforeBiggest = gapFinder.previous(subGaps, biggestSubGap);
-                                if (subGapBeforeBiggest.isPresent()) {
-                                    if (onlyFirstNumberBeforeBiggestNumberIsMatchingIntoGaps(lastBeforeBiggest, numbersMatchingBiggestSubGap.getFirst(), subGapBeforeBiggest.get(), biggestSubGap, numbersToFind, gaps)) {
-                                        if (!gapFinder.areSubGapsMergeable(firstBiggest.number, subGapBeforeBiggest.get(), biggestSubGap)) {
-                                            if (lastBeforeBiggest.number == subGapBeforeBiggest.get().length) {
-                                                gapFiller.fillTheGapEntirely(subGapBeforeBiggest.get(), lastBeforeBiggest, rowOrCol, puzzle, changes);
+                                if (firstBiggest.equals(numbersMatchingBiggestSubGap.getFirst())) {
+                                    var subGapBeforeBiggest = gapFinder.previous(subGaps, biggestSubGap);
+                                    if (subGapBeforeBiggest.isPresent()) {
+                                        if (onlyFirstNumberBeforeBiggestNumberIsMatchingIntoGaps(lastBeforeBiggest, numbersMatchingBiggestSubGap.getFirst(), subGapBeforeBiggest.get(), biggestSubGap, numbersToFind, gaps)) {
+                                            if (!gapFinder.areSubGapsMergeable(firstBiggest.number, subGapBeforeBiggest.get(), biggestSubGap)) {
+                                                if (lastBeforeBiggest.number == subGapBeforeBiggest.get().length) {
+                                                    gapFiller.fillTheGapEntirely(subGapBeforeBiggest.get(), lastBeforeBiggest, rowOrCol, puzzle, changes);
+                                                }
                                             }
                                         }
                                     }
@@ -56,10 +60,18 @@ public class MarkBeforeAfterTheBiggestNumber extends Solver {
     }
 
     private boolean onlyFirstNumberBeforeBiggestNumberIsMatchingIntoGaps(NumberToFind lastBeforeBiggest, NumberToFind firstBiggestNumber, SubGap beforeBiggestSubGap, SubGap biggestSubGap, List<NumberToFind> numbers, List<Gap> gaps) {
-        var gapsStartingBeforeFirstSubGap = gapFinder.gapsStartingBeforeSubGap(beforeBiggestSubGap, gaps);
-        var gapsEndingAfterSecondSubGap = gapFinder.gapsEndingAfterSubGap(biggestSubGap, gaps);
-        var gapsToCheck = gapFinder.sumGaps(gapsStartingBeforeFirstSubGap, gapsEndingAfterSecondSubGap);
-        var fitsWithTheNumberBefore = gapFiller.doAllNumbersFitInGaps(List.of(lastBeforeBiggest, firstBiggestNumber), gapsToCheck);
+        if (firstBiggestNumber.number < biggestSubGap.length) {
+            return false;
+        }
+        var gapsStartingBeforeFirstSubGap = gapFinder.gapsStartingBeforeSubGapCut(beforeBiggestSubGap, gaps);
+        var gapsToCheck = gapFinder.allPreviousAndThis(gapsStartingBeforeFirstSubGap, gapFinder.getGapOfSubGap(gaps, biggestSubGap));
+        var gapToShorten = gapsToCheck.removeLast();
+        int shortenedLength = firstBiggestNumber.number;
+        int shortenedEnd = Math.min(biggestSubGap.start + shortenedLength - 1, gapToShorten.end);
+        var gapShortened = new Gap(gapToShorten.rowOrCol, gapToShorten.start, shortenedEnd, shortenedEnd - gapToShorten.start + 1, gapToShorten.assignedNumber, gapToShorten.filledSubGaps);
+        gapsToCheck.add(gapShortened);
+        // take into account filled fields
+        var fitsWithTheNumberBefore = gapFiller.doAllNumbersFitInGaps(List.of(lastBeforeBiggest, firstBiggestNumber), toSubGaps(gapsToCheck));
         if (!fitsWithTheNumberBefore) {
             return false;
         }
@@ -67,21 +79,22 @@ public class MarkBeforeAfterTheBiggestNumber extends Solver {
         if (numberBeforeLastBeforeBiggest.isEmpty()) {
             return true;
         }
-        var fitsWithTheNumberBeforeBefore = gapFiller.doAllNumbersFitInGaps(List.of(numberSelector.artificial(1), lastBeforeBiggest, firstBiggestNumber), gapsToCheck);
+        // take into account filled fields
+        var fitsWithTheNumberBeforeBefore = gapFiller.doAllNumbersFitInGaps(List.of(numberSelector.artificial(1), lastBeforeBiggest, firstBiggestNumber), toSubGaps(gapsToCheck));
         return !fitsWithTheNumberBeforeBefore;
     }
 
     private boolean onlyFirstBiggestNumberIsMatchingIntoGaps(List<NumberToFind> biggestNumbers, SubGap subGap, List<NumberToFind> numbers, List<Gap> gaps) {
         var firstBiggestNumber = biggestNumbers.getFirst();
         var numberToFitBeforeFirstBiggest = numberSelector.allPreviousAndThis(numbers, firstBiggestNumber);
-        var gapsEndingAfterSubGap = gapFinder.gapsEndingAfterSubGap(subGap, gaps);
-        var fitsWithTheFirstNumber = gapFiller.doAllNumbersFitInGaps(numberToFitBeforeFirstBiggest, gapsEndingAfterSubGap);
+        var gapsEndingAfterSubGap = gapFinder.gapsEndingAfterSubGapCut(subGap, gaps);
+        var fitsWithTheFirstNumber = gapFiller.doAllNumbersFitInGaps(numberToFitBeforeFirstBiggest, toSubGaps(gapsEndingAfterSubGap));
         if (!fitsWithTheFirstNumber) {
             return false;
         }
         var secondBiggestNumber = biggestNumbers.get(1);
         var numberToFitBeforeSecondBiggest = numberSelector.allPreviousAndThis(numbers, secondBiggestNumber);
-        var fitsWithTheSecondNumber = gapFiller.doAllNumbersFitInGaps(numberToFitBeforeSecondBiggest, gapsEndingAfterSubGap);
+        var fitsWithTheSecondNumber = gapFiller.doAllNumbersFitInGaps(numberToFitBeforeSecondBiggest, toSubGaps(gapsEndingAfterSubGap));
         return !fitsWithTheSecondNumber;
     }
 

@@ -26,7 +26,7 @@ public class Gap extends SubGap {
         this.assignedNumber = assignedNumber;
     }
 
-    public Gap(RowOrCol rowOrCol, int start, int end, int length, Optional<NumberToFind> assignedNumber, ArrayList<SubGap> subGaps) {
+    public Gap(RowOrCol rowOrCol, int start, int end, int length, Optional<NumberToFind> assignedNumber, List<SubGap> subGaps) {
         this(rowOrCol, start, end, length, assignedNumber);
         this.filledSubGaps = subGaps;
     }
