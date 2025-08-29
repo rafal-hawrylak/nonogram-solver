@@ -18,6 +18,7 @@ import java.util.Map;
 public class PuzzleSolver {
 
     public static final boolean DEBUG = true;
+    public static final boolean DEBUG_PRINT_FIELDS = false;
     public static final int ITERATIONS_TO_HARD_STOP_AFTER = DEBUG ? 400 : 300;
     public static final boolean HARD_STOP = true;
 

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import static org.hawrylak.puzzle.nonogram.PuzzleSolver.DEBUG_PRINT_FIELDS;
 import static org.hawrylak.puzzle.nonogram.model.Gap.toSubGaps;
 
 @AllArgsConstructor
@@ -61,7 +62,7 @@ public class GapFiller {
                 FieldState currentState = puzzle.fields[i][rowOrCol.number];
                 validateStateChange(changes, state, currentState, i, rowOrCol.number);
                 if (!state.equals(currentState)) {
-                    puzzle.fields[i][rowOrCol.number] = state;
+                    markField(puzzle, i, rowOrCol.number, currentState, state);
                     changes.markChangeField(i, rowOrCol.number);
                     return true;
                 }
@@ -71,7 +72,7 @@ public class GapFiller {
                 FieldState currentState = puzzle.fields[rowOrCol.number][i];
                 validateStateChange(changes, state, currentState, rowOrCol.number, i);
                 if (!state.equals(currentState)) {
-                    puzzle.fields[rowOrCol.number][i] = state;
+                    markField(puzzle, rowOrCol.number, i, currentState, state);
                     changes.markChangeField(rowOrCol.number, i);
                     return true;
                 }
@@ -80,10 +81,17 @@ public class GapFiller {
         return false;
     }
 
+    private static void markField(Puzzle puzzle, int i, int j, FieldState currentState, FieldState state) {
+        puzzle.fields[i][j] = state;
+        if (DEBUG_PRINT_FIELDS) {
+            System.out.println("changed [" + i + "," + j + "] from " + currentState + " to " + state);
+        }
+    }
+
     private static void validateStateChange(ChangedInIteration changes, FieldState state, FieldState currentState, int c, int r) {
         if ((FieldState.EMPTY.equals(state) && FieldState.FULL.equals(currentState)) || (FieldState.EMPTY.equals(currentState)
             && FieldState.FULL.equals(state))) {
-            throw new IllegalStateException("Changing state of the field from " + currentState + " to " + state + " at [" + c + "; " + r
+            throw new IllegalStateException("Changing state of the field from " + currentState + " to " + state + " at [" + c + "," + r
                 + "] is not allowed. iteration = " + changes.getIteration());
         }
     }
