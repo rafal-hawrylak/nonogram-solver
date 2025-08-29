@@ -6,8 +6,8 @@ Backlog:
 - [done] implement filling the gap if the only matching
 - [done] bug in FillTheNumbersWithStartAndEndNotConnectedSolver
 - areSubGapsMergeable may check if in the same gap - do not remember why is this check needed?
-- solve SolveWholeCase020Test - iteration = 73 - completion 30% (264 / 875)
-- solve SolveWholeCase022Test - iteration = 38 - completion 29% (218 / 750)
+- solve SolveWholeCase020Test - iteration = 83 - completion 30% (264 / 875)
+- solve SolveWholeCase022Test - iteration = 40 - completion 29% (218 / 750)
 - solve SolveWholeCase024Test - iteration = 10 - completion 11% (134 / 1200)
 - order of solvers impact the result
 - implement guessing
