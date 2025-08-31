@@ -36,6 +36,12 @@ public class Puzzle {
         initFields();
     }
 
+    public Puzzle(int width, int height, List<RowOrCol> rowsOrCols) {
+        this.width = width;
+        this.height = height;
+        this.rowsOrCols.addAll(rowsOrCols);
+    }
+
     private void initFields() {
         fields = new FieldState[width][height];
         for (int c = 0; c < width; c++) {

@@ -17,11 +17,35 @@ public class PuzzleCloner {
         return newPuzzle;
     }
 
+    public Puzzle deepClone(Puzzle puzzle) {
+        List<RowOrCol> rowsOrCols = deepCloneRowsOrCols(puzzle.rowsOrCols);
+        Puzzle newPuzzle = new Puzzle(puzzle.width, puzzle.height, rowsOrCols);
+        newPuzzle.fields = clone(puzzle.fields);
+        return newPuzzle;
+    }
+
     private List<List<Integer>> clone(List<RowOrCol> rowOrCols) {
         return rowOrCols.stream()
                 .map(rowOrCol -> rowOrCol.numbersToFind)
                 .map(this::toList)
                 .toList();
+    }
+
+    private List<RowOrCol> deepCloneRowsOrCols(List<RowOrCol> rowOrCols) {
+        return rowOrCols.stream().map(this::deepClone).toList();
+    }
+
+    private RowOrCol deepClone(RowOrCol rowOrCol) {
+        List<NumberToFind> numbersToFind = deepCloneNumbersToFind(rowOrCol.numbersToFind);
+        return new RowOrCol(rowOrCol.id, numbersToFind, rowOrCol.number, rowOrCol.horizontal, rowOrCol.solved);
+    }
+
+    private List<NumberToFind> deepCloneNumbersToFind(List<NumberToFind> numbersToFind) {
+        return numbersToFind.stream().map(this::deepClone).toList();
+    }
+
+    private NumberToFind deepClone(NumberToFind number) {
+        return new NumberToFind(number.number, number.id, number.found, number.foundStart, number.foundEnd);
     }
 
     private List<Integer> toList(List<NumberToFind> numbers) {

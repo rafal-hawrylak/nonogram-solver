@@ -16,12 +16,20 @@ public class RowOrCol {
     public boolean solved = false;
     public List<NumberToFind> numbersToFind;
     @Include
-    private final UUID id = UUID.randomUUID();
+    public UUID id = UUID.randomUUID();
 
     public RowOrCol(List<Integer> numbersToFind, int number, boolean horizontal) {
         this.numbersToFind = numbersToFind.stream()
             .map(NumberToFind::new).toList();
         this.number = number;
         this.horizontal = horizontal;
+    }
+
+    public RowOrCol(UUID id, List<NumberToFind> numbersToFind, int number, boolean horizontal, boolean solved) {
+        this.id = id;
+        this.numbersToFind = numbersToFind;
+        this.number = number;
+        this.horizontal = horizontal;
+        this.solved = solved;
     }
 }
