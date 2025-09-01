@@ -4,6 +4,8 @@ import org.hawrylak.puzzle.nonogram.model.FieldState;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 
+import java.util.List;
+
 public class RowSelector {
 
     public RowOrCol find(Puzzle puzzle, int n, boolean horizontal) {
@@ -23,5 +25,9 @@ public class RowSelector {
             }
         }
         return count;
+    }
+
+    public List<RowOrCol> getNotFound(List<RowOrCol> rowsOrCols) {
+        return rowsOrCols.stream().filter(rOC -> !rOC.solved).toList();
     }
 }

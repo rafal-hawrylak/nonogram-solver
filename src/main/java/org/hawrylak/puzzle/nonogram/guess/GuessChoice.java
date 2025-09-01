@@ -1,14 +1,21 @@
 package org.hawrylak.puzzle.nonogram.guess;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.hawrylak.puzzle.nonogram.model.FieldState;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
+@ToString
 public class GuessChoice {
-    private int row;
-    private int col;
-    private FieldState state;
+    private final int row;
+    private final int col;
+    private final FieldState state;
+    private boolean opposite = false;
+
+    public void setOpposite() {
+        opposite = true;
+    }
 }

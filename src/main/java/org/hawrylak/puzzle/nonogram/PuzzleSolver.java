@@ -1,5 +1,6 @@
 package org.hawrylak.puzzle.nonogram;
 
+import org.hawrylak.puzzle.nonogram.guess.GuessManager;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.Solution;
@@ -10,6 +11,7 @@ import org.hawrylak.puzzle.nonogram.solver.provider.SpecificOrderSolversCollecti
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleStatisticsCalculator;
+import org.hawrylak.puzzle.nonogram.utils.StatsCloner;
 import org.hawrylak.puzzle.nonogram.validation.PuzzleValidator;
 import org.hawrylak.puzzle.nonogram.validation.ValidationException;
 
@@ -19,6 +21,7 @@ public class PuzzleSolver {
 
     public static final boolean DEBUG = true;
     public static final boolean DEBUG_PRINT_FIELDS = false;
+    public static final boolean GUESS_BRANCHING_ENABLED = true;
     public static final int ITERATIONS_TO_HARD_STOP_AFTER = DEBUG ? 400 : 300;
     public static final boolean HARD_STOP = true;
 
@@ -26,7 +29,9 @@ public class PuzzleSolver {
 
     public Solution solve(Puzzle puzzleToSolve) {
 
-        var puzzle = new PuzzleCloner().clone(puzzleToSolve);
+        var puzzleCloner = new PuzzleCloner();
+        var statsCloner = new StatsCloner();
+        var puzzle = puzzleCloner.clone(puzzleToSolve);
 
         var stats = new SolversStatistics();
         var changes = new ChangedInIteration(puzzle);
@@ -35,41 +40,60 @@ public class PuzzleSolver {
         Map<String, Solver> solvers = new SpecificOrderSolversCollectionProvider().provide();
 //        Map<String, Solver> solvers = new RandomOrderSolverProvider().provide();
         System.out.println("solvers = " + solvers);
+        var guessManager = new GuessManager(puzzleCloner, statsCloner);
 
         while (changes.firstIteration() || changes.anyChange()) {
-            if (HARD_STOP && changes.getIteration() >= ITERATIONS_TO_HARD_STOP_AFTER) {
-                break;
-            }
-
-            changes.nextIteration();
-            System.out.println("iteration = " + changes.getIteration());
-
-            markRowsAsSolved(puzzle);
-
-            var breakAndContinue = false;
-            for (String solverName : solvers.keySet()) {
-                changes.rememberPreviousPuzzle();
-                var solver = solvers.get(solverName);
-                solver.apply(puzzle, changes);
-                updateStatsAndPrintDebug(puzzle, changes, stats, solverName);
-                if (DEBUG && changes.anyChange()) {
-                    breakAndContinue = true;
+            try {
+                if (HARD_STOP && changes.getIteration() >= ITERATIONS_TO_HARD_STOP_AFTER) {
                     break;
                 }
-            }
 
-            var validationResult = puzzleValidator.validate(puzzle);
-            if (!validationResult.isValid()) {
-                throw new ValidationException(validationResult.getMessage());
-            }
+                changes.nextIteration();
+                System.out.println("iteration = " + changes.getIteration());
 
-            if (breakAndContinue) {
-                continue;
-            }
+                markRowsAsSolved(puzzle);
 
-            System.out.println(puzzle.toString(changes));
+                var breakAndContinue = false;
+                for (String solverName : solvers.keySet()) {
+                    changes.rememberPreviousPuzzle();
+                    var solver = solvers.get(solverName);
+                    solver.apply(puzzle, changes);
+                    updateStatsAndPrintDebug(puzzle, changes, stats, solverName);
+                    if (DEBUG && changes.anyChange()) {
+                        breakAndContinue = true;
+                        break;
+                    }
+                }
+
+                var validationResult = puzzleValidator.validate(puzzle);
+                if (!validationResult.isValid()) {
+                    throw new ValidationException(validationResult.getMessage());
+                }
+
+                if (breakAndContinue) {
+                    continue;
+                }
+
+                markRowsAsSolved(puzzle);
+                boolean puzzleSolved = isPuzzleSolved(puzzle);
+                if (!changes.anyChange() && !puzzleSolved && GUESS_BRANCHING_ENABLED) {
+                    System.out.println("Branch attempt");
+                    if (guessManager.exceededMaxNumberOfGuesses()) {
+                        System.out.println("Total number of guesses exceeded");
+                    } else {
+                        if (guessManager.exceededMaxNumberOfGuessesInCurrentBranch()) {
+                            System.out.println("Total number of guesses in current branch exceeded");
+                        } else {
+                            guessManager.guess(puzzle, changes, stats);
+                        }
+                    }
+                }
+
+                System.out.println(puzzle.toString(changes));
+            } catch (RuntimeException e) {
+                handleException(e, guessManager);
+            }
         }
-        markRowsAsSolved(puzzle);
 
         if (DEBUG) {
             System.out.println("stats = " + stats.toString().replaceAll(",", System.lineSeparator()) + System.lineSeparator());
@@ -78,11 +102,30 @@ public class PuzzleSolver {
         return new Solution(puzzleSolved, puzzle, stats);
     }
 
+    private static void handleException(RuntimeException e, GuessManager guessManager) {
+        if (GUESS_BRANCHING_ENABLED) {
+            switch (guessManager.isAnyGuessEvaluated()) {
+                case NOT_GUESSING -> {
+                    System.out.println("Exception happened [no guessing]: " + e);
+                    throw e;
+                }
+                case GUESSING_FIRST_TRIAL -> {
+                    // FIXME implement - guess the opposite
+                    throw new RuntimeException("not implemented opposite guessing");
+                }
+                case GUESSING_OPPOSITE -> {
+                    System.out.println("Exception happened [guessing opposite]: " + e);
+                    throw e;
+                }
+            }
+        }
+    }
+
     private void updateStatsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String solverName) {
         PuzzleStatistics diff = puzzleStatisticsCalculator.diff(changes.getPreviousPuzzle(), changes.getCurrentPuzzle());
         stats.increaseUsage(solverName);
         stats.increaseEmptyFieldsMarked(solverName, diff.numberOfEmptyFields());
-        stats.increaseFullFieldsMarked(solverName, diff.numberOfEmptyFields());
+        stats.increaseFullFieldsMarked(solverName, diff.numberOfFullFields());
         if (DEBUG && changes.anyChange()) {
             System.out.println(puzzle.toString(changes, solverName + " " + diff));
         }

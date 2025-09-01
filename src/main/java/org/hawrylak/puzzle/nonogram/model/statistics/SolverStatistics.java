@@ -7,7 +7,6 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
-@ToString
 public class SolverStatistics {
 
     private final String name;
@@ -28,5 +27,16 @@ public class SolverStatistics {
     public void increaseFullFieldsMarked(int increase) {
         fieldsMarked += increase;
         fullFieldsMarked += increase;
+    }
+
+    @Override
+    public String toString() {
+        return "SolverStatistics{" +
+                name +
+                "; usage=" + usage +
+                "; fieldsMarked=" + fieldsMarked +
+                "; emptyFieldsMarked=" + emptyFieldsMarked +
+                "; fullFieldsMarked=" + fullFieldsMarked +
+                '}';
     }
 }
