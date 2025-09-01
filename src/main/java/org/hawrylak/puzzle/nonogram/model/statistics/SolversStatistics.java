@@ -1,6 +1,9 @@
 package org.hawrylak.puzzle.nonogram.model.statistics;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -8,6 +11,9 @@ import java.util.Map;
 
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class SolversStatistics {
 
     private Map<String, SolverStatistics> stats = new HashMap<>();

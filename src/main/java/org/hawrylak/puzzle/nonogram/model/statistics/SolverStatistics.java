@@ -1,11 +1,13 @@
 package org.hawrylak.puzzle.nonogram.model.statistics;
 
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
+@EqualsAndHashCode
+@ToString
 public class SolverStatistics {
 
     private final String name;
@@ -26,16 +28,5 @@ public class SolverStatistics {
     public void increaseFullFieldsMarked(int increase) {
         fieldsMarked += increase;
         fullFieldsMarked += increase;
-    }
-
-    @Override
-    public String toString() {
-        return "SolverStatistics{" +
-                name +
-                "; usage=" + usage +
-                "; fieldsMarked=" + fieldsMarked +
-                "; emptyFieldsMarked=" + emptyFieldsMarked +
-                "; fullFieldsMarked=" + fullFieldsMarked +
-                '}';
     }
 }
