@@ -12,12 +12,11 @@ public class OriginalOrderSolversCollectionProvider implements SolversCollection
 
     @Override
     public Map<String, Solver> provide() {
-        FieldFinder fieldFinder = new FieldFinder();
-        RowSelector rowSelector = new RowSelector();
-        NumberSelector numberSelector = new NumberSelector();
         GapFinder gapFinder = utilsProvider.getGapFinder();
-        GapFiller gapFiller = new GapFiller(fieldFinder, numberSelector, gapFinder);
-        GapCloser gapCloser = new GapCloser(fieldFinder, gapFiller, numberSelector);
+        RowSelector rowSelector = utilsProvider.getRowSelector();
+        NumberSelector numberSelector = utilsProvider.getNumberSelector();
+        GapFiller gapFiller = utilsProvider.getGapFiller();
+        GapCloser gapCloser = utilsProvider.getGapCloser();
 
         Map<String, Solver> solvers = new LinkedHashMap<>();
         addSolver(solvers, new CloseTooSmallToFitAnything(gapFinder, gapCloser));
