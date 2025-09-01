@@ -59,24 +59,23 @@ public class GapFiller {
     public boolean fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
         if (rowOrCol.horizontal) {
             if (i >= 0 && i < puzzle.width) {
-                FieldState currentState = puzzle.fields[i][rowOrCol.number];
-                validateStateChange(changes, state, currentState, i, rowOrCol.number);
-                if (!state.equals(currentState)) {
-                    markField(puzzle, i, rowOrCol.number, currentState, state);
-                    changes.markChangeField(i, rowOrCol.number);
-                    return true;
-                }
+                return fillSingleField(puzzle, i, rowOrCol.number, changes, state);
             }
         } else {
             if (i >= 0 && i < puzzle.height) {
-                FieldState currentState = puzzle.fields[rowOrCol.number][i];
-                validateStateChange(changes, state, currentState, rowOrCol.number, i);
-                if (!state.equals(currentState)) {
-                    markField(puzzle, rowOrCol.number, i, currentState, state);
-                    changes.markChangeField(rowOrCol.number, i);
-                    return true;
-                }
+                return fillSingleField(puzzle, rowOrCol.number, i, changes, state);
             }
+        }
+        return false;
+    }
+
+    public boolean fillSingleField(Puzzle puzzle, int i, int j, ChangedInIteration changes, FieldState state) {
+        FieldState currentState = puzzle.fields[i][j];
+        validateStateChange(changes, state, currentState, i, j);
+        if (!state.equals(currentState)) {
+            markField(puzzle, i, j, currentState, state);
+            changes.markChangeField(i, j);
+            return true;
         }
         return false;
     }
