@@ -1,6 +1,7 @@
 package org.hawrylak.puzzle.nonogram;
 
 import org.hawrylak.puzzle.nonogram.guess.GuessManager;
+import org.hawrylak.puzzle.nonogram.guess.Restored;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
 import org.hawrylak.puzzle.nonogram.model.Solution;
@@ -16,6 +17,7 @@ import org.hawrylak.puzzle.nonogram.validation.PuzzleValidator;
 import org.hawrylak.puzzle.nonogram.validation.ValidationException;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class PuzzleSolver {
 
@@ -75,23 +77,15 @@ public class PuzzleSolver {
                 }
 
                 markRowsAsSolved(puzzle);
-                boolean puzzleSolved = isPuzzleSolved(puzzle);
-                if (!changes.anyChange() && !puzzleSolved && GUESS_BRANCHING_ENABLED) {
-                    System.out.println("Branch attempt");
-                    if (guessManager.exceededMaxNumberOfGuesses()) {
-                        System.out.println("Total number of guesses exceeded");
-                    } else {
-                        if (guessManager.exceededMaxNumberOfGuessesInCurrentBranch()) {
-                            System.out.println("Total number of guesses in current branch exceeded");
-                        } else {
-                            guessManager.guess(puzzle, changes, stats);
-                        }
-                    }
-                }
+                tryGuessing(puzzle, changes, guessManager, stats);
 
                 System.out.println(puzzle.toString(changes));
             } catch (RuntimeException e) {
-                handleException(e, guessManager);
+                var potentiallyRestored = handleException(e, guessManager, puzzle, changes);
+                if (potentiallyRestored.isPresent()) {
+                    puzzle = potentiallyRestored.get().puzzle();
+                    stats = potentiallyRestored.get().stats();
+                }
             }
         }
 
@@ -102,7 +96,23 @@ public class PuzzleSolver {
         return new Solution(puzzleSolved, puzzle, stats);
     }
 
-    private static void handleException(RuntimeException e, GuessManager guessManager) {
+    private void tryGuessing(Puzzle puzzle, ChangedInIteration changes, GuessManager guessManager, SolversStatistics stats) {
+        boolean puzzleSolved = isPuzzleSolved(puzzle);
+        if (!changes.anyChange() && !puzzleSolved && GUESS_BRANCHING_ENABLED) {
+            System.out.println("Branch attempt #" + (guessManager.getTotalNumberOfGuesses() + 1));
+            if (guessManager.exceededMaxNumberOfGuesses()) {
+                System.out.println("Total number of guesses exceeded");
+            } else {
+                if (guessManager.exceededMaxNumberOfGuessesInCurrentBranch()) {
+                    System.out.println("Total number of guesses in current branch exceeded");
+                } else {
+                    guessManager.guess(puzzle, changes, stats);
+                }
+            }
+        }
+    }
+
+    private static Optional<Restored> handleException(RuntimeException e, GuessManager guessManager, Puzzle puzzle, ChangedInIteration changes) {
         if (GUESS_BRANCHING_ENABLED) {
             switch (guessManager.isAnyGuessEvaluated()) {
                 case NOT_GUESSING -> {
@@ -110,15 +120,21 @@ public class PuzzleSolver {
                     throw e;
                 }
                 case GUESSING_FIRST_TRIAL -> {
-                    // FIXME implement - guess the opposite
-                    throw new RuntimeException("not implemented opposite guessing");
+                    if (DEBUG) {
+                        System.out.println("Exception happened [before guessing opposite]: " + e);
+                    }
+                    return Optional.of(guessManager.guessOpposite(puzzle, changes));
                 }
                 case GUESSING_OPPOSITE -> {
-                    System.out.println("Exception happened [guessing opposite]: " + e);
-                    throw e;
+                    if (DEBUG) {
+                        System.out.println("Exception happened [after guessing opposite]: " + e);
+                    }
+                    return Optional.of(guessManager.revertOneGuess(puzzle, changes));
                 }
             }
         }
+        System.out.println("Exception happened [no branching enabled]: " + e);
+        throw e;
     }
 
     private void updateStatsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String solverName) {
@@ -126,7 +142,7 @@ public class PuzzleSolver {
         stats.increaseUsage(solverName);
         stats.increaseEmptyFieldsMarked(solverName, diff.numberOfEmptyFields());
         stats.increaseFullFieldsMarked(solverName, diff.numberOfFullFields());
-        if (DEBUG && changes.anyChange()) {
+        if (DEBUG) {
             System.out.println(puzzle.toString(changes, solverName + " " + diff));
         }
     }

@@ -3,6 +3,5 @@ package org.hawrylak.puzzle.nonogram.guess;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.statistics.SolversStatistics;
 
-public record Checkpoint(Puzzle savedPuzzle, SolversStatistics savedStats, int iteration) {
-
+public record Restored(Puzzle puzzle, SolversStatistics stats) {
 }

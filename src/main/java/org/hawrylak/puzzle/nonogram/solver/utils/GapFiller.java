@@ -59,19 +59,21 @@ public class GapFiller {
     public boolean fillSingleField(RowOrCol rowOrCol, Puzzle puzzle, ChangedInIteration changes, int i, FieldState state) {
         if (rowOrCol.horizontal) {
             if (i >= 0 && i < puzzle.width) {
-                return fillSingleField(puzzle, i, rowOrCol.number, changes, state);
+                return fillSingleField(puzzle, i, rowOrCol.number, changes, state, true);
             }
         } else {
             if (i >= 0 && i < puzzle.height) {
-                return fillSingleField(puzzle, rowOrCol.number, i, changes, state);
+                return fillSingleField(puzzle, rowOrCol.number, i, changes, state, true);
             }
         }
         return false;
     }
 
-    public boolean fillSingleField(Puzzle puzzle, int i, int j, ChangedInIteration changes, FieldState state) {
+    public boolean fillSingleField(Puzzle puzzle, int i, int j, ChangedInIteration changes, FieldState state, boolean validate) {
         FieldState currentState = puzzle.fields[i][j];
-        validateStateChange(changes, state, currentState, i, j);
+        if (validate) {
+            validateStateChange(changes, state, currentState, i, j);
+        }
         if (!state.equals(currentState)) {
             markField(puzzle, i, j, currentState, state);
             changes.markChangeField(i, j);

@@ -1,6 +1,6 @@
 package org.hawrylak.puzzle.nonogram.guess;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.statistics.SolversStatistics;
 import org.hawrylak.puzzle.nonogram.solver.utils.UtilsProvider;
@@ -8,14 +8,19 @@ import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
 import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
 import org.hawrylak.puzzle.nonogram.utils.StatsCloner;
 
-@RequiredArgsConstructor
 public class GuessManager {
-    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 3;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 10;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH = 5;
 
-    private final PuzzleCloner puzzleCloner;
-    private final StatsCloner statsCloner;
+    private final CheckpointManager checkpointManager;
+
+    public GuessManager(PuzzleCloner puzzleCloner, StatsCloner statsCloner) {
+        this.checkpointManager = new CheckpointManager(puzzleCloner, statsCloner);
+    }
+
+    @Getter
     private int totalNumberOfGuesses = 0;
-    private final Guesses guesses = new Guesses();
+    private final GuessBranch guessBranch = new GuessBranch();
     private final Guesser guesser = new RandomSingleFullFieldGuesser();
     private final UtilsProvider utils = UtilsProvider.instance();
 
@@ -24,41 +29,45 @@ public class GuessManager {
     }
 
     public boolean exceededMaxNumberOfGuessesInCurrentBranch() {
-        return false; // FIXME
+        return guessBranch.getGuessCount() >= MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH;
     }
 
     public void guess(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats) {
-        if (wasGuessMade()) {
-            // FIXME implement rollback to a checkpoint
-            throw new RuntimeException("not implemented doing the opposite guess");
-        } else {
-            var checkpoint = createCheckpoint(puzzle, changes, stats);
-            guesses.setCheckpoint(checkpoint);
-            var guess = guesser.guess(puzzle);
-            guesses.setGuess(guess);
-            System.out.println("Guess: " + guess);
-            applyGuess(guess, puzzle, changes);
-            totalNumberOfGuesses++;
-        }
+        var checkpoint = checkpointManager.create(puzzle, changes, stats);
+        guessBranch.addCheckpoint(checkpoint);
+        var guess = guesser.guess(puzzle);
+        System.out.println("[guessing] guess: " + guess);
+        guessBranch.addGuess(guess);
+        applyGuess(guess, puzzle, changes);
+        totalNumberOfGuesses++;
     }
 
-    private boolean wasGuessMade() {
-        return guesses.getCheckpoint().isPresent();
+    public Restored guessOpposite(Puzzle puzzle, ChangedInIteration changes) {
+        Checkpoint checkpoint = guessBranch.lastCheckpoint();
+        GuessChoice guess = guessBranch.popLastGuess();
+        GuessChoice oppositeGuess = GuessChoice.opposite(guess);
+        System.out.println("[guessing] guess opposite: " + oppositeGuess);
+        Restored restored = checkpointManager.restore(checkpoint, changes);
+        guessBranch.addGuess(oppositeGuess);
+        applyGuess(oppositeGuess, puzzle, changes);
+        return restored;
     }
 
-    private Checkpoint createCheckpoint(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats) {
-        var clonedPuzzle = puzzleCloner.deepClone(puzzle);
-        var clonedStats = statsCloner.deepClone(stats);
-        return new Checkpoint(clonedPuzzle, clonedStats, changes.getIteration());
+    public Restored revertOneGuess(Puzzle puzzle, ChangedInIteration changes) {
+        guessBranch.popLastCheckpoint();
+        guessBranch.popLastGuess();
+        Restored restored = guessOpposite(puzzle, changes);
+        System.out.println("[guessing] revert a guess to iteration: " + changes.getIteration());
+        return restored;
     }
 
     private void applyGuess(GuessChoice guess, Puzzle puzzle, ChangedInIteration changes) {
-        utils.getGapFiller().fillSingleField(puzzle, guess.getRow(), guess.getCol(), changes, guess.getState());
+        utils.getGapFiller().fillSingleField(puzzle, guess.getRow(), guess.getCol(), changes, guess.getState(), false);
     }
 
     public GuessingState isAnyGuessEvaluated() {
-        if (guesses.getLastGuess().isPresent()) {
-            return guesses.getLastGuess().get().isOpposite() ? GuessingState.GUESSING_OPPOSITE : GuessingState.GUESSING_FIRST_TRIAL;
+        if (guessBranch.wasGuessMade()) {
+            return guessBranch.lastGuess().isOpposite() ? GuessingState.GUESSING_OPPOSITE : GuessingState.GUESSING_FIRST_TRIAL;
         } else {
             return GuessingState.NOT_GUESSING;
         }

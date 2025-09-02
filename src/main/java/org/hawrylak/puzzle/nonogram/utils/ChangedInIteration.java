@@ -2,6 +2,7 @@ package org.hawrylak.puzzle.nonogram.utils;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import org.hawrylak.puzzle.nonogram.model.NumberToFind;
 import org.hawrylak.puzzle.nonogram.model.Puzzle;
 import org.hawrylak.puzzle.nonogram.model.RowOrCol;
@@ -14,8 +15,10 @@ import java.util.Set;
 @Getter
 public class ChangedInIteration {
 
-    private final Puzzle currentPuzzle;
+    @Setter
+    private Puzzle currentPuzzle;
     private Puzzle previousPuzzle;
+    @Setter
     int iteration = 0;
     private final Set<RowOrCol> changedRowsOrCols = new HashSet<>();
     private boolean[][] changedFields;
