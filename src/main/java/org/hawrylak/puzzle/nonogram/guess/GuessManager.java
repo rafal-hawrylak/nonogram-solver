@@ -9,8 +9,8 @@ import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
 import org.hawrylak.puzzle.nonogram.utils.StatsCloner;
 
 public class GuessManager {
-    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 10;
-    public final static int MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH = 5;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 150;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH = 100;
 
     private final CheckpointManager checkpointManager;
 
@@ -40,29 +40,35 @@ public class GuessManager {
         guessBranch.addGuess(guess);
         applyGuess(guess, puzzle, changes);
         totalNumberOfGuesses++;
+        stats.increaseGuesserUsage(guesser.getName());
+        stats.increaseGuessCount(guesser.getName());
     }
 
-    public Restored guessOpposite(Puzzle puzzle, ChangedInIteration changes) {
+    public Restored guessOpposite(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats) {
         Checkpoint checkpoint = guessBranch.lastCheckpoint();
         GuessChoice guess = guessBranch.popLastGuess();
         GuessChoice oppositeGuess = GuessChoice.opposite(guess);
         System.out.println("[guessing] guess opposite: " + oppositeGuess);
         Restored restored = checkpointManager.restore(checkpoint, changes);
         guessBranch.addGuess(oppositeGuess);
-        applyGuess(oppositeGuess, puzzle, changes);
+        applyGuess(oppositeGuess, restored.puzzle(), changes);
+        stats.increaseGuesserUsage(guesser.getName());
+        stats.increaseOppositeGuessCount(guesser.getName());
         return restored;
     }
 
-    public Restored revertOneGuess(Puzzle puzzle, ChangedInIteration changes) {
+    public Restored revertOneGuess(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats) {
         guessBranch.popLastCheckpoint();
         guessBranch.popLastGuess();
-        Restored restored = guessOpposite(puzzle, changes);
+        Restored restored = guessOpposite(puzzle, changes, stats);
         System.out.println("[guessing] revert a guess to iteration: " + changes.getIteration());
+        stats.increaseGuesserUsage(guesser.getName());
+        stats.increaseRevertCount(guesser.getName());
         return restored;
     }
 
     private void applyGuess(GuessChoice guess, Puzzle puzzle, ChangedInIteration changes) {
-        utils.getGapFiller().fillSingleField(puzzle, guess.getRow(), guess.getCol(), changes, guess.getState(), false);
+        utils.getGapFiller().fillSingleField(puzzle, guess.getCol(), guess.getRow(), changes, guess.getState(), false);
     }
 
     public GuessingState isAnyGuessEvaluated() {

@@ -16,52 +16,87 @@ import java.util.Map;
 @EqualsAndHashCode
 public class SolversStatistics {
 
-    private Map<String, SolverStatistics> stats = new HashMap<>();
+    private Map<String, SolverStatistics> solversStats = new HashMap<>();
+    private Map<String, GuessStatistics> guessStats = new HashMap<>();
+    private Map<String, GuessStatistics> totalGuessStats = new HashMap<>();
 
     public int getUsage(String solverName) {
         makeSureSolverIsPresent(solverName);
-        return stats.get(solverName).getUsage();
+        return solversStats.get(solverName).getUsage();
     }
 
     public int getFieldsMarked(String solverName) {
         makeSureSolverIsPresent(solverName);
-        return stats.get(solverName).getFieldsMarked();
+        return solversStats.get(solverName).getFieldsMarked();
     }
 
     public int getEmptyFieldsMarked(String solverName) {
         makeSureSolverIsPresent(solverName);
-        return stats.get(solverName).getEmptyFieldsMarked();
+        return solversStats.get(solverName).getEmptyFieldsMarked();
     }
 
     public int getFullFieldsMarked(String solverName) {
         makeSureSolverIsPresent(solverName);
-        return stats.get(solverName).getFullFieldsMarked();
+        return solversStats.get(solverName).getFullFieldsMarked();
     }
 
-    public void increaseUsage(String solverName) {
+    public void increaseSolverUsage(String solverName) {
         makeSureSolverIsPresent(solverName);
-        stats.get(solverName).increaseUsage();
+        solversStats.get(solverName).increaseUsage();
     }
 
-    public void increaseEmptyFieldsMarked(String solverName, int increase) {
+    public void increaseSolverEmptyFieldsMarked(String solverName, int increase) {
         makeSureSolverIsPresent(solverName);
-        stats.get(solverName).increaseEmptyFieldsMarked(increase);
+        solversStats.get(solverName).increaseEmptyFieldsMarked(increase);
     }
 
-    public void increaseFullFieldsMarked(String solverName, int increase) {
+    public void increaseSolverFullFieldsMarked(String solverName, int increase) {
         makeSureSolverIsPresent(solverName);
-        stats.get(solverName).increaseFullFieldsMarked(increase);
+        solversStats.get(solverName).increaseFullFieldsMarked(increase);
     }
 
     private void makeSureSolverIsPresent(String solverName) {
-        if (!stats.containsKey(solverName)) {
-            stats.put(solverName, new SolverStatistics(solverName));
+        if (!solversStats.containsKey(solverName)) {
+            solversStats.put(solverName, new SolverStatistics(solverName));
         }
+    }
+
+    public void increaseGuesserUsage(String guesserName) {
+        makeSureGuesserIsPresent(guesserName);
+        guessStats.get(guesserName).increaseUsage();
+        totalGuessStats.get(guesserName).increaseUsage();
+    }
+
+    private void makeSureGuesserIsPresent(String guesserName) {
+        if (!guessStats.containsKey(guesserName)) {
+            guessStats.put(guesserName, new GuessStatistics(guesserName));
+            totalGuessStats.put(guesserName, new GuessStatistics(guesserName));
+        }
+    }
+
+    public void increaseGuessCount(String guesserName) {
+        makeSureGuesserIsPresent(guesserName);
+        guessStats.get(guesserName).increaseGuessCount();
+        totalGuessStats.get(guesserName).increaseGuessCount();
+    }
+
+    public void increaseOppositeGuessCount(String guesserName) {
+        makeSureGuesserIsPresent(guesserName);
+        guessStats.get(guesserName).increaseOppositeGuessCount();
+        totalGuessStats.get(guesserName).increaseOppositeGuessCount();
+    }
+
+    public void increaseRevertCount(String guesserName) {
+        makeSureGuesserIsPresent(guesserName);
+        guessStats.get(guesserName).increaseRevertCount();
+        totalGuessStats.get(guesserName).increaseRevertCount();
     }
 
     @Override
     public String toString() {
-        var list = stats.values().stream().sorted(Comparator.comparingInt(SolverStatistics::getUsage)).toList().reversed();
-        return "SolversStatistics{\n" + list + "\n}";
+        var solversList = solversStats.values().stream().sorted(Comparator.comparingInt(SolverStatistics::getUsage)).toList().reversed();
+        var guessList = guessStats.values().stream().sorted(Comparator.comparingInt(GuessStatistics::getUsage)).toList().reversed();
+        var totalGuessList = totalGuessStats.values().stream().sorted(Comparator.comparingInt(GuessStatistics::getUsage)).toList().reversed();
+        return "SolversStatistics{\n\tsolvers:\n" + solversList + "\n\n\tguesses:\n" + guessList + "\n\n\ttotal guesses:\n" + totalGuessList + "\n}";
     }
 }

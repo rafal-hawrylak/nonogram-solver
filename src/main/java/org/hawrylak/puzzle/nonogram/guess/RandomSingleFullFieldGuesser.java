@@ -49,11 +49,11 @@ public class RandomSingleFullFieldGuesser implements Guesser {
         for (int i = gap.start; i <= gap.end; i++) {
             if (rowOrCol.horizontal) {
                 if (puzzle.fields[i][rowOrCol.number] == FieldState.UNKNOWN) {
-                    result.add(new GuessChoice(i, rowOrCol.number, FieldState.FULL));
+                    result.add(new GuessChoice(rowOrCol.number, i, FieldState.FULL));
                 }
             } else {
                 if (puzzle.fields[rowOrCol.number][i] == FieldState.UNKNOWN) {
-                    result.add(new GuessChoice(rowOrCol.number, i, FieldState.FULL));
+                    result.add(new GuessChoice(i, rowOrCol.number, FieldState.FULL));
                 }
             }
         }

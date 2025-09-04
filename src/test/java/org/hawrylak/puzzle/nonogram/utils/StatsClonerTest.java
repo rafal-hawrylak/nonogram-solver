@@ -17,9 +17,9 @@ class StatsClonerTest {
     void afterCloningAreIdenticalButNotTheSame() {
         // given
         SolversStatistics stats = new SolversStatistics();
-        stats.increaseUsage(SOLVER_NAME);
-        stats.increaseEmptyFieldsMarked(SOLVER_NAME, 10);
-        stats.increaseFullFieldsMarked(SOLVER_NAME, 15);
+        stats.increaseSolverUsage(SOLVER_NAME);
+        stats.increaseSolverEmptyFieldsMarked(SOLVER_NAME, 10);
+        stats.increaseSolverFullFieldsMarked(SOLVER_NAME, 15);
 
         StatsCloner statsCloner = new StatsCloner();
 
@@ -35,17 +35,17 @@ class StatsClonerTest {
     void afterCloningAreOldUnchangedNewChanged() {
         // given
         SolversStatistics stats = new SolversStatistics();
-        stats.increaseUsage(SOLVER_NAME);
-        stats.increaseEmptyFieldsMarked(SOLVER_NAME, 10);
-        stats.increaseFullFieldsMarked(SOLVER_NAME, 15);
+        stats.increaseSolverUsage(SOLVER_NAME);
+        stats.increaseSolverEmptyFieldsMarked(SOLVER_NAME, 10);
+        stats.increaseSolverFullFieldsMarked(SOLVER_NAME, 15);
 
         StatsCloner statsCloner = new StatsCloner();
 
         // when
         var cloned = statsCloner.deepClone(stats);
-        cloned.increaseUsage(SOLVER_NAME);
-        cloned.increaseEmptyFieldsMarked(SOLVER_NAME, 8);
-        cloned.increaseFullFieldsMarked(SOLVER_NAME, 12);
+        cloned.increaseSolverUsage(SOLVER_NAME);
+        cloned.increaseSolverEmptyFieldsMarked(SOLVER_NAME, 8);
+        cloned.increaseSolverFullFieldsMarked(SOLVER_NAME, 12);
 
         // then
         assertNotEquals(cloned, stats);

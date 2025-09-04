@@ -60,7 +60,7 @@ public class PuzzleSolver {
                     changes.rememberPreviousPuzzle();
                     var solver = solvers.get(solverName);
                     solver.apply(puzzle, changes);
-                    updateStatsAndPrintDebug(puzzle, changes, stats, solverName);
+                    updateSolversStatsAndPrintDebug(puzzle, changes, stats, solverName);
                     if (DEBUG && changes.anyChange()) {
                         breakAndContinue = true;
                         break;
@@ -81,7 +81,7 @@ public class PuzzleSolver {
 
                 System.out.println(puzzle.toString(changes));
             } catch (RuntimeException e) {
-                var potentiallyRestored = handleException(e, guessManager, puzzle, changes);
+                var potentiallyRestored = handleException(e, guessManager, puzzle, changes, stats);
                 if (potentiallyRestored.isPresent()) {
                     puzzle = potentiallyRestored.get().puzzle();
                     stats = potentiallyRestored.get().stats();
@@ -112,7 +112,7 @@ public class PuzzleSolver {
         }
     }
 
-    private static Optional<Restored> handleException(RuntimeException e, GuessManager guessManager, Puzzle puzzle, ChangedInIteration changes) {
+    private static Optional<Restored> handleException(RuntimeException e, GuessManager guessManager, Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats) {
         if (GUESS_BRANCHING_ENABLED) {
             switch (guessManager.isAnyGuessEvaluated()) {
                 case NOT_GUESSING -> {
@@ -123,13 +123,13 @@ public class PuzzleSolver {
                     if (DEBUG) {
                         System.out.println("Exception happened [before guessing opposite]: " + e);
                     }
-                    return Optional.of(guessManager.guessOpposite(puzzle, changes));
+                    return Optional.of(guessManager.guessOpposite(puzzle, changes, stats));
                 }
                 case GUESSING_OPPOSITE -> {
                     if (DEBUG) {
                         System.out.println("Exception happened [after guessing opposite]: " + e);
                     }
-                    return Optional.of(guessManager.revertOneGuess(puzzle, changes));
+                    return Optional.of(guessManager.revertOneGuess(puzzle, changes, stats));
                 }
             }
         }
@@ -137,12 +137,12 @@ public class PuzzleSolver {
         throw e;
     }
 
-    private void updateStatsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String solverName) {
+    private void updateSolversStatsAndPrintDebug(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats, String solverName) {
         PuzzleStatistics diff = puzzleStatisticsCalculator.diff(changes.getPreviousPuzzle(), changes.getCurrentPuzzle());
-        stats.increaseUsage(solverName);
-        stats.increaseEmptyFieldsMarked(solverName, diff.numberOfEmptyFields());
-        stats.increaseFullFieldsMarked(solverName, diff.numberOfFullFields());
-        if (DEBUG) {
+        stats.increaseSolverUsage(solverName);
+        stats.increaseSolverEmptyFieldsMarked(solverName, diff.numberOfEmptyFields());
+        stats.increaseSolverFullFieldsMarked(solverName, diff.numberOfFullFields());
+        if (DEBUG && changes.anyChange()) {
             System.out.println(puzzle.toString(changes, solverName + " " + diff));
         }
     }
