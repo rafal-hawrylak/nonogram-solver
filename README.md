@@ -6,7 +6,8 @@ Backlog:
 - [done] implement filling the gap if the only matching
 - [done] bug in FillTheNumbersWithStartAndEndNotConnectedSolver
 - areSubGapsMergeable may check if in the same gap - do not remember why is this check needed?
-- solve SolveWholeCase020Test - deterministic - iteration = 83 - completion 30% (264 / 875)
+- solve SolveWholeCase017Test - deterministic - iteration = 111 - completion 77% (466 / 600)
+- solve SolveWholeCase020Test - deterministic - iteration = 77 - completion 30% (269 / 875)
 - solve SolveWholeCase022Test - deterministic - iteration = 40 - completion 29% (218 / 750)
 - solve SolveWholeCase024Test - deterministic - iteration = 10 - completion 11% (134 / 1200)
 - order of solvers impact the result

@@ -239,10 +239,14 @@ public class GapFiller {
             var secondSubGap = first ? gap.filledSubGaps.get(1) : gap.filledSubGaps.getLast();
             var distanceFromEdge = first ? secondSubGap.start - gap.start : gap.end - firstSubGap.end;
             if (number.number >= distanceFromEdge) {
-                for (int i = firstSubGap.end + 1; i < secondSubGap.start; i++) {
-                    fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
-                }
+                mergeSubGaps(puzzle, changes, rowOrCol, firstSubGap, secondSubGap);
             }
+        }
+    }
+
+    public void mergeSubGaps(Puzzle puzzle, ChangedInIteration changes, RowOrCol rowOrCol, SubGap firstSubGap, SubGap secondSubGap) {
+        for (int i = firstSubGap.end + 1; i < secondSubGap.start; i++) {
+            fillSingleField(rowOrCol, puzzle, changes, i, FieldState.FULL);
         }
     }
 
