@@ -9,15 +9,44 @@ import java.util.List;
 
 public class SolveWholeCase022Test extends PuzzleSolverTestBase {
 
+    // solved by Guesser
     @Test
-//    @Disabled("unsolved")
     /*
       iteration = 38
       completion 29% (218 / 750)
      */
     void test() {
         String expectedPuzzle = """
-""";
+xxxxxxx■■■■■■■xxxxxxx■■■x
+xxxxxx■■■xxxx■■xxxxx■■x■■
+xxxxx■■■xxxxxx■■xxx■■xxx■
+xxxxx■■xx■■■■xx■■xx■xxxx■
+xxxx■■xx■■xx■■xx■xx■xxxxx
+xxxx■xx■■xxxx■■x■■x■x■■■x
+xxxx■xx■■xxxxx■xx■x■x■x■■
+xxxx■xx■xxxxxx■x■■■■x■xx■
+xxx■■x■■xx■■■x■■x■x■x■xxx
+xxx■xx■xx■■x■■■■x■x■■■xxx
+xxx■xx■x■■xxxx■■xxx■■xxxx
+xxx■xx■x■xxxx■■■xx■■■xxxx
+xxx■xx■xxxx■■■■■xx■■■■■xx
+xxxxxx■xx■■■■■■■xx■■■■■■■
+xxxxxx■xx■■■■■■xxxx■■■■■■
+xxxxxx■xx■■■■■■■■■■■■■■■■
+xxxxxxxxxx■■■■■■■■■■■■■■x
+xxxxx■■■■■■■■■■■■■■■■■■xx
+xx■■■■■■■■xx■■■■■■■■x■xxx
+■■■■■■x■■xxx■■xxxxxxx■x■■
+■■■xx■■■xx■x■■xxxxxxx■xxx
+■xx■■xxx■■xx■■■■■■■x■■x■x
+■■■xxx■■■x■xx■■xxxxx■xxx■
+■xxx■■■xx■■x■■■■■■■x■■x■x
+xxx■■xxx■■xx■■■xxxxxx■xx■
+xx■■xx■■■x■■■■■■■■■■■x■■x
+x■■x■■■xx■■■■xxxxxxxxxx■■
+■xx■■xx■■■■■■■■■■■■■■■■■x
+■xxxxx■■■xxxxxxxxxxxxxxxx
+xxx■■■■■■■■■xxx■■■■■■■■■■""";
         Puzzle before = getTestPuzzle19ProfessionalLevel2();
         solveAndAssertSystem(before, expectedPuzzle);
     }
