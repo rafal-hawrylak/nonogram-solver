@@ -9,8 +9,8 @@ import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
 import org.hawrylak.puzzle.nonogram.utils.StatsCloner;
 
 public class GuessManager {
-    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 150;
-    public final static int MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH = 100;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 3000;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH = 2000;
 
     private final CheckpointManager checkpointManager;
 
@@ -60,7 +60,7 @@ public class GuessManager {
     public Restored revertOneGuess(Puzzle puzzle, ChangedInIteration changes, SolversStatistics stats) {
         guessBranch.popLastCheckpoint();
         guessBranch.popLastGuess();
-        Restored restored = guessOpposite(puzzle, changes, stats);
+        Restored restored = guessBranch.lastGuess().isOpposite() ? revertOneGuess(puzzle, changes, stats) : guessOpposite(puzzle, changes, stats);
         System.out.println("[guessing] revert a guess to iteration: " + changes.getIteration());
         stats.increaseGuesserUsage(guesser.getName());
         stats.increaseRevertCount(guesser.getName());
