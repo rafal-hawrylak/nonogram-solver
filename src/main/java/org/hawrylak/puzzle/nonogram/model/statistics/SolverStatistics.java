@@ -1,7 +1,10 @@
 package org.hawrylak.puzzle.nonogram.model.statistics;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @AllArgsConstructor

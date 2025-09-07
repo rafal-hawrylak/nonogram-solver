@@ -1,14 +1,13 @@
 package org.hawrylak.puzzle.nonogram.solver;
 
 import lombok.AllArgsConstructor;
-import org.hawrylak.puzzle.nonogram.model.*;
+import org.hawrylak.puzzle.nonogram.model.Puzzle;
+import org.hawrylak.puzzle.nonogram.model.RowOrCol;
+import org.hawrylak.puzzle.nonogram.model.SubGap;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFiller;
 import org.hawrylak.puzzle.nonogram.solver.utils.GapFinder;
 import org.hawrylak.puzzle.nonogram.solver.utils.NumberSelector;
 import org.hawrylak.puzzle.nonogram.utils.ChangedInIteration;
-
-import java.util.Comparator;
-import java.util.List;
 
 @AllArgsConstructor
 public class MergeTwoFromThreeSubGapsIfThereAreOnlyTwoNumbers extends Solver {
