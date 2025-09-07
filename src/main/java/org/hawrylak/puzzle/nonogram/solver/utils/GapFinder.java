@@ -232,8 +232,13 @@ public class GapFinder {
         return gaps.stream().filter(g -> g.start == gap.start && g.end == gap.end).findFirst();
     }
 
-    public boolean areSubGapsMergeable(int number, SubGap subGap, SubGap nextSubGap) {
-        var sizeAfterMerging = getSizeAfterMerging(subGap, nextSubGap);
+    public boolean areSubGapsMergeable(List<Gap> gaps, int number, SubGap firstSubGap, SubGap secondSubGap) {
+        var gapOfFirstSubGap = getGapOfSubGap(gaps, firstSubGap);
+        var gapOfSecondSubGap = getGapOfSubGap(gaps, secondSubGap);
+        if (!gapOfFirstSubGap.equals(gapOfSecondSubGap)) {
+            return false;
+        }
+        var sizeAfterMerging = getSizeAfterMerging(firstSubGap, secondSubGap);
         return sizeAfterMerging <= number;
     }
 

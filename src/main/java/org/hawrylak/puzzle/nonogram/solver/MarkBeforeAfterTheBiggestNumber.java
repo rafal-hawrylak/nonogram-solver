@@ -43,7 +43,7 @@ public class MarkBeforeAfterTheBiggestNumber extends Solver {
                                     var subGapBeforeBiggest = gapFinder.previous(subGaps, biggestSubGap);
                                     if (subGapBeforeBiggest.isPresent()) {
                                         if (onlyFirstNumberBeforeBiggestNumberIsMatchingIntoGaps(lastBeforeBiggest, numbersMatchingBiggestSubGap.getFirst(), subGapBeforeBiggest.get(), biggestSubGap, numbersToFind, gaps)) {
-                                            if (!gapFinder.areSubGapsMergeable(firstBiggest.number, subGapBeforeBiggest.get(), biggestSubGap)) {
+                                            if (!gapFinder.areSubGapsMergeable(gaps, firstBiggest.number, subGapBeforeBiggest.get(), biggestSubGap)) {
                                                 if (lastBeforeBiggest.number == subGapBeforeBiggest.get().length) {
                                                     gapFiller.fillTheGapEntirely(subGapBeforeBiggest.get(), lastBeforeBiggest, rowOrCol, puzzle, changes);
                                                 }

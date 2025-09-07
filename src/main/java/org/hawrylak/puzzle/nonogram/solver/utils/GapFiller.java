@@ -161,6 +161,7 @@ public class GapFiller {
             return;
         }
         gap = refreshedGap.get();
+
         if (gap.filledSubGaps.size() == 1) {
             var subGap = gap.filledSubGaps.getFirst();
             var howManyEmptyFromFront = subGap.end - number.number;
@@ -221,8 +222,9 @@ public class GapFiller {
             var secondNumber = numbers.get(1);
             var firstSubGap = gap.filledSubGaps.get(0);
             var secondSubGap = gap.filledSubGaps.get(1);
-            var mergeableForFirstNumber = gapFinder.areSubGapsMergeable(firstNumber.number, firstSubGap, secondSubGap);
-            var mergeableForSecondNumber = gapFinder.areSubGapsMergeable(secondNumber.number, firstSubGap, secondSubGap);
+            var gaps = gapFinder.find(puzzle, rowOrCol);
+            var mergeableForFirstNumber = gapFinder.areSubGapsMergeable(gaps, firstNumber.number, firstSubGap, secondSubGap);
+            var mergeableForSecondNumber = gapFinder.areSubGapsMergeable(gaps, secondNumber.number, firstSubGap, secondSubGap);
             if (!mergeableForFirstNumber && !mergeableForSecondNumber) {
                 var minLength = secondSubGap.start - gap.start - 1;
                 if (minLength == firstNumber.number) {

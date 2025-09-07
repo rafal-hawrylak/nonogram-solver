@@ -20,6 +20,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound extends Solv
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
+            var gaps = gapFinder.find(puzzle, rowOrCol);
             var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
             var firstNumber = numberSelector.getFirstNotFound(rowOrCol.numbersToFind);
             if (firstGap.isPresent() && firstNumber.isPresent()) {
@@ -30,7 +31,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound extends Solv
                     if (missingNumberPart >= 0) {
                         if (firstSubGap.start - firstGap.get().start >= missingNumberPart &&
                             firstSubGap.start - firstGap.get().start <= firstNumber.get().number) {
-                            boolean mergeable = gapFinder.areSubGapsMergeable(firstNumber.get().number, firstSubGap, nextSubGap);
+                            boolean mergeable = gapFinder.areSubGapsMergeable(gaps, firstNumber.get().number, firstSubGap, nextSubGap);
                             var onlySingleFieldBetweenSubGaps = firstSubGap.end + 2 == nextSubGap.start;
                             if (!mergeable && onlySingleFieldBetweenSubGaps) {
                                 var fakeGap = new Gap(rowOrCol, firstSubGap.end + 1, firstSubGap.end + 1, 1);
@@ -51,7 +52,7 @@ public class FindUnmergableSubGapsForBiggestForFirstAndLastNotFound extends Solv
                     if (missingNumberPart >= 0) {
                         if (lastGap.get().end - lastSubGap.end >= missingNumberPart &&
                             lastGap.get().end - lastSubGap.end <= lastNumber.get().number) {
-                            boolean mergeable = gapFinder.areSubGapsMergeable(lastNumber.get().number, prevSubGap, lastSubGap);
+                            boolean mergeable = gapFinder.areSubGapsMergeable(gaps, lastNumber.get().number, prevSubGap, lastSubGap);
                             var onlySingleFieldBetweenSubGaps = prevSubGap.end + 2 == lastSubGap.start;
                             if (!mergeable && onlySingleFieldBetweenSubGaps) {
                                 var fakeGap = new Gap(rowOrCol, prevSubGap.end + 1, prevSubGap.end + 1, 1);

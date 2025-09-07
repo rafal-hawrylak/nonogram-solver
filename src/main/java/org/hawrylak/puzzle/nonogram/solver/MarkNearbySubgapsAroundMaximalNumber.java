@@ -47,7 +47,7 @@ public class MarkNearbySubgapsAroundMaximalNumber extends Solver {
                 var previousNumbers = Utils.allPrevious(notFoundNumbers, theOnlyNumberMatching);
                 if (!previousSubGaps.isEmpty() && !previousNumbers.isEmpty()) {
                     var previousSubGap = Utils.previous(subGaps, maxSubGap).get();
-                    var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, previousSubGap, maxSubGap);
+                    var mergeable = gapFinder.areSubGapsMergeable(unassignedGaps, theOnlyNumberMatching.number, previousSubGap, maxSubGap);
                     if (!mergeable) {
                         var maxPreviousNumber = previousNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
                         for (SubGap subGap : Utils.reverse(previousSubGaps)) {
@@ -63,7 +63,7 @@ public class MarkNearbySubgapsAroundMaximalNumber extends Solver {
                 var nextNumbers = Utils.allNext(notFoundNumbers, theOnlyNumberMatching);
                 if (!nextSubGaps.isEmpty() && !nextNumbers.isEmpty()) {
                     var nextSubGap = Utils.next(subGaps, maxSubGap).get();
-                    var mergeable = gapFinder.areSubGapsMergeable(theOnlyNumberMatching.number, maxSubGap, nextSubGap);
+                    var mergeable = gapFinder.areSubGapsMergeable(unassignedGaps, theOnlyNumberMatching.number, maxSubGap, nextSubGap);
                     if (!mergeable) {
                         var maxNextNumber = nextNumbers.stream().max(Comparator.comparingInt(n -> n.number)).get();
                         for (SubGap subGap : nextSubGaps) {

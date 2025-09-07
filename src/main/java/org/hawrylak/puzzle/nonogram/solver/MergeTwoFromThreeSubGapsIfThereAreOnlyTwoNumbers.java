@@ -24,8 +24,8 @@ public class MergeTwoFromThreeSubGapsIfThereAreOnlyTwoNumbers extends Solver {
             var subGaps = gapFinder.allSubGaps(gaps);
             var numbersToFind = numberSelector.getNotFound(rowOrCol.numbersToFind);
             if (subGaps.size() == 3 && numbersToFind.size() == 2) {
-                boolean areTwoFirstSubGapsMergable = gapFinder.areSubGapsMergeable(numbersToFind.getFirst().number, subGaps.getFirst(), subGaps.get(1));
-                boolean areTwoLastSubGapsMergable = gapFinder.areSubGapsMergeable(numbersToFind.getLast().number, subGaps.get(1), subGaps.getLast());
+                boolean areTwoFirstSubGapsMergable = gapFinder.areSubGapsMergeable(gaps, numbersToFind.getFirst().number, subGaps.getFirst(), subGaps.get(1));
+                boolean areTwoLastSubGapsMergable = gapFinder.areSubGapsMergeable(gaps, numbersToFind.getLast().number, subGaps.get(1), subGaps.getLast());
                 if (areTwoFirstSubGapsMergable && !areTwoLastSubGapsMergable) {
                     gapFiller.mergeSubGaps(puzzle, changes, rowOrCol, subGaps.getFirst(), subGaps.get(1));
                     if (numbersToFind.getFirst().number == subGaps.get(1).end - subGaps.getFirst().start + 1) {

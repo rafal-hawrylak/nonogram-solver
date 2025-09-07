@@ -29,7 +29,7 @@ public class FindUnmergableSubGapsForBiggest extends Solver {
                 for (int i = 0; i < gap.filledSubGaps.size() - 1; i++) {
                     var subGap = gap.filledSubGaps.get(i);
                     var nextSubGap = gap.filledSubGaps.get(i + 1);
-                    boolean mergeable = gapFinder.areSubGapsMergeable(biggest, subGap, nextSubGap);
+                    boolean mergeable = gapFinder.areSubGapsMergeable(gaps, biggest, subGap, nextSubGap);
                     var onlySingleFieldBetweenSubGaps = subGap.end + 2 == nextSubGap.start;
                     if (!mergeable && onlySingleFieldBetweenSubGaps) {
                         var fakeGap = new Gap(rowOrCol, subGap.end + 1, subGap.end + 1, 1);

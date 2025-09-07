@@ -22,6 +22,7 @@ public class SecondSubGapMayBeClosed extends Solver {
     @Override
     public void apply(Puzzle puzzle, ChangedInIteration changes) {
         for (RowOrCol rowOrCol : puzzle.getUnsolvedRowsOrCols()) {
+            var gaps = gapFinder.findWithoutAssignedNumber(puzzle, rowOrCol);
             var firstGap = gapFinder.findFirstWithoutNumberAssigned(puzzle, rowOrCol);
             if (firstGap.isEmpty()) {
                 continue;
@@ -38,7 +39,7 @@ public class SecondSubGapMayBeClosed extends Solver {
                 var secondSubGap = Utils.next(gap.filledSubGaps, firstSubGap).get();
                 var missingNumberPart = number.number - firstSubGap.length;
                 if (missingNumberPart >= 0 && firstSubGap.start - gap.start <= missingNumberPart) {
-                    if (!gapFinder.areSubGapsMergeable(number.number, firstSubGap, secondSubGap)) {
+                    if (!gapFinder.areSubGapsMergeable(gaps, number.number, firstSubGap, secondSubGap)) {
                         if (!gapFinder.numberFitsBetweenSubGaps(nextNumber.get().number, firstSubGap, secondSubGap)) {
                             if (nextNumber.get().number == secondSubGap.length) {
                                 var fakeGap = new Gap(rowOrCol, secondSubGap.start, secondSubGap.end, secondSubGap.length, Optional.of(nextNumber.get()));
@@ -65,7 +66,7 @@ public class SecondSubGapMayBeClosed extends Solver {
                 var lastButOneSubGap = Utils.previous(gap.filledSubGaps, lastSubGap).get();
                 var missingNumberPart = number.number - lastSubGap.length;
                 if (missingNumberPart >= 0 && gap.end - lastSubGap.end <= missingNumberPart) {
-                    if (!gapFinder.areSubGapsMergeable(number.number, lastButOneSubGap, lastSubGap)) {
+                    if (!gapFinder.areSubGapsMergeable(gaps, number.number, lastButOneSubGap, lastSubGap)) {
                         if (!gapFinder.numberFitsBetweenSubGaps(previousNumber.get().number, lastButOneSubGap, lastSubGap)) {
                             if (previousNumber.get().number == lastButOneSubGap.length) {
                                 var fakeGap = new Gap(rowOrCol, lastButOneSubGap.start, lastButOneSubGap.end, lastButOneSubGap.length, previousNumber);

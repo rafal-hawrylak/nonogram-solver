@@ -48,7 +48,7 @@ public class MergeSubGapForBiggestIfPreviousDoesNotMatch extends Solver {
                     continue;
                 }
                 var firstSubGap = subGaps.get(0);
-                boolean mergeable = gapFinder.areSubGapsMergeable(biggest, firstSubGap, maxSubGap);
+                boolean mergeable = gapFinder.areSubGapsMergeable(gaps, biggest, firstSubGap, maxSubGap);
                 if (mergeable) {
                     var fakeGap = new Gap(rowOrCol, firstSubGap.end + 1, maxSubGap.start - 1, maxSubGap.start - firstSubGap.end + 1);
                     gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
@@ -64,8 +64,8 @@ public class MergeSubGapForBiggestIfPreviousDoesNotMatch extends Solver {
                 }
                 var firstSubGap = subGaps.get(0);
                 var nextSubGap = subGaps.get(1);
-                boolean mergeableWithFirstNumber = gapFinder.areSubGapsMergeable(previousNumber.number, firstSubGap, nextSubGap);
-                boolean mergeableWithSecondNumber = gapFinder.areSubGapsMergeable(biggest, nextSubGap, maxSubGap);
+                boolean mergeableWithFirstNumber = gapFinder.areSubGapsMergeable(gaps, previousNumber.number, firstSubGap, nextSubGap);
+                boolean mergeableWithSecondNumber = gapFinder.areSubGapsMergeable(gaps, biggest, nextSubGap, maxSubGap);
                 if (!mergeableWithFirstNumber && mergeableWithSecondNumber) {
                     var fakeGap = new Gap(rowOrCol, nextSubGap.end + 1, maxSubGap.start - 1, maxSubGap.start - nextSubGap.end + 1);
                     gapFiller.fillTheGap(fakeGap, rowOrCol, puzzle, changes);
