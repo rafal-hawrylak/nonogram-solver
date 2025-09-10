@@ -9,8 +9,8 @@ import org.hawrylak.puzzle.nonogram.utils.PuzzleCloner;
 import org.hawrylak.puzzle.nonogram.utils.StatsCloner;
 
 public class GuessManager {
-    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 30;
-    public final static int MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH = 20;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES = 300;
+    public final static int MAX_TOTAL_NUMBER_OF_GUESSES_IN_SINGLE_BRANCH = 200;
 
     private final CheckpointManager checkpointManager;
 
@@ -21,7 +21,7 @@ public class GuessManager {
     @Getter
     private int totalNumberOfGuesses = 0;
     private final GuessBranch guessBranch = new GuessBranch();
-    private final GuesserProvider guesserProvider = new ChosenGuesserProvider();
+    private final GuesserProvider guesserProvider = new RandomGuesserProvider();
     private final UtilsProvider utils = UtilsProvider.instance();
 
     public boolean exceededMaxNumberOfGuesses() {
